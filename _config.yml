@@ -246,7 +246,7 @@ whitelist:
 
 #remote_theme: "mmistakes/minimal-mistakes@4.19.2"
 theme: minimal-mistakes-jekyll
-minimal_mistakes_skin: "sunrise"
+minimal_mistakes_skin: "default"
 
 # Archives
 #  Type
