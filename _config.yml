@@ -12,7 +12,7 @@ title_separator          : "-"
 name                     : &name "Tom Sasani"
 description              : &description "Postdoctoral fellow with Dr. Kelley Harris at UW"
 url                      : https://tomsasani.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
-baseurl                  : "" # the subpath of your site, e.g. "/blog"
+baseurl                  : "/" # the subpath of your site, e.g. "/blog"
 repository               : "tomsasani/tomsasani.github.io"
 teaser                   :  # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 breadcrumbs              : false # true, false (default)
