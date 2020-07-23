@@ -122,12 +122,12 @@ author:
 include:
   - .htaccess
   - _pages
-  - _posts
   - files
   - images
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
+  - _posts
   - .asset-cache
   - .bundle
   - .jekyll-assets-cache
