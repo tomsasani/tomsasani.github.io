@@ -59,7 +59,7 @@ yandex_site_verification :
 
 # Social Sharing
 twitter:
-  username               : &twitter
+  username               : @tomsasani
 facebook:
   username               :
   app_id                 :
@@ -245,7 +245,7 @@ whitelist:
 
 
 remote_theme: "mmistakes/minimal-mistakes@4.19.2"
-# theme: minimal-mistakes-jekyll
+theme: minimal-mistakes-jekyll
 minimal_mistakes_skin: "sunrise"
 
 # Archives
