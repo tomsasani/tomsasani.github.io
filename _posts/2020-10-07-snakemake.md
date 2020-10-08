@@ -104,11 +104,11 @@ rule bwa_align:
     """
 ```
 
-> *A huge advantage of Snakemake is that it will only run a rule if its output is needed by a downstream rule.**
+> **A huge advantage of Snakemake is that it will only run a rule if its output is needed by a downstream rule.**
 
 > You can see that I've added a rule (called `all`) to the top of the pipeline. This is because Snakemake runs in a "bottom-up" fashion.
 
-> **The `all` rule tells Snakemake what the final output of the entire pipeline should be.** In this case, we want the final output to be an aligned BAM.
+> **The `all` rule tells Snakemake what the final output of the entire pipeline should be. In this case, we want the final output to be an aligned BAM.**
 
 > In this example, Snakemake finds the rule that outputs `A.sorted.bam` (which is `bwa_align`), and checks to see if that rule has access to all of its necessary inputs (a reference and two FASTQ files). If not, Snakemake finds the rules that produce those files and runs them. And so on. Once `bwa_align` has all of the inputs it needs, Snakemake runs it to produce the final output.
 
@@ -279,7 +279,7 @@ rule count_snps:
     """
 ```
 
-> Notice that when a rule includes python code, we use the `run:` syntax instead of the `shell:` syntax at the top of the code block.
+> **Notice that when a rule includes python code, we use the `run:` syntax instead of the `shell:` syntax at the top of the code block.**
 
 Running a Snakemake pipeline on the Sage Grid Engine (SGE)
 ---
