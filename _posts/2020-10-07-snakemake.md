@@ -47,11 +47,11 @@ rule download_reference:
     """
 ```
 
-* This rule, which is named `download_reference`, doesn't take any input, since it's just downloading a FASTA directly.
+> This rule, which is named `download_reference`, doesn't take any input, since it's just downloading a FASTA directly.
 
-* We specify that the expected output of this rule is a single gzipped FASTA.
+> We specify that the expected output of this rule is a single gzipped FASTA.
 
-* After `shell:`, we simply list the commands we'd normally type at the command line to produce the specified output.
+> After `shell:`, we simply list the commands we'd normally type at the command line to produce the specified output.
 
 Next, we want to align the FASTQ data from sample A to the reference.
 
@@ -69,7 +69,7 @@ rule bwa_align:
     """
 ```
 
-* This rule takes as input a reference genome and two FASTQ files. As you can see, it's possible to name individual input or output files (using Python variable assignment) so that we can access particular files in our shell command.
+> This rule takes as input a reference genome and two FASTQ files. As you can see, it's possible to name individual input or output files (using Python variable assignment) so that we can access particular files in our shell command.
 
 
 Snakemake will only run a rule if it has to
@@ -104,15 +104,15 @@ rule bwa_align:
     """
 ```
 
-**A huge advantage of Snakemake is that it will only run a rule if its output is needed by a downstream rule.**
+> *A huge advantage of Snakemake is that it will only run a rule if its output is needed by a downstream rule.**
 
-* You can see that I've added a rule (called `all`) to the top of the pipeline. This is because Snakemake runs in a "bottom-up" fashion.
+> You can see that I've added a rule (called `all`) to the top of the pipeline. This is because Snakemake runs in a "bottom-up" fashion.
 
-**The `all` rule tells Snakemake what the final output of the entire pipeline should be.** In this case, we want the final output to be an aligned BAM.
+> **The `all` rule tells Snakemake what the final output of the entire pipeline should be.** In this case, we want the final output to be an aligned BAM.
 
-* In this example, Snakemake finds the rule that outputs `A.sorted.bam` (which is `bwa_align`), and checks to see if that rule has access to all of its necessary inputs (a reference and two FASTQ files). If not, Snakemake finds the rules that produce those files and runs them. And so on. Once `bwa_align` has all of the inputs it needs, Snakemake runs it to produce the final output.
+> In this example, Snakemake finds the rule that outputs `A.sorted.bam` (which is `bwa_align`), and checks to see if that rule has access to all of its necessary inputs (a reference and two FASTQ files). If not, Snakemake finds the rules that produce those files and runs them. And so on. Once `bwa_align` has all of the inputs it needs, Snakemake runs it to produce the final output.
 
-* And let's say that for whatever reason, `bwa_align` fails when its run. When we re-run the pipeline, Snakemake will check that its input files are present. Since all of the previous rules will have been run before invoking `bwa_align`, Snakemake will see that its inputs are present and won't re-run any of the upstream steps!
+> And let's say that for whatever reason, `bwa_align` fails when its run. When we re-run the pipeline, Snakemake will check that its input files are present. Since all of the previous rules will have been run before invoking `bwa_align`, Snakemake will see that its inputs are present and won't re-run any of the upstream steps!
 
 Using wildcards to avoid re-writing the same command over and over again
 ---
@@ -152,9 +152,9 @@ rule bwa_align:
     """
 ```
 
-* Here, I've just replaced every instance of a sample name in an output or input file with a `{sample}` wildcard. 
+> Here, I've just replaced every instance of a sample name in an output or input file with a `{sample}` wildcard. 
 
-* In the `all` rule, I'm using the `expand` function to tell Snakemake that the expected output is a list of sorted BAMs, with the sample names in `samples` filled in.
+> In the `all` rule, I'm using the `expand` function to tell Snakemake that the expected output is a list of sorted BAMs, with the sample names in `samples` filled in.
 
 In this case, the result of the `expand` would just be:
 
@@ -164,7 +164,7 @@ In this case, the result of the `expand` would just be:
 ["A.sorted.bam", "B.sorted.bam", "C.sorted.bam"]
 ```
 
-**Notice that at the top of the script, I've created a python `list()` of the sample names. In a Snakemake workflow, we can include pure python code. So if we wanted to read in sample names from an external PED file, or get a list of intervals for variant calling, we could do that using python at the top of our Snakefile.**
+> **Notice that at the top of the script, I've created a python `list()` of the sample names. In a Snakemake workflow, we can include pure python code. So if we wanted to read in sample names from an external PED file, or get a list of intervals for variant calling, we could do that using python at the top of our Snakefile.**
 
 But we can use `expand` for more complicated chaining of multiple sample names and parameters.
 
@@ -221,9 +221,9 @@ rule call_variants:
     """
 ```
 
-* We've now added a step to the pipeline which takes a reference genome and a BAM as input, and outputs a variant call file (VCF). 
+> We've now added a step to the pipeline which takes a reference genome and a BAM as input, and outputs a variant call file (VCF). 
 
-**Notice that in the `call_variants` rule, my `freebayes` command takes a `-r` argument that specifies the region we want to analyze. Whenever you want to access a wildcard inside of the `shell:` portion of a rule, its necessary to preface the wildcard name with `wildcard`.**
+> **Notice that in the `call_variants` rule, my `freebayes` command takes a `-r` argument that specifies the region we want to analyze. Whenever you want to access a wildcard inside of the `shell:` portion of a rule, its necessary to preface the wildcard name with `wildcard`.**
 
 And in this example, `expand` takes the Cartesian product (i.e., `itertools.product()`) of the lists of parameters. So, the output of `expand` would be:
 
@@ -279,7 +279,7 @@ rule count_snps:
     """
 ```
 
-* Notice that when a rule includes python code, we use the `run:` syntax instead of the `shell:` syntax at the top of the code block.
+> Notice that when a rule includes python code, we use the `run:` syntax instead of the `shell:` syntax at the top of the code block.
 
 Running a Snakemake pipeline on the Sage Grid Engine (SGE)
 ---
@@ -296,11 +296,11 @@ snakemake -j 10 \
        "qsub -l centos=7 -l mfree=16G -l h_rt=12:0:0 -o /path/to/outdir -e /path/to/errdir"
 ```
 
-* The `-j` flag specifies the maximum number of jobs Snakemake is allowed to submit to SGE at a time.
+> The `-j` flag specifies the maximum number of jobs Snakemake is allowed to submit to SGE at a time.
 
-* The `--rerun-incomplete` flag is awesome. If we run our pipeline and it fails for some reason, using `--rerun-incomplete` will tell Snakemake to re-run a rule if the output of that rule is incomplete (i.e., if the rule didn't finish due to a job failure in the last pipeline execution).
+> The `--rerun-incomplete` flag is awesome. If we run our pipeline and it fails for some reason, using `--rerun-incomplete` will tell Snakemake to re-run a rule if the output of that rule is incomplete (i.e., if the rule didn't finish due to a job failure in the last pipeline execution).
 
-* After specifying `--cluster`, we just put the normal `qsub` command we'd normally use to submit a `.sh` or `.sge` script to the cluster, specifying the memory required by each job, wall time, etc.
+> After specifying `--cluster`, we just put the normal `qsub` command we'd normally use to submit a `.sh` or `.sge` script to the cluster, specifying the memory required by each job, wall time, etc.
 
 Using a config file to flexibly change grid requirements for particular rules
 ---
