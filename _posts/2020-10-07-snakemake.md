@@ -69,7 +69,7 @@ rule bwa_align:
     """
 ```
 
-This rule takes as input a reference genome and two FASTQ files. As you can see, it's possible to name individual input or output files (using Python variable assignment) so that we can access particular files in our shell command.
+* This rule takes as input a reference genome and two FASTQ files. As you can see, it's possible to name individual input or output files (using Python variable assignment) so that we can access particular files in our shell command.
 
 
 Snakemake will only run a rule if it has to
@@ -106,13 +106,13 @@ rule bwa_align:
 
 **A huge advantage of Snakemake is that it will only run a rule if its output is needed by a downstream rule.**
 
-You can see that I've added a rule (called `all`) to the top of the pipeline. This is because Snakemake runs in a "bottom-up" fashion.
+* You can see that I've added a rule (called `all`) to the top of the pipeline. This is because Snakemake runs in a "bottom-up" fashion.
 
 **The `all` rule tells Snakemake what the final output of the entire pipeline should be.** In this case, we want the final output to be an aligned BAM.
 
-In this example, Snakemake finds the rule that outputs `A.sorted.bam` (which is `bwa_align`), and checks to see if that rule has access to all of its necessary inputs (a reference and two FASTQ files). If not, Snakemake finds the rules that produce those files and runs them. And so on. Once `bwa_align` has all of the inputs it needs, Snakemake runs it to produce the final output.
+* In this example, Snakemake finds the rule that outputs `A.sorted.bam` (which is `bwa_align`), and checks to see if that rule has access to all of its necessary inputs (a reference and two FASTQ files). If not, Snakemake finds the rules that produce those files and runs them. And so on. Once `bwa_align` has all of the inputs it needs, Snakemake runs it to produce the final output.
 
-And let's say that for whatever reason, `bwa_align` fails when its run. When we re-run the pipeline, Snakemake will check that its input files are present. Since all of the previous rules will have been run before invoking `bwa_align`, Snakemake will see that its inputs are present and won't re-run any of the upstream steps!
+* And let's say that for whatever reason, `bwa_align` fails when its run. When we re-run the pipeline, Snakemake will check that its input files are present. Since all of the previous rules will have been run before invoking `bwa_align`, Snakemake will see that its inputs are present and won't re-run any of the upstream steps!
 
 Using wildcards to avoid re-writing the same command over and over again
 ---
@@ -152,9 +152,9 @@ rule bwa_align:
     """
 ```
 
-Here, I've just replaced every instance of a sample name in an output or input file with a `{sample}` wildcard. 
+* Here, I've just replaced every instance of a sample name in an output or input file with a `{sample}` wildcard. 
 
-And in the `all` rule, I'm using the `expand` function to tell Snakemake that the expected output is a list of sorted BAMs, with the sample names in `samples` filled in.
+* In the `all` rule, I'm using the `expand` function to tell Snakemake that the expected output is a list of sorted BAMs, with the sample names in `samples` filled in.
 
 In this case, the result of the `expand` would just be:
 
@@ -221,7 +221,7 @@ rule call_variants:
     """
 ```
 
-We've now added a step to the pipeline which takes a reference genome and a BAM as input, and outputs a variant call file (VCF). 
+* We've now added a step to the pipeline which takes a reference genome and a BAM as input, and outputs a variant call file (VCF). 
 
 **Notice that in the `call_variants` rule, my `freebayes` command takes a `-r` argument that specifies the region we want to analyze. Whenever you want to access a wildcard inside of the `shell:` portion of a rule, its necessary to preface the wildcard name with `wildcard`.**
 
@@ -279,7 +279,7 @@ rule count_snps:
     """
 ```
 
-Notice that when a rule includes python code, we use the `run:` syntax instead of the `shell:` syntax at the top of the code block.{: .btn .btn--success .btn--small}{: .notice--info}
+* Notice that when a rule includes python code, we use the `run:` syntax instead of the `shell:` syntax at the top of the code block.
 
 Running a Snakemake pipeline on the Sage Grid Engine (SGE)
 ---
@@ -296,13 +296,13 @@ snakemake -j 10 \
        "qsub -l centos=7 -l mfree=16G -l h_rt=12:0:0 -o /path/to/outdir -e /path/to/errdir"
 ```
 
-The `-j` flag specifies the maximum number of jobs Snakemake is allowed to submit to SGE at a time.
+* The `-j` flag specifies the maximum number of jobs Snakemake is allowed to submit to SGE at a time.
 
-The `--rerun-incomplete` flag is awesome. If we run our pipeline and it fails for some reason, using `--rerun-incomplete` will tell Snakemake to re-run a rule if the output of that rule is incomplete (i.e., if the rule didn't finish due to a job failure in the last pipeline execution).
+* The `--rerun-incomplete` flag is awesome. If we run our pipeline and it fails for some reason, using `--rerun-incomplete` will tell Snakemake to re-run a rule if the output of that rule is incomplete (i.e., if the rule didn't finish due to a job failure in the last pipeline execution).
 
-After specifying `--cluster`, we just put the normal `qsub` command we'd normally use to submit a `.sh` or `.sge` script to the cluster, specifying the memory required by each job, wall time, etc.
+* After specifying `--cluster`, we just put the normal `qsub` command we'd normally use to submit a `.sh` or `.sge` script to the cluster, specifying the memory required by each job, wall time, etc.
 
-Using a config file to flexibly change grid requirements for particular jobs
+Using a config file to flexibly change grid requirements for particular rules
 ---
 
 One natural issue with the above command is that some rules might require different cluster specifications than others.
@@ -350,4 +350,4 @@ snakemake --dag | dot -Tsvg > dag.svg
 
 This will produce the following image, showing us exactly what steps Snakemake will during execution. This plot ignores the VCF calling steps, since the DAG gets pretty unweildy with that many steps!
 
-[](images/dag.pdf)
+[file](images/dag.png)
