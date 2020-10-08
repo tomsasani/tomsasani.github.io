@@ -22,54 +22,54 @@ And there are few (if any) programs or scripts that will run/compile correctly o
 
 For these reasons, it's often crucial to package the various steps of your analysis into a "pipeline." Ideally, this pipeline would accept a file(s) as input, do some stuff with that file, and generate an output file(s). For example, your pipeline might take a FASTQ file and reference genome FASTA as input, and output an aligned, sorted, and indexed BAM.
 
-In theory, a pipeline could just be a Bash script in which you enumerate each step of the process. But what if you want to run the pipeline on hundreds of samples' FASTQ files? And what if the final step in your Bash script fails? You'll have to re-run **the entire pipeline all over again.**
+In theory, a pipeline could just be a Bash script in which you enumerate each step of the process. But what if you want to run the pipeline on hundreds of samples' FASTQ files? And what if the final step in your Bash script fails? **You'll have to re-run the entire pipeline all over again.**
 
 This is where Snakemake comes in. Snakemake is a flexible Python-based pipeline manager, and it's even tuned for running on the Sage Grid Engine (or pretty much any other compute environment).
 
-As an example, let's imagine that we want to take paired-end FASTQ from 3 different mouse samples (A, B, and C) and generate a preliminary set of variant calls for each sample.
+*As an example, let's imagine that we want to take paired-end FASTQ from 3 different mouse samples (A, B, and C) and generate a preliminary set of variant calls for each sample.
 
-To start, let's imagine we only want to process one sample: A.
+To start, let's imagine we only want to process one sample: A.*
 
 Every step of the pipeline gets its own "rule"
 ---
 
 
-The first step of our pipeline will be to download an *M. musculus* reference genome so that we can align reads.
+The first step of the pipeline will be to download an *M. musculus* reference genome so that we can align reads.
 
 ```
 rule download_reference:
-	input: 
-	output:
-		"GRCm38.primary_assembly.genome.fa.gz"
-	shell:
-		"""
-		wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
-		"""
+  input:
+  output:
+    "GRCm38.primary_assembly.genome.fa.gz"
+  shell:
+    """
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+    """
 ```
 
-This rule, which we've named "download_reference," doesn't take any input, since we're just downloading a FASTA directly.
+* This rule, which is named `download_reference`, doesn't take any input, since it's just downloading a FASTA directly.
 
-We specify that the expected output of this rule is a single gzipped FASTA.
+* We specify that the expected output of this rule is a single gzipped FASTA.
 
-After `shell:`, we simply list the commands we'd normally type at the command line to produce the specified output.
+* After `shell:`, we simply list the commands we'd normally type at the command line to produce the specified output.
 
 Next, we want to align the FASTQ data from sample A to the reference.
 
 ```
 rule bwa_align:
-	input: 
-		ref = "GRCm38.primary_assembly.genome.fa.gz",
-		fq1 = "A_1.fastq.gz",
-		fq2 = "A_2.fastq.gz"
-	output:
-		"A.sorted.bam"
-	shell:
-		"""
-		bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
-		"""
+  input:
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    fq1 = "A_1.fastq.gz",
+    fq2 = "A_2.fastq.gz"
+  output:
+    "A.sorted.bam"
+  shell:
+    """
+    bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
+    """
 ```
 
-This rule takes as input a reference genome and two FASTQ files. As you can see, it's possible to name individual input or output files (using python variable assignment) so that we can access particular files in our shell command.
+This rule takes as input a reference genome and two FASTQ files. As you can see, it's possible to name individual input or output files (using Python variable assignment) so that we can access particular files in our shell command.
 
 
 Snakemake will only run a rule if it has to
@@ -79,29 +79,29 @@ Let's take a look at the full pipeline we've defined so far.
 
 ```
 rule all:
-	input:
-		"A.sorted.bam"
+  input:
+    "A.sorted.bam"
 
 rule download_reference:
-	input: 
-	output:
-		"GRCm38.primary_assembly.genome.fa.gz"
-	shell:
-		"""
-		wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
-		"""
+  input:
+  output:
+    "GRCm38.primary_assembly.genome.fa.gz"
+  shell:
+    """
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+    """
 
 rule bwa_align:
-	input: 
-		ref = "GRCm38.primary_assembly.genome.fa.gz",
-		fq1 = "A_1.fastq.gz",
-		fq2 = "A_2.fastq.gz"
-	output:
-		"A.sorted.bam"
-	shell:
-		"""
-		bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
-		"""
+  input:
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    fq1 = "A_1.fastq.gz",
+    fq2 = "A_2.fastq.gz"
+  output:
+    "A.sorted.bam"
+  shell:
+    """
+    bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
+    """
 ```
 
 **A huge advantage of Snakemake is that it will only run a rule if its output is needed by a downstream rule.**
@@ -110,7 +110,7 @@ You can see that I've added a rule (called `all`) to the top of the pipeline. Th
 
 **The `all` rule tells Snakemake what the final output of the entire pipeline should be.** In this case, we want the final output to be an aligned BAM.
 
-In this example, Snakemake finds the rule that outputs `A.sorted.bam` (which is `bwa_align`), and checks to see if that rule has access to all of its necessary inputs (a reference and two FASTQ files). If not, Snakemake finds the rules that produce those files, and runs them. And so on. Once `bwa_align` has all of the inputs it needs, Snakemake runs it to produce the final output.
+In this example, Snakemake finds the rule that outputs `A.sorted.bam` (which is `bwa_align`), and checks to see if that rule has access to all of its necessary inputs (a reference and two FASTQ files). If not, Snakemake finds the rules that produce those files and runs them. And so on. Once `bwa_align` has all of the inputs it needs, Snakemake runs it to produce the final output.
 
 And let's say that for whatever reason, `bwa_align` fails when its run. When we re-run the pipeline, Snakemake will check that its input files are present. Since all of the previous rules will have been run before invoking `bwa_align`, Snakemake will see that its inputs are present and won't re-run any of the upstream steps!
 
@@ -119,7 +119,7 @@ Using wildcards to avoid re-writing the same command over and over again
 
 In the previous example, we were only running the pipeline on a single sample. But to generalize the pipeline to run on any list of samples, we can make use of the `expand` feature, as well as Snakemake "wildcards."
 
-Were this a bash pipeline, we'd have to write out a separate set of commands for every sample. But with Snakemake it's much easier.
+Were this a bash pipeline we'd have to write out a separate set of commands for every sample. But with Snakemake it's much easier.
 
 Here's an example of what our pipeline would look like with wildcard placeholders instead of explicit sample names.
 
@@ -127,29 +127,29 @@ Here's an example of what our pipeline would look like with wildcard placeholder
 samples = ["A", "B", "C"]
 
 rule all:
-	input:
-		expand("{sample}.sorted.bam", sample=samples)
+  input:
+    expand("{sample}.sorted.bam", sample=samples)
 
 rule download_reference:
-	input: 
-	output:
-		"GRCm38.primary_assembly.genome.fa.gz"
-	shell:
-		"""
-		wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
-		"""
+  input: 
+  output:
+    "GRCm38.primary_assembly.genome.fa.gz"
+  shell:
+    """
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+    """
 
 rule bwa_align:
-	input: 
-		ref = "GRCm38.primary_assembly.genome.fa.gz",
-		fq1 = "{sample}_1.fastq.gz",
-		fq2 = "{sample}_2.fastq.gz"
-	output:
-		"{sample}.sorted.bam"
-	shell:
-		"""
-		bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
-		"""
+  input: 
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    fq1 = "{sample}_1.fastq.gz",
+    fq2 = "{sample}_2.fastq.gz"
+  output:
+    "{sample}.sorted.bam"
+  shell:
+    """
+    bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
+    """
 ```
 
 Here, I've just replaced every instance of a sample name in an output or input file with a `{sample}` wildcard. 
@@ -161,12 +161,12 @@ In this case, the result of the `expand` would just be:
 ```
 >>> expand("{sample}.sorted.bam", sample=samples)
 
-["SRR2589044.sorted.bam", "SRR2584863.sorted.bam", "SRR2584866.sorted.bam"]
+["A.sorted.bam", "B.sorted.bam", "C.sorted.bam"]
 ```
 
-Notice that at the top of the script, I've created a python `list()` of the sample names. **In a Snakemake workflow, we can include pure python code.** So if we wanted to read in sample names from an external PED file, or get a list of intervals for variant calling, we could do that using python at the top of our Snakefile.{: .btn .btn--success .btn--small}{: .notice--info}
+**Notice that at the top of the script, I've created a python `list()` of the sample names. In a Snakemake workflow, we can include pure python code. So if we wanted to read in sample names from an external PED file, or get a list of intervals for variant calling, we could do that using python at the top of our Snakefile.**
 
-But we can use `expand` to chain multiple sample names and parameters together.
+But we can use `expand` for more complicated chaining of multiple sample names and parameters.
 
 Using `expand` to run a pipeline on many samples or with many parameters
 ---
@@ -185,45 +185,45 @@ chromosomes = list(map(str, chromosomes))
 chromosomes.extend(['X', 'Y'])
 
 rule all:
-	input:
-		expand("{sample}.{chrom}.vcf", sample=samples, chrom=chromosomes)
+  input:
+    expand("{sample}.{chrom}.vcf", sample=samples, chrom=chromosomes)
 
 rule download_reference:
-	input: 
-	output:
-		"GRCm38.primary_assembly.genome.fa.gz"
-	shell:
-		"""
-		wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
-		"""
+  input: 
+  output:
+    "GRCm38.primary_assembly.genome.fa.gz"
+  shell:
+    """
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+    """
 
 rule bwa_align:
-	input: 
-		ref = "GRCm38.primary_assembly.genome.fa.gz",
-		fq1 = "{sample}_1.fastq.gz",
-		fq2 = "{sample}_2.fastq.gz"
-	output:
-		"{sample}.sorted.bam"
-	shell:
-		"""
-		bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
-		"""
+  input: 
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    fq1 = "{sample}_1.fastq.gz",
+    fq2 = "{sample}_2.fastq.gz"
+  output:
+    "{sample}.sorted.bam"
+  shell:
+    """
+    bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
+    """
 
 rule call_variants:
-	input:
-		ref = "GRCm38.primary_assembly.genome.fa.gz",
-		bam = "{sample}.sorted.bam"
-	output:
-		"{sample}.{chrom}.vcf"
-	shell:
-		"""
-		freebayes -f {input.ref} -r {wildcards.chrom} {input.bam} > {output}
-		"""
+  input:
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    bam = "{sample}.sorted.bam"
+  output:
+    "{sample}.{chrom}.vcf"
+  shell:
+    """
+    freebayes -f {input.ref} -r {wildcards.chrom} {input.bam} > {output}
+    """
 ```
 
 We've now added a step to the pipeline which takes a reference genome and a BAM as input, and outputs a variant call file (VCF). 
 
-Notice that in the `call_variants` rule, my `freebayes` command takes a `-r` argument that specifies the region we want to analyze. Whenever you want to access a wildcard inside of the `shell:` portion of a rule, its necessary to preface the wildcard name with `wildcard.`.{: .btn .btn--success .btn--small}{: .notice--info}
+**Notice that in the `call_variants` rule, my `freebayes` command takes a `-r` argument that specifies the region we want to analyze. Whenever you want to access a wildcard inside of the `shell:` portion of a rule, its necessary to preface the wildcard name with `wildcard`.**
 
 And in this example, `expand` takes the Cartesian product (i.e., `itertools.product()`) of the lists of parameters. So, the output of `expand` would be:
 
@@ -246,37 +246,38 @@ So far, our rules have only invoked shell commands like `bwa` or `wget`. But Sna
 
 ```
 rule count_snps:
-	input:
-		expand("{sample}.{chrom}.vcf", sample=samples, chrom=chromosomes)
-	output:
-		"per_sample.snp_counts.tsv"
-	run:
-		"""
-		from cyvcf2 import VCF
+  input:
+    expand("{sample}.{chrom}.vcf", sample=samples, chrom=chromosomes)
+  output:
+    "per_sample.snp_counts.tsv"
+  run:
+    """
+    from cyvcf2 import VCF
 
-		vcf_file = VCF({input})
+    vcf_file = VCF({input})
 
-		output_fh = open({output}, "w")
-		
-		# loop over input files
-		for vcf_fh in {input}:
+    output_fh = open({output}, "w")
+    
+    # loop over input files
+    for vcf_fh in {input}:
 
-			sample_name = vcf_fh.split('.')[0]
-			chrom = vcf_fh.split('.')[1]
+      sample_name = vcf_fh.split('.')[0]
+      chrom = vcf_fh.split('.')[1]
 
-			# initialize a VCF object using each
-			# file handle in the input list
-			vcf = VCF(vcf_fh)
+      # initialize a VCF object using each
+      # file handle in the input list
+      vcf = VCF(vcf_fh)
 
-			snp_count = 0
+      snp_count = 0
 
-			for v in vcf:
-				if v.var_type != "snp": continue
-				snp_count += 1
+      for v in vcf:
+        if v.var_type != "snp": continue
+        snp_count += 1
 
-			print (','.join([sample_name, chrom, str(snp_count)]), file=output_fh)
+      print (','.join([sample_name, chrom, str(snp_count)]), file=output_fh)
 
-		"""
+    """
+```
 
 Notice that when a rule includes python code, we use the `run:` syntax instead of the `shell:` syntax at the top of the code block.{: .btn .btn--success .btn--small}{: .notice--info}
 
@@ -290,9 +291,9 @@ As an example, we could execute our pipeline as follows:
 
 ```
 snakemake -j 10 \
-		  --cluster \
-		  --rerun-incomplete \
- 		  "qsub -l centos=7 -l mfree=16G -l h_rt=12:0:0 -o /path/to/outdir -e /path/to/errdir"
+      --cluster \
+      --rerun-incomplete \
+       "qsub -l centos=7 -l mfree=16G -l h_rt=12:0:0 -o /path/to/outdir -e /path/to/errdir"
 ```
 
 The `-j` flag specifies the maximum number of jobs Snakemake is allowed to submit to SGE at a time.
@@ -330,10 +331,10 @@ Then, when we run Snakemake, we could do the following:
 
 ```
 snakemake -j 10 \
-		  --cluster-config /path/to/config.json \
-		  --cluster \
-		  --rerun-incomplete \
-		  "qsub -l centos={cluster.os} -l mfree={cluster.memory} -l h_rt={cluster.time} -pe serial {cluster.threads}"
+      --cluster-config /path/to/config.json \
+      --cluster \
+      --rerun-incomplete \
+      "qsub -l centos={cluster.os} -l mfree={cluster.memory} -l h_rt={cluster.time} -pe serial {cluster.threads}"
 ```
 
 Visualizing the full pipeline with a DAG
@@ -349,4 +350,4 @@ snakemake --dag | dot -Tsvg > dag.svg
 
 This will produce the following image, showing us exactly what steps Snakemake will during execution. This plot ignores the VCF calling steps, since the DAG gets pretty unweildy with that many steps!
 
-[]
+[](images/dag.pdf)
