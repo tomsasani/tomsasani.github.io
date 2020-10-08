@@ -350,4 +350,4 @@ snakemake --dag | dot -Tsvg > dag.svg
 
 This will produce the following image, showing us exactly what steps Snakemake will during execution. This plot ignores the VCF calling steps, since the DAG gets pretty unweildy with that many steps!
 
-[file](images/dag.png)
+![file](images/dag.png)
