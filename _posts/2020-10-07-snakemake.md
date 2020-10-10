@@ -16,7 +16,8 @@ A quick-start guide for Snakemake
 Motivation
 ---
 
-There are few (if any) scientific questions that you can answer by running a single program or script. Calling variants involves aligning reads, sorting reads, indexing reads, running a variant caller, filtering those calls, etc. Running a simulation will invariably require changing parameters or including new combinations of those parameters.
+There are few (if any) scientific questions that you can answer by running a single program or script. Calling variants involves aligning reads, sorting reads, indexing reads, running a variant caller, filtering those calls, etc. Running a simulation will inevitably require changing parameters or including new combinations of those parameters.{: .btn .btn--info .btn--small}
+{: .notice--info}
 
 And there are few (if any) programs or scripts that will run/compile correctly on the first try, due to either user error, code bugs, dependency conflicts, improperly configured environments, or any combination therein.
 
@@ -26,9 +27,9 @@ In theory, a pipeline could just be a Bash script in which you enumerate each st
 
 This is where Snakemake comes in. Snakemake is a flexible Python-based pipeline manager, and it's even tuned for running on the Sage Grid Engine (or pretty much any other compute environment).
 
-*As an example, let's imagine that we want to take paired-end FASTQ from 3 different mouse samples (A, B, and C) and generate a preliminary set of variant calls for each sample.
+**As an example, let's imagine that we want to take paired-end FASTQ from 3 different mouse samples (A, B, and C) and generate a preliminary set of variant calls for each sample.
 
-To start, let's imagine we only want to process one sample: A.*
+To start, let's imagine we only want to process one sample: A.**
 
 Every step of the pipeline gets its own "rule"
 ---
@@ -51,7 +52,7 @@ rule download_reference:
 
 > We specify that the expected output of this rule is a single gzipped FASTA.
 
-> After `shell:`, we simply list the commands we'd normally type at the command line to produce the specified output.
+> After `shell:`, we simply list the commands we'd normally type at the command line to produce the specified output. These commands can be wrapped up in a docstring for easy formatting.
 
 Next, we want to align the FASTQ data from sample A to the reference.
 
@@ -70,6 +71,8 @@ rule bwa_align:
 ```
 
 > This rule takes as input a reference genome and two FASTQ files. As you can see, it's possible to name individual input or output files (using Python variable assignment) so that we can access particular files in our shell command.
+
+> Note that if a rule has more than one input (or output) files, they should be comma-separated.
 
 
 Snakemake will only run a rule if it has to
@@ -108,7 +111,7 @@ rule bwa_align:
 
 > You can see that I've added a rule (called `all`) to the top of the pipeline. This is because Snakemake runs in a "bottom-up" fashion.
 
-> **The `all` rule tells Snakemake what the final output of the entire pipeline should be. In this case, we want the final output to be an aligned BAM.**
+> The `all` rule tells Snakemake what the final output of the entire pipeline should be. In this case, we want the final output to be an aligned BAM.
 
 > In this example, Snakemake finds the rule that outputs `A.sorted.bam` (which is `bwa_align`), and checks to see if that rule has access to all of its necessary inputs (a reference and two FASTQ files). If not, Snakemake finds the rules that produce those files and runs them. And so on. Once `bwa_align` has all of the inputs it needs, Snakemake runs it to produce the final output.
 
@@ -164,9 +167,7 @@ In this case, the result of the `expand` would just be:
 ["A.sorted.bam", "B.sorted.bam", "C.sorted.bam"]
 ```
 
-> **Notice that at the top of the script, I've created a python `list()` of the sample names. In a Snakemake workflow, we can include pure python code. So if we wanted to read in sample names from an external PED file, or get a list of intervals for variant calling, we could do that using python at the top of our Snakefile.**
-
-But we can use `expand` for more complicated chaining of multiple sample names and parameters.
+But we can also use `expand` for more complicated chaining of multiple sample names and parameters.
 
 Using `expand` to run a pipeline on many samples or with many parameters
 ---
@@ -223,7 +224,7 @@ rule call_variants:
 
 > We've now added a step to the pipeline which takes a reference genome and a BAM as input, and outputs a variant call file (VCF). 
 
-> **Notice that in the `call_variants` rule, my `freebayes` command takes a `-r` argument that specifies the region we want to analyze. Whenever you want to access a wildcard inside of the `shell:` portion of a rule, its necessary to preface the wildcard name with `wildcard`.**
+> Notice that in the `call_variants` rule, my `freebayes` command takes a `-r` argument that specifies the region we want to analyze. Whenever you want to access a wildcard inside of the `shell:` portion of a rule, its necessary to preface the wildcard name with `wildcard`.
 
 And in this example, `expand` takes the Cartesian product (i.e., `itertools.product()`) of the lists of parameters. So, the output of `expand` would be:
 
