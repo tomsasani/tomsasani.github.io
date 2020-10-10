@@ -26,8 +26,12 @@ In theory, a pipeline could just be a Bash script in which you enumerate each st
 
 This is where Snakemake comes in. Snakemake is a flexible Python-based pipeline manager, and it's even tuned for running on the Sage Grid Engine (or pretty much any other compute environment).
 
-As an example, let's imagine that we want to take paired-end FASTQ from 3 different mouse samples (A, B, and C) and generate a preliminary set of variant calls for each sample. To start, let's imagine we only want to process one sample: A.
+As an example, let's imagine that we want to take paired-end FASTQ from 3 different mouse samples (A, B, and C) and generate a preliminary set of variant calls for each sample. 
 {: .notice--info}
+
+
+To start, let's imagine we only want to process one sample: A.
+{: .notice--success}
 
 Every step of the pipeline gets its own "rule"
 ---
