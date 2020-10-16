@@ -7,6 +7,10 @@ redirect_from:
   - /publications/
 ---
 
+### Preprints
+
+Wallace AD, **Sasani TA**, Swanier J, Gates B, Greenland J, Pedersen BP, Varley KT, Quinlan AR. CaBagE: a Cas9-based Background Elimination strategy for targeted, long-read DNA sequencing (2020). *bioRxiv*. [Paper](https://www.biorxiv.org/content/10.1101/2020.10.13.337253v2){: .btn .btn--info .btn--small}
+{: .notice--info}
 
 ### Peer-reviewed manuscripts
 
