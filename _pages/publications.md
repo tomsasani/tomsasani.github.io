@@ -20,7 +20,7 @@ Fixsen SM, Cone KR, Goldstein SA, **Sasani TA**, Quinlan AR, Rothenburg S, Elde 
 
 ### Peer-reviewed manuscripts
 
-Wallace AD, **Sasani TA**, Swanier J, Gates B, Greenland J, Pedersen BP, Varley KT, Quinlan AR. CaBagE: a Cas9-based Background Elimination strategy for targeted, long-read DNA sequencing (2020). *PLoS One*. [Paper](https://doi.org/10.1371/journal.pone.0241253){: .btn .btn--info .btn--small}
+Wallace AD, **Sasani TA**, Swanier J, Gates B, Greenland J, Pedersen BP, Varley KT, Quinlan AR. CaBagE: a Cas9-based Background Elimination strategy for targeted, long-read DNA sequencing (2021). *PLoS One*. [Paper](https://doi.org/10.1371/journal.pone.0241253){: .btn .btn--info .btn--small}
 {: .notice--info}
 
 Cawthon RM, Meeks HD\*, **Sasani TA**\*, Smith KR, Kerber RA, O'Brien E, Baird L, Dixon MM, Peiffer AP, Leppert MF, Quinlan AR, Jorde LB. Germline mutation rates in young adults predict longevity and reproductive lifespan (2020). *Scientific Reports*. [Paper](https://www.nature.com/articles/s41598-020-66867-0){: .btn .btn--info .btn--small}
