@@ -7,4 +7,10 @@ redirect_from:
   - /about/
 ---
 
-I’m a computational biologist interested in the *how*, *when*, and *where* of mutation.<br/><br/>Currently, I’m a postdoctoral fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home) at the University of Washington. In 2019, I defended my Ph.D in Human Genetics at the University of Utah under the supervision of [Dr. Aaron Quinlan](http://quinlanlab.org/), and received my B.A. in Biochemistry from Lawrence University (Appleton, WI) in 2015. My thesis work focused on the rates and patterns of human mutation, as well as the combined roles of structural and single-nucleotide variation in rapid virus genome evolution. These projects involved a variety of sequencing technologies, study systems, and analysis methods, including both the Oxford Nanopore sequencing platform and short-read sequencing data from large, multi-generational pedigrees.<br/><br/>Copies of my academic [CV](files/sasanit_cv.pdf) and a shorter [resume](files/sasanit_resume.pdf) are available.
+I’m a computational biologist using genomic data to answer fundamental questions about human health and evolution.<br/><br/>
+
+Currently, I’m a Data Scientist at [Recursion Pharmaceuticals](https://www.recursion.com). Before that, I was a postdoctoral fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home) at the University of Washington. And before that, I defended a Ph.D in Human Genetics at the University of Utah under the supervision of [Dr. Aaron Quinlan](http://quinlanlab.org/). 
+
+<br/><br/>[Academic CV](files/sasanit_cv.pdf)
+
+<br/><br/>[Resume](files/sasanit_resume.pdf)
