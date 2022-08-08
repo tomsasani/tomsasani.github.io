@@ -1,0 +1,152 @@
+---
+title: 'A simple guide to running GATK'
+---
+
+## Motivation
+
+There are probably hundreds of "how to use GATK" guides published online, not including the detailed documentation on the [GATK website](https://gatk.broadinstitute.org/hc/en-us).
+But in my (admittedly limited) experience, running GATK can be a bit finicky, and the workflow for producing a genotyped VCF using GATK "best practices" can take a little bit of troubleshooting.
+Below I've outlined my own simple workflow for calling SNVs in **human data** using GATK, including the various preprocessing steps and file/software downloads.
+This is mostly for my own reference in the future, when the ramblings in my lab notebook eventually lose all meaning to me.
+
+## Installing GATK
+
+Getting a compiled GATK binary is actually *quite easy*. Simply go to the [releases](https://github.com/broadinstitute/gatk/releases) on the GATK GitHub, and `wget` the most recent version (in my case, v.4.1.8.1). Then, just unzip the package.
+
+```
+wget https://github.com/broadinstitute/gatk/releases/download/4.1.8.1/gatk-4.1.8.1.zip
+
+unzip gatk-4.1.8.1.zip
+```
+
+The `gatk` binary should be sitting in that directory. Just run as follows:
+
+```
+/path/to/gatk/binary/gatk
+```
+
+## Preparing BAM files for initial variant calling
+
+Let's assume you're running GATK separately on individual sample BAMs. Even though each BAM contains a single sample's reads, it's still **necessary to add read groups to the BAM header and read entries**. 
+
+```
+samtools addreplacerg -r "@RG\tID:${sample_name}\tSM:${sample_name}" -o {output} {input}
+```
+
+Although GATK will run just fine on a BAM with no read groups, exactly zero variants will be output to VCF. In fact, my version of GATK HaplotypeCaller stated that all reads were filtered out by `MappingQualityFilter`.
+
+Of course, if you're planning on merging multiple sample BAMs into a single BAM before running HaplotypeCaller, you should add read groups in order to know exactly which sample a given read is derived from.
+
+Then, as usual, it's good to `sort` and `index` the BAM, and mark duplicates.
+
+```
+samtools sort -O BAM -o {output} {input}
+
+samtools index {input}
+```
+
+For duplicate marking, I tend to use `picard` (available [here](https://github.com/broadinstitute/picard/releases)).
+
+```
+java -jar /path/to/picard.jar MarkDuplicates INPUT={input} OUTPUT={output} METRICS_FILE={metrics} TMP_DIR={tmpdir}
+```
+
+As it marches along the BAM and marks duplicates, `picard` will output lots of temporary files, so it's good to specify a $tmpdir with enough space for potentially hundreds (or more) temporary files.
+
+## Running GATK HaplotypeCaller
+
+The first step of variant calling involves running `HaplotypeCaller`, which will produce an initial list of variants. By design, `HaplotypeCaller` is *very sensitive*, so it's possible (read: almost certain) that most of the variants in the output VCF will be junk. We'll do some filtering and "calibration" of variants in later steps.
+
+```
+gatk HaplotypeCaller \
+	--input ${input_bam} \
+	--output ${output_VCF} \
+	--reference ${reference_genome} \
+	--java-options "-Xmx8G"
+	-ERC GVCF
+```
+
+Since GATK is written in Java, we can also pass in some standard Java options (such as max memory to be used) as an argument!
+
+Also, by passing in the `-ERC GVCF` argument, we tell HaplotypeCaller to produce GVCF (generic VCF) output, which looks a bit different from normal VCF. The benefit of outputting GVCFs is that we can then run joint genotyping on many samples' GVCFs together quite quickly.
+
+## Joint genotyping GVCFs
+
+```
+gatk GenotypeGVCFs \
+	--variant ${input_gvcfs} \
+	--output {output} \
+	--reference {input.ref} \
+	--java-options "-Xmx8G"
+```
+
+Here, we can run GenotypeGVCFs on one or many GVCFs together. By passing in multiple GVCFs, we can take advantage of the joint genotyping process to consider evidence from multiple samples at a given variant site. In any case, the output here will be "true" VCF.
+
+
+## Variant quality score recalibration (VQSR)
+
+Now, we arrive at the most arcane (in my opinion) step in running GATK. Essentially, VQSR takes in a few "truth sets," which are just VCF files containing variants considered to be either "very good" or "very bad," so that GATK can get a feeling for the qualities that make a "good variant." But first, we need to get a hold of these truth sets.
+
+### Downloading GATK resources for VQSR
+
+GATK hosts its "resource bundle," containing various files that are important for running GATK, on Google. The four truth sets we can use are hosted [here](https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0;tab=objects?prefix=).
+
+To download, we can use a tool called `gsutil`, developed by Google specifically for fetching files from Google Cloud.
+
+```
+# download "omni" truth set
+/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/1000G_omni2.5.hg38.vcf.gz
+# download "hapmap" truth set
+/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/hapmap_3.3.hg38.vcf.gz
+# download "1000G" truth set
+/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/1000G_phase1.snps.high_confidence.hg38.vcf.gz
+# download "dbsnp" truth set
+/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf
+```
+
+We'll also need the `tabix` indices for these VCFs, which can also be download from the Google Cloud repository, or done by hand. The "dbsnp" truth set also needs to be `bgzip`-ed!
+
+### Running VQSR
+
+Now that we've collected the various files we need, we can run VQSR. Importantly, VQSR **does not output VCF files**. Instead it outputs a `.recal` file and a `.tranches` file, which are "applied" to the previous VCF file in the final step of calibration.
+
+A couple of notes here: 
+
+- we can specify exactly which annotations we want VQSR to add by specifying `-an` multiple times
+- we can specify the "tranches" we want VQSR to divide our variants into by specifying `tranche` multiple times
+- in GATK v4.1.8.1, we must include a space between the `--resource` truth set info and the path to the truth set
+- it looks as though GATK now has a convolutional neural net approach to VQSR in GATK v4+ for single samples (see [here](https://github.com/broadinstitute/gatk/pull/5548))
+
+More detailed documentation on running VQSR (for human data) is [here](https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering).
+
+```
+gatk VariantRecalibrator \
+	--variant {input} \
+	--output {recal_file_output} \
+	--tranches-file {tranch_file_output} \
+	-an QD -an MQRankSum -an ReadPosRankSum -an FS -an SOR \
+	--mode SNP \
+	--trust-all-polymorphic true \
+	--java-options "-Xmx8G" \
+	-tranche 100.0 -tranche 99.95 -tranche 99.9 -tranche 99.8 -tranche 99.6 -tranche 99.5 -tranche 99.0 -tranche 98.0 -tranche 97.0 -tranche 90.0 \
+	--resource:omni,known=false,training=true,truth=true,prior=12 /path/to/1000G_omni2.5.hg38.vcf.gz \
+	--resource:1000G,known=false,training=true,truth=false,prior=10 /path/to/1000G_phase1.snps.high_confidence.hg38.vcf.gz \
+	--resource:hapmap,known=false,training=true,truth=true,prior=15 /path/to/hapmap_3.3.hg38.vcf.gz \
+	--resource:dbsnp,known=true,training=false,truth=false,prior=7 /path/to/Homo_sapiens_assembly38.dbsnp138.vcf.gz
+```
+
+### Applying VQSR
+
+Now, we arrive at the final step of VQSR. Here, we use the `.tranches` and `.recal` files produced in the previous step, and "apply" them to the VCF produced in the first step of this section. The output is a recalibrated VCF, which we can then pass into any downstream filtering or analysis pipelines we want!
+
+```
+gatk ApplyVQSR \
+	--variant {input_vcf} \
+	--recal-file {recal_file} \
+	--tranches-file {tranches_file} \
+	--truth-sensitivity-filter-level 99.7 \
+	--create-output-variant-index true \
+	-mode SNP \
+	--output {output} \
+	--java-options "-Xmx8G"	
+```

@@ -1,0 +1,45 @@
+---
+title: "Tom Sasani, PhD"
+about:
+  template: solana
+  image: sasanit_headshot.jpg
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/tomsasani
+    - icon: github
+      text: Github
+      href: https://github.com/tomsasani
+---
+
+**I’m a computational biologist using genetic data to better understand health and evolution.**
+
+Currently, I’m a Senior Data Scientist at [Recursion Pharmaceuticals.](https://www.recursion.com/)
+
+Previously, I was a NIH T32 Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home) at the University of Washington, where I used whole-genome sequencing data to [discover genetic modifiers of the germline mutation rate in mice.](https://www.nature.com/articles/s41586-022-04701-5)
+
+Before that, I defended a Ph.D in Human Genetics with [Dr. Aaron Quinlan](http://quinlanlab.org/) at the University of Utah. My graduate research focused on [characterizing patterns of germline mutation](https://elifesciences.org/articles/46922) in large human families and [tracking viral evolution](https://elifesciences.org/articles/35453) using long read sequencing technologies.
+
+## Education 
+
+**University of Utah** | Salt Lake City, UT 
+
+* Ph.D in Human Genetics | 2015 - 2019
+
+**Lawrence University** | Appleton, WI
+
+* B.A. in Biochemistry, *summa cum laude* | 2011 - 2015 
+
+<!-- ### Experience 
+
+**Recursion Pharmaceuticals** | Salt Lake City, UT 
+
+* *Senior Data Scientist* | 2021 - pres. 
+
+**University of Washington** | Seattle, WA
+
+* *NIH T32 Postdoctoral Fellow* | [Harris Lab](https://sites.google.com/site/harriskelley/home) | 2020 - 2021 
+
+**University of Utah** | Salt Lake City, UT 
+
+* *Graduate Research Assistant* | [Quinlan Lab](http://quinlanlab.org/) | 2015 - 2019 -->

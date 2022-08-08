@@ -1,0 +1,47 @@
+project:
+  type: website
+
+website:
+  title: "Tom Sasani"
+
+  navbar:
+    left:
+      - text: "Home"
+        file: index.qmd
+      - text: "Publications"
+        file: pubs.qmd
+      - text: "Talks"
+        file: talks.qmd
+      - text: "Teaching"
+        file: teaching.qmd
+      - text: "CV"
+        file: vitae/sasani_thomas_cv.pdf
+      - sidebar:tutorials
+
+  sidebar:
+
+    - id: tutorials
+      title: "Tutorials"
+      style: "docked"
+      background: light
+      collapse-level: 2
+      contents: 
+        - href: snakemake.qmd
+        - href: gatk.qmd
+    
+    - tools:
+      - icon: twitter
+        href: https://twitter.com/tomsasani
+      - icon: github
+        href: https://github.com/tomsasani
+
+    
+      
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+
+
