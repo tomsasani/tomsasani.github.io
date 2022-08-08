@@ -11,7 +11,7 @@ This is mostly for my own reference in the future, when the ramblings in my lab 
 
 ## Installing GATK
 
-Getting a compiled GATK binary is actually *quite easy*. Simply go to the [releases](https://github.com/broadinstitute/gatk/releases) on the GATK GitHub, and `wget` the most recent version (in my case, v.4.1.8.1). Then, just unzip the package.
+Go to the [releases](https://github.com/broadinstitute/gatk/releases) on the GATK GitHub, and `wget` the most recent version (in my case, v.4.1.8.1). Then, just unzip the package.
 
 ```
 wget https://github.com/broadinstitute/gatk/releases/download/4.1.8.1/gatk-4.1.8.1.zip
@@ -55,7 +55,7 @@ As it marches along the BAM and marks duplicates, `picard` will output lots of t
 
 ## Running GATK HaplotypeCaller
 
-The first step of variant calling involves running `HaplotypeCaller`, which will produce an initial list of variants. By design, `HaplotypeCaller` is *very sensitive*, so it's possible (read: almost certain) that most of the variants in the output VCF will be junk. We'll do some filtering and "calibration" of variants in later steps.
+The first step of variant calling involves running `HaplotypeCaller`, which will produce an initial list of variants. By design, `HaplotypeCaller` is *very sensitive*, so it's possible that most of the variants in the output VCF will be junk. We'll do some filtering and "calibration" of variants in later steps.
 
 ```
 gatk HaplotypeCaller \
@@ -66,9 +66,9 @@ gatk HaplotypeCaller \
 	-ERC GVCF
 ```
 
-Since GATK is written in Java, we can also pass in some standard Java options (such as max memory to be used) as an argument!
+> Since GATK is written in Java, we can also pass in some standard Java options (such as max memory to be used) as an argument!
 
-Also, by passing in the `-ERC GVCF` argument, we tell HaplotypeCaller to produce GVCF (generic VCF) output, which looks a bit different from normal VCF. The benefit of outputting GVCFs is that we can then run joint genotyping on many samples' GVCFs together quite quickly.
+> Also, by passing in the `-ERC GVCF` argument, we tell HaplotypeCaller to produce GVCF (generic VCF) output, which looks a bit different from normal VCF. The benefit of outputting GVCFs is that we can then run joint genotyping on many samples' GVCFs together quite quickly.
 
 ## Joint genotyping GVCFs
 

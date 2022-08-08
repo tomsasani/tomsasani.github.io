@@ -18,6 +18,14 @@ website:
         file: vitae/sasani_thomas_cv.pdf
       - sidebar:tutorials
 
+    right: 
+      - icon: twitter
+        href: https://twitter.com/tomsasani
+      - icon: github
+        href: https://github.com/tomsasani
+      # - icon: imgs/google-scholar.svg 
+      #   href: https://scholar.google.com/citations?user=T_Tq0UYAAAAJ&hl=en
+
   sidebar:
 
     - id: tutorials
@@ -34,12 +42,14 @@ website:
         href: https://twitter.com/tomsasani
       - icon: github
         href: https://github.com/tomsasani
+    #   - favicon: imgs/google-scholar.svg 
+    #     href: https://scholar.google.com/citations?user=T_Tq0UYAAAAJ&hl=en
 
     
       
 format:
   html:
-    theme: cosmo
+    theme: journal
     css: styles.css
     toc: true
 

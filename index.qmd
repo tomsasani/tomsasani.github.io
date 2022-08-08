@@ -2,14 +2,14 @@
 title: "Tom Sasani, PhD"
 about:
   template: solana
-  image: sasanit_headshot.jpg
-  links:
-    - icon: twitter
-      text: Twitter
-      href: https://twitter.com/tomsasani
-    - icon: github
-      text: Github
-      href: https://github.com/tomsasani
+  image: imgs/sasanit_headshot.jpg
+  # links:
+  #   - icon: twitter
+  #     text: Twitter
+  #     href: https://twitter.com/tomsasani
+  #   - icon: github
+  #     text: Github
+  #     href: https://github.com/tomsasani
 ---
 
 **I’m a computational biologist using genetic data to better understand health and evolution.**
@@ -20,7 +20,7 @@ Previously, I was a NIH T32 Postdoctoral Fellow with [Dr. Kelley Harris](https:/
 
 Before that, I defended a Ph.D in Human Genetics with [Dr. Aaron Quinlan](http://quinlanlab.org/) at the University of Utah. My graduate research focused on [characterizing patterns of germline mutation](https://elifesciences.org/articles/46922) in large human families and [tracking viral evolution](https://elifesciences.org/articles/35453) using long read sequencing technologies.
 
-## Education 
+<!-- ## Education 
 
 **University of Utah** | Salt Lake City, UT 
 
@@ -28,7 +28,7 @@ Before that, I defended a Ph.D in Human Genetics with [Dr. Aaron Quinlan](http:/
 
 **Lawrence University** | Appleton, WI
 
-* B.A. in Biochemistry, *summa cum laude* | 2011 - 2015 
+* B.A. in Biochemistry, *summa cum laude* | 2011 - 2015  -->
 
 <!-- ### Experience 
 
