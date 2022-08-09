@@ -23,4 +23,4 @@ title: "Talks"
 **Directly measuring the dynamics of the human mutation rate by sequencing large, multi-generational pedigrees.** American Society of Human Genetics annual meeting (2018). Plenary presentation. *San Diego, CA.*
 
 
-**Human immune defense mechanisms drive rapid genome evolution in vaccinia virus.** American Society of Human Genetics annual meeting (2018). Platform presentation. *Orlando, FL.*
+**Human immune defense mechanisms drive rapid genome evolution in vaccinia virus.** American Society of Human Genetics annual meeting (2017). Platform presentation. *Orlando, FL.*
