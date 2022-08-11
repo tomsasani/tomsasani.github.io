@@ -1,5 +1,6 @@
 ---
 title: "Tom Sasani, PhD"
+from: markdown+emoji
 about:
   template: solana
   image: imgs/sasanit_headshot.jpg
@@ -14,11 +15,19 @@ about:
 
 **I’m a computational biologist using genetic data to better understand health and evolution.**
 
-Currently, I’m a Senior Data Scientist at [Recursion Pharmaceuticals.](https://www.recursion.com/)
+## Experience
 
-Previously, I was a NIH T32 Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home) at the University of Washington, where I used whole-genome sequencing data to [discover genetic modifiers of the germline mutation rate in mice.](https://www.nature.com/articles/s41586-022-04701-5)
+#### Senior Data Scientist @ [Recursion Pharmaceuticals](https://www.recursion.com/)
 
-Before that, I defended a Ph.D in Human Genetics with [Dr. Aaron Quinlan](http://quinlanlab.org/) at the University of Utah. My graduate research focused on [characterizing patterns of germline mutation](https://elifesciences.org/articles/46922) in large human families and [tracking viral evolution](https://elifesciences.org/articles/35453) using long read sequencing technologies.
+:microscope: **2021 - present**: analyzing data from massive cellular imaging experiments to find new disease treatments
+
+#### NIH T32 Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home)
+
+:mouse: **2020 - 2021**: discovering [genetic modifiers of the germline mutation rate in mice](https://www.nature.com/articles/s41586-022-04701-5)
+
+#### Graduate Student with [Dr. Aaron Quinlan](http://quinlanlab.org/)
+
+:dna: **2015 - 2020**: characterizing [patterns of germline mutation in large human families](https://elifesciences.org/articles/46922)
 
 <!-- ## Education 
 
