@@ -10,25 +10,25 @@ Fixsen SM, Cone KR, Goldstein SA, **Sasani TA**, Quinlan AR, Rothenburg S, Elde 
 
 ## Peer-reviewed Manuscripts
 
-**Sasani TA**, Ashbrook DG, Beichman AC, Lu L, Palmer AA, Williams RW, Pritchard JK, Harris K. A natural mutator allele shapes mutation spectrum variation in mice (2022). [*Nature.*](https://www.nature.com/articles/s41586-022-04701-5) [**Code.**](https://github.com/tomsasani/bxd_mutator_manuscript) [[PDF]](pdfs/sasani_nature_2022.pdf)
+**Sasani TA**, Ashbrook DG, Beichman AC, Lu L, Palmer AA, Williams RW, Pritchard JK, Harris K. A natural mutator allele shapes mutation spectrum variation in mice (2022). [*Nature.*](https://www.nature.com/articles/s41586-022-04701-5) [**Code.**](https://github.com/tomsasani/bxd_mutator_manuscript) [[.pdf]](pdfs/sasani_nature_2022.pdf)
 
-Belyeu JR*, **Sasani TA**\*, Pedersen BS, Quinlan AR. Unfazed: parent-of-origin detection for large and small de novo variants (2021). [*Bioinformatics.*](https://doi.org/10.1093/bioinformatics/btab454) [**Code.**](https://github.com/jbelyeu/unfazed) [[PDF]](pdfs/belyeu_bioinfo_2021.pdf)
+Belyeu JR*, **Sasani TA**\*, Pedersen BS, Quinlan AR. Unfazed: parent-of-origin detection for large and small de novo variants (2021). [*Bioinformatics.*](https://doi.org/10.1093/bioinformatics/btab454) [**Code.**](https://github.com/jbelyeu/unfazed) [[.pdf]](pdfs/belyeu_bioinfo_2021.pdf)
 
-Wallace AD, **Sasani TA**, Swanier J, Gates B, Greenland J, Pedersen BP, Varley KT, Quinlan AR. CaBagE: a Cas9-based Background Elimination strategy for targeted, long-read DNA sequencing (2021). [*PLoS One.*](https://doi.org/10.1371/journal.pone.0241253) [[PDF]](pdfs/wallace_plos_2021.pdf)
+Wallace AD, **Sasani TA**, Swanier J, Gates B, Greenland J, Pedersen BP, Varley KT, Quinlan AR. CaBagE: a Cas9-based Background Elimination strategy for targeted, long-read DNA sequencing (2021). [*PLoS One.*](https://doi.org/10.1371/journal.pone.0241253) [[.pdf]](pdfs/wallace_plos_2021.pdf)
 
-Cawthon RM, Meeks HD, **Sasani TA***, Smith KR, Kerber RA, O'Brien E, Baird L, Dixon MM, Peiffer AP, Leppert MF, Quinlan AR, Jorde LB. Germline mutation rates in young adults predict longevity and reproductive lifespan (2020). [*Scientific Reports.*](https://www.nature.com/articles/s41598-020-66867-0) [[PDF]](pdfs/cawthon_scirep_2020.pdf)
+Cawthon RM, Meeks HD, **Sasani TA***, Smith KR, Kerber RA, O'Brien E, Baird L, Dixon MM, Peiffer AP, Leppert MF, Quinlan AR, Jorde LB. Germline mutation rates in young adults predict longevity and reproductive lifespan (2020). [*Scientific Reports.*](https://www.nature.com/articles/s41598-020-66867-0) [[.pdf]](pdfs/cawthon_scirep_2020.pdf)
 
-**Sasani TA**, Pedersen BS, Gao Z, Baird L, Przeworski M, Jorde LB, Quinlan AR. Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation (2019). [*eLife.*](https://elifesciences.org/articles/46922) [**Code.**](https://github.com/quinlan-lab/ceph-dnm-manuscript) [[PDF]](pdfs/sasani_elife_2019.pdf)
+**Sasani TA**, Pedersen BS, Gao Z, Baird L, Przeworski M, Jorde LB, Quinlan AR. Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation (2019). [*eLife.*](https://elifesciences.org/articles/46922) [**Code.**](https://github.com/quinlan-lab/ceph-dnm-manuscript) [[.pdf]](pdfs/sasani_elife_2019.pdf)
 
-Gao Z, Moorjani P, **Sasani TA**, Pedersen BP, Quinlan AR, Jorde LB, Amster G, Przeworski MP. Overlooked roles of DNA damage and maternal age in generating human germline mutations (2019). [*PNAS.*](https://www.pnas.org/content/116/19/9491.short) [[PDF]](pdfs/gao_pnas_2019.pdf)
+Gao Z, Moorjani P, **Sasani TA**, Pedersen BP, Quinlan AR, Jorde LB, Amster G, Przeworski MP. Overlooked roles of DNA damage and maternal age in generating human germline mutations (2019). [*PNAS.*](https://www.pnas.org/content/116/19/9491.short) [[.pdf]](pdfs/gao_pnas_2019.pdf)
 
-**Sasani TA**\*, Cone KR\*, Quinlan AR, Elde NC. Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays (2018). [*eLife.*](https://elifesciences.org/articles/35453) [**Code.**](https://github.com/tomsasani/vacv-ont-manuscript) [[PDF]](pdfs/sasani_elife_2018.pdf)
+**Sasani TA**\*, Cone KR\*, Quinlan AR, Elde NC. Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays (2018). [*eLife.*](https://elifesciences.org/articles/35453) [**Code.**](https://github.com/tomsasani/vacv-ont-manuscript) [[.pdf]](pdfs/sasani_elife_2018.pdf)
 
-Belyeu JR, Nicholas TJ, Pedersen BS, **Sasani TA**, Havrilla JM, Kravitz SN, Conway ME, Lohman BK, Quinlan AR, Layer RM. SV-plaudit: a cloud-based framework for manually curating thousands of structural variants (2018). [*GigaScience.*](https://academic.oup.com/gigascience/article/7/7/giy064/5026174) [**Code.**](https://github.com/jbelyeu/SV-plaudit) [[PDF]](pdfs/belyeu_giga_2018.pdf)
+Belyeu JR, Nicholas TJ, Pedersen BS, **Sasani TA**, Havrilla JM, Kravitz SN, Conway ME, Lohman BK, Quinlan AR, Layer RM. SV-plaudit: a cloud-based framework for manually curating thousands of structural variants (2018). [*GigaScience.*](https://academic.oup.com/gigascience/article/7/7/giy064/5026174) [**Code.**](https://github.com/jbelyeu/SV-plaudit) [[.pdf]](pdfs/belyeu_giga_2018.pdf)
 
-Jain M*, Koren S*, Miga K*, Quick J*, Rand AC*, **Sasani TA***, Tyson JR*, Beggs AD, Dilthey AT, Fiddes IT, Malla S, Marriott H, Nieto T, O’Grady J, Olsen HE, Pedersen BS, Rhie A, Richardson H, Quinlan AR, Snutch TP, Tee L, Paten B, Phillippy AM, Simpson JT, Loman NJ, Loose M. Nanopore sequencing and assembly of a human genome with ultra-long reads (2018). [*Nature Biotechnology.*](https://www.nature.com/articles/nbt.4060) [[PDF]](pdfs/jain_natbio_2018.pdf)
+Jain M*, Koren S*, Miga K*, Quick J*, Rand AC*, **Sasani TA***, Tyson JR*, Beggs AD, Dilthey AT, Fiddes IT, Malla S, Marriott H, Nieto T, O’Grady J, Olsen HE, Pedersen BS, Rhie A, Richardson H, Quinlan AR, Snutch TP, Tee L, Paten B, Phillippy AM, Simpson JT, Loman NJ, Loose M. Nanopore sequencing and assembly of a human genome with ultra-long reads (2018). [*Nature Biotechnology.*](https://www.nature.com/articles/nbt.4060) [[.pdf]](pdfs/jain_natbio_2018.pdf)
 
-Feusier J, Witherspoon DJ, Watkins SW, Goubert C, **Sasani TA**, Jorde LB. Discovery of rare, diagnostic AluYb8/9 elements in diverse human populations (2017). [*Mobile DNA.*](https://mobilednajournal.biomedcentral.com/articles/10.1186/s13100-017-0093-0) [[PDF]](pdfs/feusier_mobdna_2017.pdf)
+Feusier J, Witherspoon DJ, Watkins SW, Goubert C, **Sasani TA**, Jorde LB. Discovery of rare, diagnostic AluYb8/9 elements in diverse human populations (2017). [*Mobile DNA.*](https://mobilednajournal.biomedcentral.com/articles/10.1186/s13100-017-0093-0) [[.pdf]](pdfs/feusier_mobdna_2017.pdf)
 
 Piasecki BP, **Sasani TA**, Lessenger AT, Huth N, Farrell S. MAPK-15 is a ciliary protein required for PKD-2 localization and male mating behavior in Caenorhabditis elegans (2017). [*Cytoskeleton.*](https://doi.org/10.1002/cm.21387)
 
