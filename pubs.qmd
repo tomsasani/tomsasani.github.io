@@ -26,7 +26,7 @@ Gao Z, Moorjani P, **Sasani TA**, Pedersen BP, Quinlan AR, Jorde LB, Amster G, P
 
 Belyeu JR, Nicholas TJ, Pedersen BS, **Sasani TA**, Havrilla JM, Kravitz SN, Conway ME, Lohman BK, Quinlan AR, Layer RM. SV-plaudit: a cloud-based framework for manually curating thousands of structural variants (2018). [*GigaScience.*](https://academic.oup.com/gigascience/article/7/7/giy064/5026174) [**Code.**](https://github.com/jbelyeu/SV-plaudit) [[.pdf]](pdfs/belyeu_giga_2018.pdf)
 
-Jain M*, Koren S*, Miga K*, Quick J*, Rand AC*, **Sasani TA***, Tyson JR*, Beggs AD, Dilthey AT, Fiddes IT, Malla S, Marriott H, Nieto T, O’Grady J, Olsen HE, Pedersen BS, Rhie A, Richardson H, Quinlan AR, Snutch TP, Tee L, Paten B, Phillippy AM, Simpson JT, Loman NJ, Loose M. Nanopore sequencing and assembly of a human genome with ultra-long reads (2018). [*Nature Biotechnology.*](https://www.nature.com/articles/nbt.4060) [[.pdf]](pdfs/jain_natbio_2018.pdf)
+Jain M\*, Koren S\*, Miga K\*, Quick J\*, Rand AC\*, **Sasani TA**\*, Tyson JR*, Beggs AD, Dilthey AT, Fiddes IT, Malla S, Marriott H, Nieto T, O’Grady J, Olsen HE, Pedersen BS, Rhie A, Richardson H, Quinlan AR, Snutch TP, Tee L, Paten B, Phillippy AM, Simpson JT, Loman NJ, Loose M. Nanopore sequencing and assembly of a human genome with ultra-long reads (2018). [*Nature Biotechnology.*](https://www.nature.com/articles/nbt.4060) [[.pdf]](pdfs/jain_natbio_2018.pdf)
 
 Feusier J, Witherspoon DJ, Watkins SW, Goubert C, **Sasani TA**, Jorde LB. Discovery of rare, diagnostic AluYb8/9 elements in diverse human populations (2017). [*Mobile DNA.*](https://mobilednajournal.biomedcentral.com/articles/10.1186/s13100-017-0093-0) [[.pdf]](pdfs/feusier_mobdna_2017.pdf)
 
