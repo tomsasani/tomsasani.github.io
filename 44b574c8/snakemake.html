@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Tom Sasani - An introduction to Snakemake for pipeline management</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Tom Sasani</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./pubs.html">Publications</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./talks.html">Talks</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./teaching.html">Teaching</a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tutorials" role="button" data-bs-toggle="dropdown" aria-expanded="false">Tutorials</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-tutorials">    
+        <li>
+    <a class="dropdown-item" href="./snakemake.html">
+ <span class="dropdown-text">An introduction to Snakemake for pipeline management</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./gatk.html">
+ <span class="dropdown-text">A simple guide to running GATK</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-cvresume" role="button" data-bs-toggle="dropdown" aria-expanded="false">CV/Resume</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-cvresume">    
+        <li>
+    <a class="dropdown-item" href="./vitae/sasani_thomas_cv.pdf">
+ <span class="dropdown-text">CV</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./vitae/sasani_thomas_resume.pdf">
+ <span class="dropdown-text">Resume</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/tomsasani"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/tomsasani"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">An introduction to Snakemake for pipeline management</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./snakemake.html" class="sidebar-item-text sidebar-link active">An introduction to Snakemake for pipeline management</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gatk.html" class="sidebar-item-text sidebar-link">A simple guide to running GATK</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#every-step-of-the-pipeline-gets-its-own-rule" id="toc-every-step-of-the-pipeline-gets-its-own-rule" class="nav-link" data-scroll-target="#every-step-of-the-pipeline-gets-its-own-rule">Every step of the pipeline gets its own “rule”</a></li>
+  <li><a href="#snakemake-will-only-run-a-rule-if-it-has-to" id="toc-snakemake-will-only-run-a-rule-if-it-has-to" class="nav-link" data-scroll-target="#snakemake-will-only-run-a-rule-if-it-has-to">Snakemake will only run a rule if it has to</a></li>
+  <li><a href="#using-wildcards-to-avoid-re-writing-the-same-command-over-and-over-again" id="toc-using-wildcards-to-avoid-re-writing-the-same-command-over-and-over-again" class="nav-link" data-scroll-target="#using-wildcards-to-avoid-re-writing-the-same-command-over-and-over-again">Using wildcards to avoid re-writing the same command over and over again</a></li>
+  <li><a href="#using-expand-to-run-a-pipeline-on-many-samples-or-with-many-parameters" id="toc-using-expand-to-run-a-pipeline-on-many-samples-or-with-many-parameters" class="nav-link" data-scroll-target="#using-expand-to-run-a-pipeline-on-many-samples-or-with-many-parameters">Using <code>expand</code> to run a pipeline on many samples or with many parameters</a></li>
+  <li><a href="#including-pure-python-in-a-rule" id="toc-including-pure-python-in-a-rule" class="nav-link" data-scroll-target="#including-pure-python-in-a-rule">Including pure python in a rule</a></li>
+  <li><a href="#running-a-snakemake-pipeline-on-the-sage-grid-engine-sge" id="toc-running-a-snakemake-pipeline-on-the-sage-grid-engine-sge" class="nav-link" data-scroll-target="#running-a-snakemake-pipeline-on-the-sage-grid-engine-sge">Running a Snakemake pipeline on the Sage Grid Engine (SGE)</a></li>
+  <li><a href="#using-a-config-file-to-flexibly-change-grid-requirements-for-particular-rules" id="toc-using-a-config-file-to-flexibly-change-grid-requirements-for-particular-rules" class="nav-link" data-scroll-target="#using-a-config-file-to-flexibly-change-grid-requirements-for-particular-rules">Using a config file to flexibly change grid requirements for particular rules</a></li>
+  <li><a href="#visualizing-the-full-pipeline-with-a-dag" id="toc-visualizing-the-full-pipeline-with-a-dag" class="nav-link" data-scroll-target="#visualizing-the-full-pipeline-with-a-dag">Visualizing the full pipeline with a DAG</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">An introduction to Snakemake for pipeline management</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>A quick-start guide for Snakemake</p>
+<section id="motivation" class="level2">
+<h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
+<p>There are few (if any) scientific questions that you can answer by running a single program or script. Calling variants involves aligning reads, sorting reads, indexing reads, running a variant caller, filtering those calls, etc. Running a simulation will inevitably require changing parameters or including new combinations of those parameters.</p>
+<p>And there are few (if any) programs or scripts that will run/compile correctly on the first try, due to either user error, code bugs, dependency conflicts, improperly configured environments, or any combination therein.</p>
+<p>For these reasons, it’s often crucial to package the various steps of your analysis into a “pipeline.” Ideally, this pipeline would accept a file(s) as input, do some stuff with that file, and generate an output file(s). For example, your pipeline might take a FASTQ file and reference genome FASTA as input, and output an aligned, sorted, and indexed BAM.</p>
+<p>In theory, a pipeline could just be a Bash script in which you enumerate each step of the process. But what if you want to run the pipeline on hundreds of samples’ FASTQ files? And what if the final step in your Bash script fails? <strong>You’ll have to re-run the entire pipeline all over again.</strong></p>
+<p>This is where Snakemake comes in. Snakemake is a flexible Python-based pipeline manager, and it’s even tuned for running on the Sage Grid Engine (or pretty much any other compute environment).</p>
+<blockquote class="blockquote">
+<p>As an example, let’s imagine that we want to take paired-end FASTQ from 3 different mouse samples (A, B, and C) and generate a preliminary set of variant calls for each sample.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>To start, let’s imagine we only want to process one sample: A.</p>
+</blockquote>
+</section>
+<section id="every-step-of-the-pipeline-gets-its-own-rule" class="level2">
+<h2 class="anchored" data-anchor-id="every-step-of-the-pipeline-gets-its-own-rule">Every step of the pipeline gets its own “rule”</h2>
+<p>The first step of the pipeline will be to download an <em>M. musculus</em> reference genome so that we can align reads.</p>
+<pre><code>rule download_reference:
+  input:
+  output:
+    "GRCm38.primary_assembly.genome.fa.gz"
+  shell:
+    """
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+    """</code></pre>
+<blockquote class="blockquote">
+<p>This rule, which is named <code>download_reference</code>, doesn’t take any input, since it’s just downloading a FASTA directly.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>We specify that the expected output of this rule is a single gzipped FASTA.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>After <code>shell:</code>, we simply list the commands we’d normally type at the command line to produce the specified output. These commands can be wrapped up in a docstring for easy formatting.</p>
+</blockquote>
+<p>Next, we want to align the FASTQ data from sample A to the reference.</p>
+<pre><code>rule bwa_align:
+  input:
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    fq1 = "A_1.fastq.gz",
+    fq2 = "A_2.fastq.gz"
+  output:
+    "A.sorted.bam"
+  shell:
+    """
+    bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
+    """</code></pre>
+<blockquote class="blockquote">
+<p>This rule takes as input a reference genome and two FASTQ files. As you can see, it’s possible to name individual input or output files (using Python variable assignment) so that we can access particular files in our shell command.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Note that if a rule has more than one input (or output) files, they should be comma-separated.</p>
+</blockquote>
+</section>
+<section id="snakemake-will-only-run-a-rule-if-it-has-to" class="level2">
+<h2 class="anchored" data-anchor-id="snakemake-will-only-run-a-rule-if-it-has-to">Snakemake will only run a rule if it has to</h2>
+<p>Let’s take a look at the full pipeline we’ve defined so far.</p>
+<pre><code>rule all:
+  input:
+    "A.sorted.bam"
+
+rule download_reference:
+  input:
+  output:
+    "GRCm38.primary_assembly.genome.fa.gz"
+  shell:
+    """
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+    """
+
+rule bwa_align:
+  input:
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    fq1 = "A_1.fastq.gz",
+    fq2 = "A_2.fastq.gz"
+  output:
+    "A.sorted.bam"
+  shell:
+    """
+    bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
+    """</code></pre>
+<blockquote class="blockquote">
+<p><strong>A huge advantage of Snakemake is that it will only run a rule if its output is needed by a downstream rule.</strong></p>
+</blockquote>
+<blockquote class="blockquote">
+<p>You can see that I’ve added a rule (called <code>all</code>) to the top of the pipeline. This is because Snakemake runs in a “bottom-up” fashion.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The <code>all</code> rule tells Snakemake what the final output of the entire pipeline should be. In this case, we want the final output to be an aligned BAM.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>In this example, Snakemake finds the rule that outputs <code>A.sorted.bam</code> (which is <code>bwa_align</code>), and checks to see if that rule has access to all of its necessary inputs (a reference and two FASTQ files). If not, Snakemake finds the rules that produce those files and runs them. And so on. Once <code>bwa_align</code> has all of the inputs it needs, Snakemake runs it to produce the final output.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>And let’s say that for whatever reason, <code>bwa_align</code> fails when its run. When we re-run the pipeline, Snakemake will check that its input files are present. Since all of the previous rules will have been run before invoking <code>bwa_align</code>, Snakemake will see that its inputs are present and won’t re-run any of the upstream steps!</p>
+</blockquote>
+</section>
+<section id="using-wildcards-to-avoid-re-writing-the-same-command-over-and-over-again" class="level2">
+<h2 class="anchored" data-anchor-id="using-wildcards-to-avoid-re-writing-the-same-command-over-and-over-again">Using wildcards to avoid re-writing the same command over and over again</h2>
+<p>In the previous example, we were only running the pipeline on a single sample. But to generalize the pipeline to run on any list of samples, we can make use of the <code>expand</code> feature, as well as Snakemake “wildcards.”</p>
+<p>Were this a bash pipeline we’d have to write out a separate set of commands for every sample. But with Snakemake it’s much easier.</p>
+<p>Here’s an example of what our pipeline would look like with wildcard placeholders instead of explicit sample names.</p>
+<pre><code>samples = ["A", "B", "C"]
+
+rule all:
+  input:
+    expand("{sample}.sorted.bam", sample=samples)
+
+rule download_reference:
+  input: 
+  output:
+    "GRCm38.primary_assembly.genome.fa.gz"
+  shell:
+    """
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+    """
+
+rule bwa_align:
+  input: 
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    fq1 = "{sample}_1.fastq.gz",
+    fq2 = "{sample}_2.fastq.gz"
+  output:
+    "{sample}.sorted.bam"
+  shell:
+    """
+    bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
+    """</code></pre>
+<blockquote class="blockquote">
+<p>Here, I’ve just replaced every instance of a sample name in an output or input file with a <code>{sample}</code> wildcard.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>In the <code>all</code> rule, I’m using the <code>expand</code> function to tell Snakemake that the expected output is a list of sorted BAMs, with the sample names in <code>samples</code> filled in.</p>
+</blockquote>
+<p>In this case, the result of the <code>expand</code> would just be:</p>
+<pre><code>&gt;&gt;&gt; expand("{sample}.sorted.bam", sample=samples)
+
+["A.sorted.bam", "B.sorted.bam", "C.sorted.bam"]</code></pre>
+<p>But we can also use <code>expand</code> for more complicated chaining of multiple sample names and parameters.</p>
+</section>
+<section id="using-expand-to-run-a-pipeline-on-many-samples-or-with-many-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="using-expand-to-run-a-pipeline-on-many-samples-or-with-many-parameters">Using <code>expand</code> to run a pipeline on many samples or with many parameters</h2>
+<p>Let’s say that once we’ve produced aligned and sorted BAMs, we want to then run a simple variant calling program on each sample’s alignments.</p>
+<p>To speed up execution of the variant calling pipeline, it might help to parallelize our pipeline to run on every chromosome separately.</p>
+<p>To do this, we’ll again make use of <code>expand</code>.</p>
+<pre><code>samples = ["A", "B", "C"]
+
+chromosomes = list(range(1, 20))
+chromosomes = list(map(str, chromosomes))
+chromosomes.extend(['X', 'Y'])
+
+rule all:
+  input:
+    expand("{sample}.{chrom}.vcf", sample=samples, chrom=chromosomes)
+
+rule download_reference:
+  input: 
+  output:
+    "GRCm38.primary_assembly.genome.fa.gz"
+  shell:
+    """
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M10/GRCm38.primary_assembly.genome.fa.gz
+    """
+
+rule bwa_align:
+  input: 
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    fq1 = "{sample}_1.fastq.gz",
+    fq2 = "{sample}_2.fastq.gz"
+  output:
+    "{sample}.sorted.bam"
+  shell:
+    """
+    bwa mem -t 4 {input.ref} {input.fq1} {input.fq2} | sambamba view -S -f bam /dev/stdin | sambamba sort -o {output} /dev/stdin
+    """
+
+rule call_variants:
+  input:
+    ref = "GRCm38.primary_assembly.genome.fa.gz",
+    bam = "{sample}.sorted.bam"
+  output:
+    "{sample}.{chrom}.vcf"
+  shell:
+    """
+    freebayes -f {input.ref} -r {wildcards.chrom} {input.bam} &gt; {output}
+    """</code></pre>
+<blockquote class="blockquote">
+<p>We’ve now added a step to the pipeline which takes a reference genome and a BAM as input, and outputs a variant call file (VCF).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Notice that in the <code>call_variants</code> rule, my <code>freebayes</code> command takes a <code>-r</code> argument that specifies the region we want to analyze. Whenever you want to access a wildcard inside of the <code>shell:</code> portion of a rule, its necessary to preface the wildcard name with <code>wildcard</code>.</p>
+</blockquote>
+<p>And in this example, <code>expand</code> takes the Cartesian product (i.e., <code>itertools.product()</code>) of the lists of parameters. So, the output of <code>expand</code> would be:</p>
+<pre><code>&gt;&gt;&gt; expand("{sample}.{chrom}.vcf", sample=samples, chrom=chromosomes)
+
+["A.chr1.vcf",
+ "A.chr2.vcf",
+ "A.chr3.vcf",
+ ...
+ "C.chrY.vcf"]</code></pre>
+<p>This way, we can enumerate every possible combination of input parameters instead of typing out 3 * 21 separate commands.</p>
+</section>
+<section id="including-pure-python-in-a-rule" class="level2">
+<h2 class="anchored" data-anchor-id="including-pure-python-in-a-rule">Including pure python in a rule</h2>
+<p>So far, our rules have only invoked shell commands like <code>bwa</code> or <code>wget</code>. But Snakemake also allows you to make a rule that is just a block of python code. For example, the following rule would be totally acceptable.</p>
+<pre><code>rule count_snps:
+  input:
+    expand("{sample}.{chrom}.vcf", sample=samples, chrom=chromosomes)
+  output:
+    "per_sample.snp_counts.tsv"
+  run:
+    """
+    from cyvcf2 import VCF
+
+    vcf_file = VCF({input})
+
+    output_fh = open({output}, "w")
+    
+    # loop over input files
+    for vcf_fh in {input}:
+
+      sample_name = vcf_fh.split('.')[0]
+      chrom = vcf_fh.split('.')[1]
+
+      # initialize a VCF object using each
+      # file handle in the input list
+      vcf = VCF(vcf_fh)
+
+      snp_count = 0
+
+      for v in vcf:
+        if v.var_type != "snp": continue
+        snp_count += 1
+
+      print (','.join([sample_name, chrom, str(snp_count)]), file=output_fh)
+
+    """</code></pre>
+<blockquote class="blockquote">
+<p><strong>Notice that when a rule includes python code, we use the <code>run:</code> syntax instead of the <code>shell:</code> syntax at the top of the code block.</strong></p>
+</blockquote>
+</section>
+<section id="running-a-snakemake-pipeline-on-the-sage-grid-engine-sge" class="level2">
+<h2 class="anchored" data-anchor-id="running-a-snakemake-pipeline-on-the-sage-grid-engine-sge">Running a Snakemake pipeline on the Sage Grid Engine (SGE)</h2>
+<p>In our lab, we use the SGE to submit and manage compute jobs on the cluster. Snakemake is actually compatible with SGE (and SLURM, etc.), which makes it super easy to submit jobs to SGE directly from a Snakemake pipeline.</p>
+<p>As an example, we could execute our pipeline as follows:</p>
+<pre><code>snakemake -j 10 \
+      --cluster \
+      --rerun-incomplete \
+       "qsub -l centos=7 -l mfree=16G -l h_rt=12:0:0 -o /path/to/outdir -e /path/to/errdir"</code></pre>
+<blockquote class="blockquote">
+<p>The <code>-j</code> flag specifies the maximum number of jobs Snakemake is allowed to submit to SGE at a time.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>The <code>--rerun-incomplete</code> flag is awesome. If we run our pipeline and it fails for some reason, using <code>--rerun-incomplete</code> will tell Snakemake to re-run a rule if the output of that rule is incomplete (i.e., if the rule didn’t finish due to a job failure in the last pipeline execution).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>After specifying <code>--cluster</code>, we just put the normal <code>qsub</code> command we’d normally use to submit a <code>.sh</code> or <code>.sge</code> script to the cluster, specifying the memory required by each job, wall time, etc.</p>
+</blockquote>
+</section>
+<section id="using-a-config-file-to-flexibly-change-grid-requirements-for-particular-rules" class="level2">
+<h2 class="anchored" data-anchor-id="using-a-config-file-to-flexibly-change-grid-requirements-for-particular-rules">Using a config file to flexibly change grid requirements for particular rules</h2>
+<p>One natural issue with the above command is that some rules might require different cluster specifications than others.</p>
+<p>For example, I’ve written my <code>bwa_align</code> rule such that <code>bwa mem</code> will use 4 threads during alignment, and it’ll probably use much more memory than downloading a reference genome.</p>
+<p>Thankfully, Snakemake lets us create individual cluster specifications for each of our rules using a <code>config</code> file. See the example <code>config</code> file below, which is written in JSON.</p>
+<pre><code>"__default__":
+
+{ "memory": "8G",
+  "time": "1:0:0",
+  "threads": "1",
+  "os": "7" },
+
+"bwa_align":
+
+{ "memory": "4G",
+  "time": "8:0:0",
+  "threads": "4",
+  "os": "7" }</code></pre>
+<p>Then, when we run Snakemake, we could do the following:</p>
+<pre><code>snakemake -j 10 \
+      --cluster-config /path/to/config.json \
+      --cluster \
+      --rerun-incomplete \
+      "qsub -l centos={cluster.os} -l mfree={cluster.memory} -l h_rt={cluster.time} -pe serial {cluster.threads}"</code></pre>
+</section>
+<section id="visualizing-the-full-pipeline-with-a-dag" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-the-full-pipeline-with-a-dag">Visualizing the full pipeline with a DAG</h2>
+<p>We can also visualize the various steps of the pipeline in a directed acyclic graph (DAG).</p>
+<p>After putting the full pipeline in a file called <code>Snakefile</code>, we can run the following from the directory in which the Snakefile resides:</p>
+<pre><code>snakemake --dag | dot -Tsvg &gt; dag.svg</code></pre>
+<p>This will produce an image showing us exactly what steps Snakemake will during execution. This plot ignores the VCF calling steps, since the DAG gets pretty unweildy with that many steps!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

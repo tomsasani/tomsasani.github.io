@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://tomsasani.github.io/teaching.html</loc>
+    <lastmod>2022-09-07T00:33:08.763Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/talks.html</loc>
+    <lastmod>2022-09-07T00:33:09.063Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/index.html</loc>
+    <lastmod>2022-09-07T00:33:09.383Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/gatk.html</loc>
+    <lastmod>2022-09-07T00:33:09.776Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/pubs.html</loc>
+    <lastmod>2022-09-07T00:33:10.083Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/tutorials.html</loc>
+    <lastmod>2022-09-07T00:33:10.330Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/snakemake.html</loc>
+    <lastmod>2022-09-07T00:33:10.648Z</lastmod>
+  </url>
+</urlset>
