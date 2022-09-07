@@ -4,6 +4,5 @@
 *.log
 *.out
 *.gz
-*.jpg
 /.quarto/
 /_site/
