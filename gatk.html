@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Tom Sasani - A simple guide to running GATK</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Tom Sasani</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./pubs.html">Publications</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./talks.html">Talks</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./teaching.html">Teaching</a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tutorials" role="button" data-bs-toggle="dropdown" aria-expanded="false">Tutorials</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-tutorials">    
+        <li>
+    <a class="dropdown-item" href="./snakemake.html">
+ <span class="dropdown-text">An introduction to Snakemake for pipeline management</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./gatk.html">
+ <span class="dropdown-text">A simple guide to running GATK</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-cvresume" role="button" data-bs-toggle="dropdown" aria-expanded="false">CV/Resume</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-cvresume">    
+        <li>
+    <a class="dropdown-item" href="./vitae/sasani_thomas_cv.pdf">
+ <span class="dropdown-text">CV</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./vitae/sasani_thomas_resume.pdf">
+ <span class="dropdown-text">Resume</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/tomsasani"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/tomsasani"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">A simple guide to running GATK</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./snakemake.html" class="sidebar-item-text sidebar-link">An introduction to Snakemake for pipeline management</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gatk.html" class="sidebar-item-text sidebar-link active">A simple guide to running GATK</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#installing-gatk" id="toc-installing-gatk" class="nav-link" data-scroll-target="#installing-gatk">Installing GATK</a></li>
+  <li><a href="#preparing-bam-files-for-initial-variant-calling" id="toc-preparing-bam-files-for-initial-variant-calling" class="nav-link" data-scroll-target="#preparing-bam-files-for-initial-variant-calling">Preparing BAM files for initial variant calling</a></li>
+  <li><a href="#running-gatk-haplotypecaller" id="toc-running-gatk-haplotypecaller" class="nav-link" data-scroll-target="#running-gatk-haplotypecaller">Running GATK HaplotypeCaller</a></li>
+  <li><a href="#joint-genotyping-gvcfs" id="toc-joint-genotyping-gvcfs" class="nav-link" data-scroll-target="#joint-genotyping-gvcfs">Joint genotyping GVCFs</a></li>
+  <li><a href="#variant-quality-score-recalibration-vqsr" id="toc-variant-quality-score-recalibration-vqsr" class="nav-link" data-scroll-target="#variant-quality-score-recalibration-vqsr">Variant quality score recalibration (VQSR)</a>
+  <ul class="collapse">
+  <li><a href="#downloading-gatk-resources-for-vqsr" id="toc-downloading-gatk-resources-for-vqsr" class="nav-link" data-scroll-target="#downloading-gatk-resources-for-vqsr">Downloading GATK resources for VQSR</a></li>
+  <li><a href="#running-vqsr" id="toc-running-vqsr" class="nav-link" data-scroll-target="#running-vqsr">Running VQSR</a></li>
+  <li><a href="#applying-vqsr" id="toc-applying-vqsr" class="nav-link" data-scroll-target="#applying-vqsr">Applying VQSR</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">A simple guide to running GATK</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="motivation" class="level2">
+<h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
+<p>There are probably hundreds of “how to use GATK” guides published online, not including the detailed documentation on the <a href="https://gatk.broadinstitute.org/hc/en-us">GATK website</a>. But in my (admittedly limited) experience, running GATK can be a bit finicky, and the workflow for producing a genotyped VCF using GATK “best practices” can take a little bit of troubleshooting. Below I’ve outlined my own simple workflow for calling SNVs in <strong>human data</strong> using GATK, including the various preprocessing steps and file/software downloads. This is mostly for my own reference in the future, when the ramblings in my lab notebook eventually lose all meaning to me.</p>
+</section>
+<section id="installing-gatk" class="level2">
+<h2 class="anchored" data-anchor-id="installing-gatk">Installing GATK</h2>
+<p>Go to the <a href="https://github.com/broadinstitute/gatk/releases">releases</a> on the GATK GitHub, and <code>wget</code> the most recent version (in my case, v.4.1.8.1). Then, just unzip the package.</p>
+<pre><code>wget https://github.com/broadinstitute/gatk/releases/download/4.1.8.1/gatk-4.1.8.1.zip
+
+unzip gatk-4.1.8.1.zip</code></pre>
+<p>The <code>gatk</code> binary should be sitting in that directory. Just run as follows:</p>
+<pre><code>/path/to/gatk/binary/gatk</code></pre>
+</section>
+<section id="preparing-bam-files-for-initial-variant-calling" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-bam-files-for-initial-variant-calling">Preparing BAM files for initial variant calling</h2>
+<p>Let’s assume you’re running GATK separately on individual sample BAMs. Even though each BAM contains a single sample’s reads, it’s still <strong>necessary to add read groups to the BAM header and read entries</strong>.</p>
+<pre><code>samtools addreplacerg -r "@RG\tID:${sample_name}\tSM:${sample_name}" -o {output} {input}</code></pre>
+<p>Although GATK will run just fine on a BAM with no read groups, exactly zero variants will be output to VCF. In fact, my version of GATK HaplotypeCaller stated that all reads were filtered out by <code>MappingQualityFilter</code>.</p>
+<p>Of course, if you’re planning on merging multiple sample BAMs into a single BAM before running HaplotypeCaller, you should add read groups in order to know exactly which sample a given read is derived from.</p>
+<p>Then, as usual, it’s good to <code>sort</code> and <code>index</code> the BAM, and mark duplicates.</p>
+<pre><code>samtools sort -O BAM -o {output} {input}
+
+samtools index {input}</code></pre>
+<p>For duplicate marking, I tend to use <code>picard</code> (available <a href="https://github.com/broadinstitute/picard/releases">here</a>).</p>
+<pre><code>java -jar /path/to/picard.jar MarkDuplicates INPUT={input} OUTPUT={output} METRICS_FILE={metrics} TMP_DIR={tmpdir}</code></pre>
+<p>As it marches along the BAM and marks duplicates, <code>picard</code> will output lots of temporary files, so it’s good to specify a $tmpdir with enough space for potentially hundreds (or more) temporary files.</p>
+</section>
+<section id="running-gatk-haplotypecaller" class="level2">
+<h2 class="anchored" data-anchor-id="running-gatk-haplotypecaller">Running GATK HaplotypeCaller</h2>
+<p>The first step of variant calling involves running <code>HaplotypeCaller</code>, which will produce an initial list of variants. By design, <code>HaplotypeCaller</code> is <em>very sensitive</em>, so it’s possible that most of the variants in the output VCF will be junk. We’ll do some filtering and “calibration” of variants in later steps.</p>
+<pre><code>gatk HaplotypeCaller \
+    --input ${input_bam} \
+    --output ${output_VCF} \
+    --reference ${reference_genome} \
+    --java-options "-Xmx8G"
+    -ERC GVCF</code></pre>
+<blockquote class="blockquote">
+<p>Since GATK is written in Java, we can also pass in some standard Java options (such as max memory to be used) as an argument!</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>Also, by passing in the <code>-ERC GVCF</code> argument, we tell HaplotypeCaller to produce GVCF (generic VCF) output, which looks a bit different from normal VCF. The benefit of outputting GVCFs is that we can then run joint genotyping on many samples’ GVCFs together quite quickly.</p>
+</blockquote>
+</section>
+<section id="joint-genotyping-gvcfs" class="level2">
+<h2 class="anchored" data-anchor-id="joint-genotyping-gvcfs">Joint genotyping GVCFs</h2>
+<pre><code>gatk GenotypeGVCFs \
+    --variant ${input_gvcfs} \
+    --output {output} \
+    --reference {input.ref} \
+    --java-options "-Xmx8G"</code></pre>
+<p>Here, we can run GenotypeGVCFs on one or many GVCFs together. By passing in multiple GVCFs, we can take advantage of the joint genotyping process to consider evidence from multiple samples at a given variant site. In any case, the output here will be “true” VCF.</p>
+</section>
+<section id="variant-quality-score-recalibration-vqsr" class="level2">
+<h2 class="anchored" data-anchor-id="variant-quality-score-recalibration-vqsr">Variant quality score recalibration (VQSR)</h2>
+<p>Now, we arrive at the most arcane (in my opinion) step in running GATK. Essentially, VQSR takes in a few “truth sets,” which are just VCF files containing variants considered to be either “very good” or “very bad,” so that GATK can get a feeling for the qualities that make a “good variant.” But first, we need to get a hold of these truth sets.</p>
+<section id="downloading-gatk-resources-for-vqsr" class="level3">
+<h3 class="anchored" data-anchor-id="downloading-gatk-resources-for-vqsr">Downloading GATK resources for VQSR</h3>
+<p>GATK hosts its “resource bundle,” containing various files that are important for running GATK, on Google. The four truth sets we can use are hosted <a href="https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0;tab=objects?prefix=">here</a>.</p>
+<p>To download, we can use a tool called <code>gsutil</code>, developed by Google specifically for fetching files from Google Cloud.</p>
+<pre><code># download "omni" truth set
+/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/1000G_omni2.5.hg38.vcf.gz
+# download "hapmap" truth set
+/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/hapmap_3.3.hg38.vcf.gz
+# download "1000G" truth set
+/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/1000G_phase1.snps.high_confidence.hg38.vcf.gz
+# download "dbsnp" truth set
+/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf</code></pre>
+<p>We’ll also need the <code>tabix</code> indices for these VCFs, which can also be download from the Google Cloud repository, or done by hand. The “dbsnp” truth set also needs to be <code>bgzip</code>-ed!</p>
+</section>
+<section id="running-vqsr" class="level3">
+<h3 class="anchored" data-anchor-id="running-vqsr">Running VQSR</h3>
+<p>Now that we’ve collected the various files we need, we can run VQSR. Importantly, VQSR <strong>does not output VCF files</strong>. Instead it outputs a <code>.recal</code> file and a <code>.tranches</code> file, which are “applied” to the previous VCF file in the final step of calibration.</p>
+<p>A couple of notes here:</p>
+<ul>
+<li>we can specify exactly which annotations we want VQSR to add by specifying <code>-an</code> multiple times</li>
+<li>we can specify the “tranches” we want VQSR to divide our variants into by specifying <code>tranche</code> multiple times</li>
+<li>in GATK v4.1.8.1, we must include a space between the <code>--resource</code> truth set info and the path to the truth set</li>
+<li>it looks as though GATK now has a convolutional neural net approach to VQSR in GATK v4+ for single samples (see <a href="https://github.com/broadinstitute/gatk/pull/5548">here</a>)</li>
+</ul>
+<p>More detailed documentation on running VQSR (for human data) is <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering">here</a>.</p>
+<pre><code>gatk VariantRecalibrator \
+    --variant {input} \
+    --output {recal_file_output} \
+    --tranches-file {tranch_file_output} \
+    -an QD -an MQRankSum -an ReadPosRankSum -an FS -an SOR \
+    --mode SNP \
+    --trust-all-polymorphic true \
+    --java-options "-Xmx8G" \
+    -tranche 100.0 -tranche 99.95 -tranche 99.9 -tranche 99.8 -tranche 99.6 -tranche 99.5 -tranche 99.0 -tranche 98.0 -tranche 97.0 -tranche 90.0 \
+    --resource:omni,known=false,training=true,truth=true,prior=12 /path/to/1000G_omni2.5.hg38.vcf.gz \
+    --resource:1000G,known=false,training=true,truth=false,prior=10 /path/to/1000G_phase1.snps.high_confidence.hg38.vcf.gz \
+    --resource:hapmap,known=false,training=true,truth=true,prior=15 /path/to/hapmap_3.3.hg38.vcf.gz \
+    --resource:dbsnp,known=true,training=false,truth=false,prior=7 /path/to/Homo_sapiens_assembly38.dbsnp138.vcf.gz</code></pre>
+</section>
+<section id="applying-vqsr" class="level3">
+<h3 class="anchored" data-anchor-id="applying-vqsr">Applying VQSR</h3>
+<p>Now, we arrive at the final step of VQSR. Here, we use the <code>.tranches</code> and <code>.recal</code> files produced in the previous step, and “apply” them to the VCF produced in the first step of this section. The output is a recalibrated VCF, which we can then pass into any downstream filtering or analysis pipelines we want!</p>
+<pre><code>gatk ApplyVQSR \
+    --variant {input_vcf} \
+    --recal-file {recal_file} \
+    --tranches-file {tranches_file} \
+    --truth-sensitivity-filter-level 99.7 \
+    --create-output-variant-index true \
+    -mode SNP \
+    --output {output} \
+    --java-options "-Xmx8G" </code></pre>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
