@@ -254,8 +254,7 @@ rule count_snps:
       snp_count = 0
 
       for v in vcf:
-        if v.var_type != "snp": continue
-        snp_count += 1
+        if v.var_type == "snp": snp_count += 1
 
       print (','.join([sample_name, chrom, str(snp_count)]), file=output_fh)
 

@@ -6,9 +6,9 @@ title: "Publications"
 
 Ashbrook DG, **Sasani TA**, Maksimov M, Gunturkun MH, Ma N, Villani F, Ren Y, Rothschild D, Chen H, Lu L, Colonna V, Dumont B, Harris K, Gymrek M, Pritchard JK, Palmer AA, Williams RW. Private and sub-family specific mutations of founder haplotypes in the BXD family reveal phenotypic consequences relevant to health and disease (2022). [*bioRxiv.*](https://www.biorxiv.org/content/10.1101/2022.04.21.489063v1.abstract)
 
-Fixsen SM, Cone KR, Goldstein SA, **Sasani TA**, Quinlan AR, Rothenburg S, Elde NC. Poxviruses capture host genes by LINE-1 retrotransposition (2020). [*bioRxiv.*](https://www.biorxiv.org/content/10.1101/2020.10.26.356402v1.abstract)
-
 ## Peer-reviewed Manuscripts
+
+Fixsen SM, Cone KR, Goldstein SA, **Sasani TA**, Quinlan AR, Rothenburg S, Elde NC. Poxviruses capture host genes by LINE-1 retrotransposition (2022). [*eLife.*](https://elifesciences.org/articles/63332)
 
 **Sasani TA**, Ashbrook DG, Beichman AC, Lu L, Palmer AA, Williams RW, Pritchard JK, Harris K. A natural mutator allele shapes mutation spectrum variation in mice (2022). [*Nature.*](https://www.nature.com/articles/s41586-022-04701-5) [**Code.**](https://github.com/tomsasani/bxd_mutator_manuscript) [[.pdf]](pdfs/sasani_nature_2022.pdf)
 
@@ -32,4 +32,4 @@ Feusier J, Witherspoon DJ, Watkins SW, Goubert C, **Sasani TA**, Jorde LB. Disco
 
 Piasecki BP, **Sasani TA**, Lessenger AT, Huth N, Farrell S. MAPK-15 is a ciliary protein required for PKD-2 localization and male mating behavior in Caenorhabditis elegans (2017). [*Cytoskeleton.*](https://doi.org/10.1002/cm.21387)
 
-* indicates equal contribution
+\* indicates equal contribution
