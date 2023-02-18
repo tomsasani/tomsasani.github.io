@@ -1,1 +1,1 @@
-Sitemap: https://github.com/tomsasani/tomsasani.github.io/sitemap.xml
+Sitemap: https://tomsasani.github.io/sitemap.xml
