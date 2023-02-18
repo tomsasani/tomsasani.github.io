@@ -47,8 +47,13 @@ website:
 
 format:
   html:
-    theme: journal
-    css: styles.css
+    theme:
+      light: [cosmo, theme.scss]
+      #light: cosmo
+      dark: [cosmo, theme-dark.scss]
+    mainfont: "Atkinson Hyperlegible"
+    code-copy: true
+    code-overflow: wrap
     toc: true
 
 
