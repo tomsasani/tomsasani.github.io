@@ -6,7 +6,7 @@ I develop and apply computational methods to study mutation rate and spectrum ev
 
 #### How does inherited genetic variation impact the germline mutation rate?
 
-> Related paper: [**A natural mutator allele shapes mutation spectrum variation in mice**](nature.com/articles/s41586-022-04701-5)
+> Related paper: [**A natural mutator allele shapes mutation spectrum variation in mice**](https://nature.com/articles/s41586-022-04701-5)
 
 #### To what degree do mutation rates vary among human families?
 
