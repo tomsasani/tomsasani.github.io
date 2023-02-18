@@ -5,9 +5,12 @@ website:
   title: "Tom Sasani"
 
   navbar:
+    background: "#C1DBDA"
     left:
       - text: "Home"
         file: index.qmd
+      - text: "Research"
+        file: research.qmd
       - text: "Publications"
         file: pubs.qmd
       - text: "Talks"
@@ -28,7 +31,7 @@ website:
     - id: tutorials
       title: "Tutorials"
       style: "docked"
-      background: light
+      background: "light"
       collapse-level: 2
       contents: 
         - href: snakemake.qmd
@@ -37,7 +40,6 @@ website:
     - id: cv 
       title: "CV/Resume"
       style: "docked"
-      background: light 
       collapse-level: 2
       contents:
         - text: "CV"

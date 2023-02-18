@@ -1,0 +1,18 @@
+---
+title: "Research"
+---
+
+I develop and apply computational methods to study mutation rate and spectrum evolution in mammalian genomes. Here are a few research questions I've pursued in the past: 
+
+#### How does inherited genetic variation impact the germline mutation rate?
+
+> Related paper: [**A natural mutator allele shapes mutation spectrum variation in mice**](nature.com/articles/s41586-022-04701-5)
+
+#### To what degree do mutation rates vary among human families?
+
+> Related paper: [**Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation**](https://elifesciences.org/articles/46922)
+
+#### How do structural and single-nucleotide variants interact to promote rapid adaptation?
+
+> Related paper: [**Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays**](https://elifesciences.org/articles/35453)
+

@@ -211,7 +211,7 @@ rule call_variants:
 
 And in this example, `expand` takes the Cartesian product (i.e., `itertools.product()`) of the lists of parameters. So, the output of `expand` would be:
 
-```
+```python
 >>> expand("{sample}.{chrom}.vcf", sample=samples, chrom=chromosomes)
 
 ["A.chr1.vcf",
