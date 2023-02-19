@@ -17,42 +17,28 @@ about:
 
 ## Experience
 
-#### Staff Research Scientist with [Dr. Aaron Quinlan](http://quinlanlab.org/)
+#### :dna: Staff Research Scientist with [Dr. Aaron Quinlan](http://quinlanlab.org/)
 
-:dna: **2022 - present**: developing new methods to analyze germline mutation and genome evolution
+> **2022 - present**: developing new methods to analyze germline mutation and genome evolution
 
-#### Senior Data Scientist @ [Recursion Pharma](https://www.recursion.com/)
+#### :microscope: Senior Data Scientist @ [Recursion Pharma](https://www.recursion.com/)
 
-:microscope: **2021 - 2022**: analyzed data from massive cellular imaging experiments to find new disease treatments
+> **2021 - 2022**: analyzed data from massive cellular imaging experiments to find new disease treatments
 
-#### Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home)
+#### :mouse: Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home)
 
-:mouse: **2020 - 2021**: discovered [genetic modifiers of the germline mutation rate in mice](https://www.nature.com/articles/s41586-022-04701-5)
+> **2020 - 2021**: discovered [genetic modifiers of the germline mutation rate in mice](https://www.nature.com/articles/s41586-022-04701-5)
 
-#### Graduate Student with [Dr. Aaron Quinlan](http://quinlanlab.org/)
+#### :dna: Graduate Student with [Dr. Aaron Quinlan](http://quinlanlab.org/)
 
-:dna: **2015 - 2020**: characterized [patterns of germline mutation in large human families](https://elifesciences.org/articles/46922)
+> **2015 - 2020**: characterized [patterns of germline mutation in large human families](https://elifesciences.org/articles/46922)
 
 <!-- ## Education 
 
 **University of Utah** | Salt Lake City, UT 
 
-* Ph.D in Human Genetics | 2015 - 2019
+> Ph.D in Human Genetics | 2015 - 2019
 
 **Lawrence University** | Appleton, WI
 
-* B.A. in Biochemistry, *summa cum laude* | 2011 - 2015  -->
-
-<!-- ### Experience 
-
-**Recursion Pharmaceuticals** | Salt Lake City, UT 
-
-* *Senior Data Scientist* | 2021 - pres. 
-
-**University of Washington** | Seattle, WA
-
-* *NIH T32 Postdoctoral Fellow* | [Harris Lab](https://sites.google.com/site/harriskelley/home) | 2020 - 2021 
-
-**University of Utah** | Salt Lake City, UT 
-
-* *Graduate Research Assistant* | [Quinlan Lab](http://quinlanlab.org/) | 2015 - 2019 -->
+> B.A. in Biochemistry, *summa cum laude* | 2011 - 2015 -->
