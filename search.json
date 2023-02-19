@@ -46,7 +46,7 @@
     "href": "index.html#experience",
     "title": "Tom Sasani, PhD",
     "section": "Experience",
-    "text": "Experience\n\nStaff Research Scientist with Dr. Aaron Quinlan\n🧬 2022 - present: developing new methods to analyze germline mutation and genome evolution\n\n\nSenior Data Scientist @ Recursion Pharmaceuticals\n🔬 2021 - 2022: analyzed data from massive cellular imaging experiments to find new disease treatments\n\n\nNIH T32 Postdoctoral Fellow with Dr. Kelley Harris\n🐭 2020 - 2021: discovered genetic modifiers of the germline mutation rate in mice\n\n\nGraduate Student with Dr. Aaron Quinlan\n🧬 2015 - 2020: characterized patterns of germline mutation in large human families"
+    "text": "Experience\n\nStaff Research Scientist with Dr. Aaron Quinlan\n🧬 2022 - present: developing new methods to analyze germline mutation and genome evolution\n\n\nSenior Data Scientist @ Recursion Pharma\n🔬 2021 - 2022: analyzed data from massive cellular imaging experiments to find new disease treatments\n\n\nPostdoctoral Fellow with Dr. Kelley Harris\n🐭 2020 - 2021: discovered genetic modifiers of the germline mutation rate in mice\n\n\nGraduate Student with Dr. Aaron Quinlan\n🧬 2015 - 2020: characterized patterns of germline mutation in large human families"
   },
   {
     "objectID": "research.html",
@@ -130,7 +130,7 @@
     "href": "teaching.html",
     "title": "Teaching",
     "section": "",
-    "text": "Basic data visualization using R. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2019. Video. Slides.\nAn introduction to regression (Part I): basic linear models and interpretation. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2019. Video. Slides.\nAn introduction to regression (Part II): multiple variables, interaction, and diagnostics. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2019. Slides.\nAn introduction to regression (Part III): approximating statistical tests as linear models. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2020. Slides."
+    "text": "Title\nSlides\nRecording\n\n\n\n\nBasic data visualization using R.\nGoogle Slides: 🔗\n\n\n\nAn introduction to regression (Part I): basic linear models and interpretation.\nGoogle Slides: 🔗\n\n\n\nAn introduction to regression (Part II): multiple variables, interaction, and diagnostics.\nGoogle Slides: 🔗\n\n\n\nAn introduction to regression (Part III): approximating statistical tests as linear models.\nGoogle Slides: 🔗"
   },
   {
     "objectID": "gatk.html",
