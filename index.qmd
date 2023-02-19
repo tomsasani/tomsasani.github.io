@@ -21,11 +21,11 @@ about:
 
 :dna: **2022 - present**: developing new methods to analyze germline mutation and genome evolution
 
-#### Senior Data Scientist @ [Recursion Pharmaceuticals](https://www.recursion.com/)
+#### Senior Data Scientist @ [Recursion Pharma](https://www.recursion.com/)
 
 :microscope: **2021 - 2022**: analyzed data from massive cellular imaging experiments to find new disease treatments
 
-#### NIH T32 Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home)
+#### Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home)
 
 :mouse: **2020 - 2021**: discovered [genetic modifiers of the germline mutation rate in mice](https://www.nature.com/articles/s41586-022-04701-5)
 
