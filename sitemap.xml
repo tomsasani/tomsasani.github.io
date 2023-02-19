@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tomsasani.github.io/teaching.html</loc>
-    <lastmod>2023-02-18T02:04:43.553Z</lastmod>
+    <loc>https://github.com/tomsasani/tomsasani.github.io/tutorials.html</loc>
+    <lastmod>2023-02-19T17:12:52.387Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/research.html</loc>
-    <lastmod>2023-02-18T02:04:43.837Z</lastmod>
+    <loc>https://github.com/tomsasani/tomsasani.github.io/talks.html</loc>
+    <lastmod>2023-02-19T17:12:54.483Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/talks.html</loc>
-    <lastmod>2023-02-18T02:04:44.109Z</lastmod>
+    <loc>https://github.com/tomsasani/tomsasani.github.io/pubs.html</loc>
+    <lastmod>2023-02-19T17:12:54.867Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/index.html</loc>
-    <lastmod>2023-02-18T02:04:44.385Z</lastmod>
+    <loc>https://github.com/tomsasani/tomsasani.github.io/index.html</loc>
+    <lastmod>2023-02-19T17:12:55.211Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/gatk.html</loc>
-    <lastmod>2023-02-18T02:04:44.683Z</lastmod>
+    <loc>https://github.com/tomsasani/tomsasani.github.io/research.html</loc>
+    <lastmod>2023-02-19T17:12:55.543Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/pubs.html</loc>
-    <lastmod>2023-02-18T02:04:45.014Z</lastmod>
+    <loc>https://github.com/tomsasani/tomsasani.github.io/snakemake.html</loc>
+    <lastmod>2023-02-19T17:12:56.003Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/tutorials.html</loc>
-    <lastmod>2023-02-18T02:04:45.266Z</lastmod>
+    <loc>https://github.com/tomsasani/tomsasani.github.io/teaching.html</loc>
+    <lastmod>2023-02-19T17:12:56.375Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/snakemake.html</loc>
-    <lastmod>2023-02-18T02:04:45.634Z</lastmod>
+    <loc>https://github.com/tomsasani/tomsasani.github.io/gatk.html</loc>
+    <lastmod>2023-02-19T17:12:56.771Z</lastmod>
   </url>
 </urlset>

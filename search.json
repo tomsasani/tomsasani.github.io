@@ -1,19 +1,5 @@
 [
   {
-    "objectID": "teaching.html",
-    "href": "teaching.html",
-    "title": "Teaching",
-    "section": "",
-    "text": "Basic data visualization using R. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2019. Video. Slides.\nAn introduction to regression (Part I): basic linear models and interpretation. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2019. Video. Slides.\nAn introduction to regression (Part II): multiple variables, interaction, and diagnostics. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2019. Slides.\nAn introduction to regression (Part III): approximating statistical tests as linear models. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2020. Slides."
-  },
-  {
-    "objectID": "research.html",
-    "href": "research.html",
-    "title": "Research",
-    "section": "",
-    "text": "I develop and apply computational methods to study mutation rate and spectrum evolution in mammalian genomes. Here are a few research questions I’ve pursued in the past:\n\nHow does inherited genetic variation impact the germline mutation rate?\n\nRelated paper: A natural mutator allele shapes mutation spectrum variation in mice\n\n\n\nTo what degree do mutation rates vary among human families?\n\nRelated paper: Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation\n\n\n\nHow do structural and single-nucleotide variants interact to promote rapid adaptation?\n\nRelated paper: Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays"
-  },
-  {
     "objectID": "talks.html",
     "href": "talks.html",
     "title": "Talks",
@@ -26,62 +12,6 @@
     "title": "Talks",
     "section": "Contributed Presentations",
     "text": "Contributed Presentations\nDirectly measuring the dynamics of the human mutation rate by sequencing large, multi-generational pedigrees. American Society of Human Genetics annual meeting (2018). Plenary presentation. San Diego, CA.\nHuman immune defense mechanisms drive rapid genome evolution in vaccinia virus. American Society of Human Genetics annual meeting (2017). Platform presentation. Orlando, FL."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Tom Sasani, PhD",
-    "section": "",
-    "text": "I’m a computational biologist using genetic data to better understand health and evolution."
-  },
-  {
-    "objectID": "index.html#experience",
-    "href": "index.html#experience",
-    "title": "Tom Sasani, PhD",
-    "section": "Experience",
-    "text": "Experience\n\nStaff Research Scientist with Dr. Aaron Quinlan\n🧬 2022 - present: developing new methods to analyze germline mutation and genome evolution\n\n\nSenior Data Scientist @ Recursion Pharmaceuticals\n🔬 2021 - 2022: analyzed data from massive cellular imaging experiments to find new disease treatments\n\n\nNIH T32 Postdoctoral Fellow with Dr. Kelley Harris\n🐭 2020 - 2021: discovered genetic modifiers of the germline mutation rate in mice\n\n\nGraduate Student with Dr. Aaron Quinlan\n🧬 2015 - 2020: characterized patterns of germline mutation in large human families"
-  },
-  {
-    "objectID": "gatk.html",
-    "href": "gatk.html",
-    "title": "A simple guide to running GATK",
-    "section": "",
-    "text": "There are probably hundreds of “how to use GATK” guides published online, not including the detailed documentation on the GATK website. But in my (admittedly limited) experience, running GATK can be a bit finicky, and the workflow for producing a genotyped VCF using GATK “best practices” can take a little bit of troubleshooting. Below I’ve outlined my own simple workflow for calling SNVs in human data using GATK, including the various preprocessing steps and file/software downloads. This is mostly for my own reference in the future, when the ramblings in my lab notebook eventually lose all meaning to me."
-  },
-  {
-    "objectID": "gatk.html#installing-gatk",
-    "href": "gatk.html#installing-gatk",
-    "title": "A simple guide to running GATK",
-    "section": "Installing GATK",
-    "text": "Installing GATK\nGo to the releases on the GATK GitHub, and wget the most recent version (in my case, v.4.1.8.1). Then, just unzip the package.\nwget https://github.com/broadinstitute/gatk/releases/download/4.1.8.1/gatk-4.1.8.1.zip\n\nunzip gatk-4.1.8.1.zip\nThe gatk binary should be sitting in that directory. Just run as follows:\n/path/to/gatk/binary/gatk"
-  },
-  {
-    "objectID": "gatk.html#preparing-bam-files-for-initial-variant-calling",
-    "href": "gatk.html#preparing-bam-files-for-initial-variant-calling",
-    "title": "A simple guide to running GATK",
-    "section": "Preparing BAM files for initial variant calling",
-    "text": "Preparing BAM files for initial variant calling\nLet’s assume you’re running GATK separately on individual sample BAMs. Even though each BAM contains a single sample’s reads, it’s still necessary to add read groups to the BAM header and read entries.\nsamtools addreplacerg -r \"@RG\\tID:${sample_name}\\tSM:${sample_name}\" -o {output} {input}\nAlthough GATK will run just fine on a BAM with no read groups, exactly zero variants will be output to VCF. In fact, my version of GATK HaplotypeCaller stated that all reads were filtered out by MappingQualityFilter.\nOf course, if you’re planning on merging multiple sample BAMs into a single BAM before running HaplotypeCaller, you should add read groups in order to know exactly which sample a given read is derived from.\nThen, as usual, it’s good to sort and index the BAM, and mark duplicates.\nsamtools sort -O BAM -o {output} {input}\n\nsamtools index {input}\nFor duplicate marking, I tend to use picard (available here).\njava -jar /path/to/picard.jar MarkDuplicates INPUT={input} OUTPUT={output} METRICS_FILE={metrics} TMP_DIR={tmpdir}\nAs it marches along the BAM and marks duplicates, picard will output lots of temporary files, so it’s good to specify a $tmpdir with enough space for potentially hundreds (or more) temporary files."
-  },
-  {
-    "objectID": "gatk.html#running-gatk-haplotypecaller",
-    "href": "gatk.html#running-gatk-haplotypecaller",
-    "title": "A simple guide to running GATK",
-    "section": "Running GATK HaplotypeCaller",
-    "text": "Running GATK HaplotypeCaller\nThe first step of variant calling involves running HaplotypeCaller, which will produce an initial list of variants. By design, HaplotypeCaller is very sensitive, so it’s possible that most of the variants in the output VCF will be junk. We’ll do some filtering and “calibration” of variants in later steps.\ngatk HaplotypeCaller \\\n    --input ${input_bam} \\\n    --output ${output_VCF} \\\n    --reference ${reference_genome} \\\n    --java-options \"-Xmx8G\"\n    -ERC GVCF\n\nSince GATK is written in Java, we can also pass in some standard Java options (such as max memory to be used) as an argument!\n\n\nAlso, by passing in the -ERC GVCF argument, we tell HaplotypeCaller to produce GVCF (generic VCF) output, which looks a bit different from normal VCF. The benefit of outputting GVCFs is that we can then run joint genotyping on many samples’ GVCFs together quite quickly."
-  },
-  {
-    "objectID": "gatk.html#joint-genotyping-gvcfs",
-    "href": "gatk.html#joint-genotyping-gvcfs",
-    "title": "A simple guide to running GATK",
-    "section": "Joint genotyping GVCFs",
-    "text": "Joint genotyping GVCFs\ngatk GenotypeGVCFs \\\n    --variant ${input_gvcfs} \\\n    --output {output} \\\n    --reference {input.ref} \\\n    --java-options \"-Xmx8G\"\nHere, we can run GenotypeGVCFs on one or many GVCFs together. By passing in multiple GVCFs, we can take advantage of the joint genotyping process to consider evidence from multiple samples at a given variant site. In any case, the output here will be “true” VCF."
-  },
-  {
-    "objectID": "gatk.html#variant-quality-score-recalibration-vqsr",
-    "href": "gatk.html#variant-quality-score-recalibration-vqsr",
-    "title": "A simple guide to running GATK",
-    "section": "Variant quality score recalibration (VQSR)",
-    "text": "Variant quality score recalibration (VQSR)\nNow, we arrive at the most arcane (in my opinion) step in running GATK. Essentially, VQSR takes in a few “truth sets,” which are just VCF files containing variants considered to be either “very good” or “very bad,” so that GATK can get a feeling for the qualities that make a “good variant.” But first, we need to get a hold of these truth sets.\n\nDownloading GATK resources for VQSR\nGATK hosts its “resource bundle,” containing various files that are important for running GATK, on Google. The four truth sets we can use are hosted here.\nTo download, we can use a tool called gsutil, developed by Google specifically for fetching files from Google Cloud.\n# download \"omni\" truth set\n/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/1000G_omni2.5.hg38.vcf.gz\n# download \"hapmap\" truth set\n/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/hapmap_3.3.hg38.vcf.gz\n# download \"1000G\" truth set\n/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/1000G_phase1.snps.high_confidence.hg38.vcf.gz\n# download \"dbsnp\" truth set\n/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf\nWe’ll also need the tabix indices for these VCFs, which can also be download from the Google Cloud repository, or done by hand. The “dbsnp” truth set also needs to be bgzip-ed!\n\n\nRunning VQSR\nNow that we’ve collected the various files we need, we can run VQSR. Importantly, VQSR does not output VCF files. Instead it outputs a .recal file and a .tranches file, which are “applied” to the previous VCF file in the final step of calibration.\nA couple of notes here:\n\nwe can specify exactly which annotations we want VQSR to add by specifying -an multiple times\nwe can specify the “tranches” we want VQSR to divide our variants into by specifying tranche multiple times\nin GATK v4.1.8.1, we must include a space between the --resource truth set info and the path to the truth set\nit looks as though GATK now has a convolutional neural net approach to VQSR in GATK v4+ for single samples (see here)\n\nMore detailed documentation on running VQSR (for human data) is here.\ngatk VariantRecalibrator \\\n    --variant {input} \\\n    --output {recal_file_output} \\\n    --tranches-file {tranch_file_output} \\\n    -an QD -an MQRankSum -an ReadPosRankSum -an FS -an SOR \\\n    --mode SNP \\\n    --trust-all-polymorphic true \\\n    --java-options \"-Xmx8G\" \\\n    -tranche 100.0 -tranche 99.95 -tranche 99.9 -tranche 99.8 -tranche 99.6 -tranche 99.5 -tranche 99.0 -tranche 98.0 -tranche 97.0 -tranche 90.0 \\\n    --resource:omni,known=false,training=true,truth=true,prior=12 /path/to/1000G_omni2.5.hg38.vcf.gz \\\n    --resource:1000G,known=false,training=true,truth=false,prior=10 /path/to/1000G_phase1.snps.high_confidence.hg38.vcf.gz \\\n    --resource:hapmap,known=false,training=true,truth=true,prior=15 /path/to/hapmap_3.3.hg38.vcf.gz \\\n    --resource:dbsnp,known=true,training=false,truth=false,prior=7 /path/to/Homo_sapiens_assembly38.dbsnp138.vcf.gz\n\n\nApplying VQSR\nNow, we arrive at the final step of VQSR. Here, we use the .tranches and .recal files produced in the previous step, and “apply” them to the VCF produced in the first step of this section. The output is a recalibrated VCF, which we can then pass into any downstream filtering or analysis pipelines we want!\ngatk ApplyVQSR \\\n    --variant {input_vcf} \\\n    --recal-file {recal_file} \\\n    --tranches-file {tranches_file} \\\n    --truth-sensitivity-filter-level 99.7 \\\n    --create-output-variant-index true \\\n    -mode SNP \\\n    --output {output} \\\n    --java-options \"-Xmx8G\""
   },
   {
     "objectID": "pubs.html",
@@ -103,6 +33,27 @@
     "title": "Publications",
     "section": "Peer-reviewed Manuscripts",
     "text": "Peer-reviewed Manuscripts\nFixsen SM, Cone KR, Goldstein SA, Sasani TA, Quinlan AR, Rothenburg S, Elde NC. Poxviruses capture host genes by LINE-1 retrotransposition (2022). eLife.\nSasani TA, Ashbrook DG, Beichman AC, Lu L, Palmer AA, Williams RW, Pritchard JK, Harris K. A natural mutator allele shapes mutation spectrum variation in mice (2022). Nature.  💻  📖\nBelyeu JR*, Sasani TA*, Pedersen BS, Quinlan AR. Unfazed: parent-of-origin detection for large and small de novo variants (2021). Bioinformatics.  💻  📖\nWallace AD, Sasani TA, Swanier J, Gates B, Greenland J, Pedersen BP, Varley KT, Quinlan AR. CaBagE: a Cas9-based Background Elimination strategy for targeted, long-read DNA sequencing (2021). PLoS One.  📖\nCawthon RM, Meeks HD, Sasani TA*, Smith KR, Kerber RA, O’Brien E, Baird L, Dixon MM, Peiffer AP, Leppert MF, Quinlan AR, Jorde LB. Germline mutation rates in young adults predict longevity and reproductive lifespan (2020). Scientific Reports.  📖\nSasani TA, Pedersen BS, Gao Z, Baird L, Przeworski M, Jorde LB, Quinlan AR. Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation (2019). eLife.  💻  📖\nGao Z, Moorjani P, Sasani TA, Pedersen BP, Quinlan AR, Jorde LB, Amster G, Przeworski MP. Overlooked roles of DNA damage and maternal age in generating human germline mutations (2019). PNAS.   📖\nSasani TA*, Cone KR*, Quinlan AR, Elde NC. Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays (2018). eLife.  💻  📖\nBelyeu JR, Nicholas TJ, Pedersen BS, Sasani TA, Havrilla JM, Kravitz SN, Conway ME, Lohman BK, Quinlan AR, Layer RM. SV-plaudit: a cloud-based framework for manually curating thousands of structural variants (2018). GigaScience.  💻  📖\nJain M*, Koren S*, Miga K*, Quick J*, Rand AC*, Sasani TA*, Tyson JR*, Beggs AD, Dilthey AT, Fiddes IT, Malla S, Marriott H, Nieto T, O’Grady J, Olsen HE, Pedersen BS, Rhie A, Richardson H, Quinlan AR, Snutch TP, Tee L, Paten B, Phillippy AM, Simpson JT, Loman NJ, Loose M. Nanopore sequencing and assembly of a human genome with ultra-long reads (2018). Nature Biotechnology.  📖\nFeusier J, Witherspoon DJ, Watkins SW, Goubert C, Sasani TA, Jorde LB. Discovery of rare, diagnostic AluYb8/9 elements in diverse human populations (2017). Mobile DNA.  📖\nPiasecki BP, Sasani TA, Lessenger AT, Huth N, Farrell S. MAPK-15 is a ciliary protein required for PKD-2 localization and male mating behavior in Caenorhabditis elegans (2017).  Cytoskeleton.\n* indicates equal contribution"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Tom Sasani, PhD",
+    "section": "",
+    "text": "I’m a computational biologist using genetic data to better understand health and evolution."
+  },
+  {
+    "objectID": "index.html#experience",
+    "href": "index.html#experience",
+    "title": "Tom Sasani, PhD",
+    "section": "Experience",
+    "text": "Experience\n\nStaff Research Scientist with Dr. Aaron Quinlan\n🧬 2022 - present: developing new methods to analyze germline mutation and genome evolution\n\n\nSenior Data Scientist @ Recursion Pharmaceuticals\n🔬 2021 - 2022: analyzed data from massive cellular imaging experiments to find new disease treatments\n\n\nNIH T32 Postdoctoral Fellow with Dr. Kelley Harris\n🐭 2020 - 2021: discovered genetic modifiers of the germline mutation rate in mice\n\n\nGraduate Student with Dr. Aaron Quinlan\n🧬 2015 - 2020: characterized patterns of germline mutation in large human families"
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "I develop and apply computational methods to study mutation rate and spectrum evolution in mammalian genomes. Here are a few research questions I’ve pursued in the past:\n\nHow does inherited genetic variation impact the germline mutation rate?\n\nRelated paper: A natural mutator allele shapes mutation spectrum variation in mice\n\n\n\nTo what degree do mutation rates vary among human families?\n\nRelated paper: Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation\n\n\n\nHow do structural and single-nucleotide variants interact to promote rapid adaptation?\n\nRelated paper: Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays"
   },
   {
     "objectID": "snakemake.html",
@@ -173,5 +124,54 @@
     "title": "An introduction to Snakemake for pipeline management",
     "section": "Visualizing the full pipeline with a DAG",
     "text": "Visualizing the full pipeline with a DAG\nWe can also visualize the various steps of the pipeline in a directed acyclic graph (DAG).\nAfter putting the full pipeline in a file called Snakefile, we can run the following from the directory in which the Snakefile resides:\nsnakemake --dag | dot -Tsvg > dag.svg\nThis will produce an image showing us exactly what steps Snakemake will during execution. This plot ignores the VCF calling steps, since the DAG gets pretty unweildy with that many steps!"
+  },
+  {
+    "objectID": "teaching.html",
+    "href": "teaching.html",
+    "title": "Teaching",
+    "section": "",
+    "text": "Basic data visualization using R. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2019. Video. Slides.\nAn introduction to regression (Part I): basic linear models and interpretation. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2019. Video. Slides.\nAn introduction to regression (Part II): multiple variables, interaction, and diagnostics. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2019. Slides.\nAn introduction to regression (Part III): approximating statistical tests as linear models. Presented for the Salt Lake Learners of Biostatistics interest group (University of Utah) in 2020. Slides."
+  },
+  {
+    "objectID": "gatk.html",
+    "href": "gatk.html",
+    "title": "A simple guide to running GATK",
+    "section": "",
+    "text": "There are probably hundreds of “how to use GATK” guides published online, not including the detailed documentation on the GATK website. But in my (admittedly limited) experience, running GATK can be a bit finicky, and the workflow for producing a genotyped VCF using GATK “best practices” can take a little bit of troubleshooting. Below I’ve outlined my own simple workflow for calling SNVs in human data using GATK, including the various preprocessing steps and file/software downloads. This is mostly for my own reference in the future, when the ramblings in my lab notebook eventually lose all meaning to me."
+  },
+  {
+    "objectID": "gatk.html#installing-gatk",
+    "href": "gatk.html#installing-gatk",
+    "title": "A simple guide to running GATK",
+    "section": "Installing GATK",
+    "text": "Installing GATK\nGo to the releases on the GATK GitHub, and wget the most recent version (in my case, v.4.1.8.1). Then, just unzip the package.\nwget https://github.com/broadinstitute/gatk/releases/download/4.1.8.1/gatk-4.1.8.1.zip\n\nunzip gatk-4.1.8.1.zip\nThe gatk binary should be sitting in that directory. Just run as follows:\n/path/to/gatk/binary/gatk"
+  },
+  {
+    "objectID": "gatk.html#preparing-bam-files-for-initial-variant-calling",
+    "href": "gatk.html#preparing-bam-files-for-initial-variant-calling",
+    "title": "A simple guide to running GATK",
+    "section": "Preparing BAM files for initial variant calling",
+    "text": "Preparing BAM files for initial variant calling\nLet’s assume you’re running GATK separately on individual sample BAMs. Even though each BAM contains a single sample’s reads, it’s still necessary to add read groups to the BAM header and read entries.\nsamtools addreplacerg -r \"@RG\\tID:${sample_name}\\tSM:${sample_name}\" -o {output} {input}\nAlthough GATK will run just fine on a BAM with no read groups, exactly zero variants will be output to VCF. In fact, my version of GATK HaplotypeCaller stated that all reads were filtered out by MappingQualityFilter.\nOf course, if you’re planning on merging multiple sample BAMs into a single BAM before running HaplotypeCaller, you should add read groups in order to know exactly which sample a given read is derived from.\nThen, as usual, it’s good to sort and index the BAM, and mark duplicates.\nsamtools sort -O BAM -o {output} {input}\n\nsamtools index {input}\nFor duplicate marking, I tend to use picard (available here).\njava -jar /path/to/picard.jar MarkDuplicates INPUT={input} OUTPUT={output} METRICS_FILE={metrics} TMP_DIR={tmpdir}\nAs it marches along the BAM and marks duplicates, picard will output lots of temporary files, so it’s good to specify a $tmpdir with enough space for potentially hundreds (or more) temporary files."
+  },
+  {
+    "objectID": "gatk.html#running-gatk-haplotypecaller",
+    "href": "gatk.html#running-gatk-haplotypecaller",
+    "title": "A simple guide to running GATK",
+    "section": "Running GATK HaplotypeCaller",
+    "text": "Running GATK HaplotypeCaller\nThe first step of variant calling involves running HaplotypeCaller, which will produce an initial list of variants. By design, HaplotypeCaller is very sensitive, so it’s possible that most of the variants in the output VCF will be junk. We’ll do some filtering and “calibration” of variants in later steps.\ngatk HaplotypeCaller \\\n    --input ${input_bam} \\\n    --output ${output_VCF} \\\n    --reference ${reference_genome} \\\n    --java-options \"-Xmx8G\"\n    -ERC GVCF\n\nSince GATK is written in Java, we can also pass in some standard Java options (such as max memory to be used) as an argument!\n\n\nAlso, by passing in the -ERC GVCF argument, we tell HaplotypeCaller to produce GVCF (generic VCF) output, which looks a bit different from normal VCF. The benefit of outputting GVCFs is that we can then run joint genotyping on many samples’ GVCFs together quite quickly."
+  },
+  {
+    "objectID": "gatk.html#joint-genotyping-gvcfs",
+    "href": "gatk.html#joint-genotyping-gvcfs",
+    "title": "A simple guide to running GATK",
+    "section": "Joint genotyping GVCFs",
+    "text": "Joint genotyping GVCFs\ngatk GenotypeGVCFs \\\n    --variant ${input_gvcfs} \\\n    --output {output} \\\n    --reference {input.ref} \\\n    --java-options \"-Xmx8G\"\nHere, we can run GenotypeGVCFs on one or many GVCFs together. By passing in multiple GVCFs, we can take advantage of the joint genotyping process to consider evidence from multiple samples at a given variant site. In any case, the output here will be “true” VCF."
+  },
+  {
+    "objectID": "gatk.html#variant-quality-score-recalibration-vqsr",
+    "href": "gatk.html#variant-quality-score-recalibration-vqsr",
+    "title": "A simple guide to running GATK",
+    "section": "Variant quality score recalibration (VQSR)",
+    "text": "Variant quality score recalibration (VQSR)\nNow, we arrive at the most arcane (in my opinion) step in running GATK. Essentially, VQSR takes in a few “truth sets,” which are just VCF files containing variants considered to be either “very good” or “very bad,” so that GATK can get a feeling for the qualities that make a “good variant.” But first, we need to get a hold of these truth sets.\n\nDownloading GATK resources for VQSR\nGATK hosts its “resource bundle,” containing various files that are important for running GATK, on Google. The four truth sets we can use are hosted here.\nTo download, we can use a tool called gsutil, developed by Google specifically for fetching files from Google Cloud.\n# download \"omni\" truth set\n/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/1000G_omni2.5.hg38.vcf.gz\n# download \"hapmap\" truth set\n/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/hapmap_3.3.hg38.vcf.gz\n# download \"1000G\" truth set\n/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/1000G_phase1.snps.high_confidence.hg38.vcf.gz\n# download \"dbsnp\" truth set\n/path/to/gsutil cp gs://genomics-public-data/resources/broad/hg38/v0/Homo_sapiens_assembly38.dbsnp138.vcf\nWe’ll also need the tabix indices for these VCFs, which can also be download from the Google Cloud repository, or done by hand. The “dbsnp” truth set also needs to be bgzip-ed!\n\n\nRunning VQSR\nNow that we’ve collected the various files we need, we can run VQSR. Importantly, VQSR does not output VCF files. Instead it outputs a .recal file and a .tranches file, which are “applied” to the previous VCF file in the final step of calibration.\nA couple of notes here:\n\nwe can specify exactly which annotations we want VQSR to add by specifying -an multiple times\nwe can specify the “tranches” we want VQSR to divide our variants into by specifying tranche multiple times\nin GATK v4.1.8.1, we must include a space between the --resource truth set info and the path to the truth set\nit looks as though GATK now has a convolutional neural net approach to VQSR in GATK v4+ for single samples (see here)\n\nMore detailed documentation on running VQSR (for human data) is here.\ngatk VariantRecalibrator \\\n    --variant {input} \\\n    --output {recal_file_output} \\\n    --tranches-file {tranch_file_output} \\\n    -an QD -an MQRankSum -an ReadPosRankSum -an FS -an SOR \\\n    --mode SNP \\\n    --trust-all-polymorphic true \\\n    --java-options \"-Xmx8G\" \\\n    -tranche 100.0 -tranche 99.95 -tranche 99.9 -tranche 99.8 -tranche 99.6 -tranche 99.5 -tranche 99.0 -tranche 98.0 -tranche 97.0 -tranche 90.0 \\\n    --resource:omni,known=false,training=true,truth=true,prior=12 /path/to/1000G_omni2.5.hg38.vcf.gz \\\n    --resource:1000G,known=false,training=true,truth=false,prior=10 /path/to/1000G_phase1.snps.high_confidence.hg38.vcf.gz \\\n    --resource:hapmap,known=false,training=true,truth=true,prior=15 /path/to/hapmap_3.3.hg38.vcf.gz \\\n    --resource:dbsnp,known=true,training=false,truth=false,prior=7 /path/to/Homo_sapiens_assembly38.dbsnp138.vcf.gz\n\n\nApplying VQSR\nNow, we arrive at the final step of VQSR. Here, we use the .tranches and .recal files produced in the previous step, and “apply” them to the VCF produced in the first step of this section. The output is a recalibrated VCF, which we can then pass into any downstream filtering or analysis pipelines we want!\ngatk ApplyVQSR \\\n    --variant {input_vcf} \\\n    --recal-file {recal_file} \\\n    --tranches-file {tranches_file} \\\n    --truth-sensitivity-filter-level 99.7 \\\n    --create-output-variant-index true \\\n    -mode SNP \\\n    --output {output} \\\n    --java-options \"-Xmx8G\""
   }
 ]
