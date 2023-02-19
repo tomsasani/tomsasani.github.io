@@ -17,19 +17,19 @@ about:
 
 ## Experience
 
-#### :dna: Staff Research Scientist with [Dr. Aaron Quinlan](http://quinlanlab.org/)
+#### Staff Research Scientist with [Dr. Aaron Quinlan](http://quinlanlab.org/)
 
 > **2022 - present**: developing new methods to analyze germline mutation and genome evolution
 
-#### :microscope: Senior Data Scientist @ [Recursion Pharma](https://www.recursion.com/)
+#### Senior Data Scientist @ [Recursion Pharma](https://www.recursion.com/)
 
 > **2021 - 2022**: analyzed data from massive cellular imaging experiments to find new disease treatments
 
-#### :mouse: Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home)
+#### Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home)
 
 > **2020 - 2021**: discovered [genetic modifiers of the germline mutation rate in mice](https://www.nature.com/articles/s41586-022-04701-5)
 
-#### :dna: Graduate Student with [Dr. Aaron Quinlan](http://quinlanlab.org/)
+#### Graduate Student with [Dr. Aaron Quinlan](http://quinlanlab.org/)
 
 > **2015 - 2020**: characterized [patterns of germline mutation in large human families](https://elifesciences.org/articles/46922)
 
