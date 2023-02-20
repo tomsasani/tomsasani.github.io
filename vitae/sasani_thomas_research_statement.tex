@@ -1,0 +1,229 @@
+%% start of file `template.tex'.
+%% Copyright 2006-2010 Xavier Danaux (xdanaux@gmail.com).
+%% Copyright 2010-2011 Mark Liu (markwayneliu@gmail.com).
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License version 1.3c,
+% available at http://www.latex-project.org/lppl/.
+
+\documentclass[11pt,a4paper,sans]{moderncv}
+
+\usepackage{verbatim}
+
+% moderncv themes
+\moderncvstyle{classic}
+\moderncvcolor{blue} 
+
+% character encoding
+\usepackage[utf8]{inputenc}                   % replace by the encoding you are using
+
+% adjust the page margins
+\usepackage[scale=0.8]{geometry}
+%\setlength{\hintscolumnwidth}{3cm}						% if you want to change the width of the column with the dates
+%\AtBeginDocument{\setlength{\maketitlenamewidth}{6cm}}  % only for the classic theme, if you want to change the width of your name placeholder (to leave more space for your address details
+%\AtBeginDocument{\recomputelengths}                     % required when changes are made to page layout lengths
+
+
+% personal data
+\firstname{Thomas A.}
+\familyname{Sasani}
+\email{thomas.a.sasani@gmail.com}                      % optional, remove the line if not wanted
+\homepage{http://tomsasani.github.io}   
+\extrainfo{GitHub: \Colorhref{https://github.com/tomsasani}{@tomsasani}}             % optional, remove the line if not wanted
+%\extrainfo{\url{http://markliu.me}} % optional, remove the line if not wanted
+
+% to show numerical labels in the bibliography; only useful if you make citations in your resume
+%\makeatletter
+%\renewcommand*{\bibliographyitemlabel}{\@biblabel{\arabic{enumiv}}}
+%\makeatother
+
+%\nopagenumbers{}                             % uncomment to suppress automatic page numbering for CVs longer than one page
+%----------------------------------------------------------------------------------
+%            content
+%----------------------------------------------------------------------------------
+\begin{document}
+\definecolor{color1}{rgb}{0.22,0.45,0.70}
+\newcommand\Colorhref[3][color1]{\href{#2}{\small\color{#1}#3}}
+%\maketitle
+
+Given the enormous complexity of genome replication and repair pathways, and 
+faced with myriad sources of potential DNA damage, our cells manage to transmit 
+their genetic material with remarkably high fidelity. When the safeguards of 
+genome integrity fail, germline and somatic mutations provide the raw 
+material for both evolution and genetic disease. Throughout my career, I've been 
+fascinated by the forces that contribute to the evolution of mutation rates in 
+mammalian genomes. \textbf{Using new statistical and computational approaches,  my research 
+program will investigate the genetic underpinnings of mutation rate 
+and spectrum evolution in mammalian genomes.}
+
+\section{Past and current work}
+
+\textbf{Characterizing germline mutation rates and spectra in large 
+human families:}  During my Ph.D., I used whole-genome sequencing data from large, three-generation 
+pedigrees to precisely measure germline mutation rates in human families, and to 
+investigate the endogenous and exogenous factors that contribute to mutation rate 
+variation (Sasani et al., 2019, \emph{eLife}). I developed methods to confidently 
+discriminate germline mutations from mutations that occurred after zygote 
+fertilization, and discovered that over 10\% of apparent germline de novo mutations 
+were, in fact, post-zygotic in origin. I also found that children born to older 
+parents possessed more germline mutations, and that these parental age effects 
+varied more than ten-fold across families. At the time, I hypothesized that 
+genetic modifiers of the mutation rate -- termed mutator alleles -- might be 
+responsible for these differences. However, owing to the high fidelity of 
+germline DNA replication and repair, which leads to a very low baseline mutation 
+rate, as well as the strength of selection against a potential mutator, we were 
+underpowered to test that expectation in human families.
+\break \break
+\textbf{Discovering germline mutator alleles in recombinant inbred mice:}  Compared to haplotypes that harbor a wild-type allele at a particular locus, 
+those that harbor mutator alleles are expected to carry an excess total number 
+of de novo germline mutations. owing to the high fidelity of germline DNA 
+replication and repair, which leads to a very low baseline mutation rate, as 
+well as the strength of selection against a potential mutator, it can be 
+difficult to test that expectation in mammalian genomes. As a postdoctoral 
+fellow, I hypothesized that germline mutator alleles might be detectable by 
+instead comparing the spectrum of mutation - the frequency of each individual 
+mutation type (C$\rightarrow$T, A$\rightarrow$G, etc.) - between haplotypes. Since DNA replication and 
+repair proteins often recognize particular sequence motifs or excise lesions at 
+specific nucleotides, the mutation spectrum can be a rich source of information 
+about genetic and environmental factors that affect mutagenesis. To test this 
+hypothesis, I identified de novo germline mutations in 152 recombinant inbred 
+lines (RILs) called the BXDs, which were derived from two laboratory strains 
+of mice (C57BL/6J and DBA/2J) that exhibited significant differences in their 
+germline mutation spectra. Using quantitative trait locus (QTL) mapping, I 
+discovered a locus on chromosome 4 that was associated with a 50\% increase 
+in the C$\rightarrow$A germline mutation rate (Sasani et al., 2022, \emph{Nature}). The locus 
+overlapped \emph{Mutyh}, a protein-coding gene that normally prevents C$\rightarrow$A mutations by 
+repairing a specific type of oxidative DNA damage. 
+\break \break
+\textbf{Identifying epistasis between mutator alleles:}  Empowered by the 
+discovery of a large-effect germline mutator allele in mice, I became interested 
+in developing new methods to detect additional, and perhaps subtler, mutation 
+rate modifiers in model systems. As a staff scientist, I developed a new 
+statistical method to detect alleles that affect the germline mutation spectrum 
+in biparental RILs. By applying this method to the data I previously generated 
+in the BXDs, I discovered an additional mutator locus that augments the C$\rightarrow$A 
+germline mutation rate (Sasani et al., 2023, \emph{bioRxiv}). The locus overlaps a 
+protein-coding gene called \emph{Ogg1}, which is a key partner of \emph{Mutyh} in the 
+base-excision repair of oxidative DNA damage. Strikingly, BXDs with the mutator 
+allele near \emph{Ogg1} did not exhibit elevated rates of C>A germline mutation unless 
+they also possessed the mutator allele near \emph{Mutyh}. However, BXDs with both 
+alleles exhibited even higher C$\rightarrow$A mutation rates than those with either one 
+alone, providing evidence of epistasis between germline mutator alleles for 
+the first time in a mammalian system.
+
+\section{Future research program}
+
+\textbf{Aim 1: Discover novel drivers of cancer progression by analyzing somatic 
+mutation spectra}
+
+\underline{Cancer genomes are an ideal system for mutator allele discovery}
+
+Although mutator alleles likely play a fundamental role in the evolution of 
+germline mutation rates, they also have a profound impact on health and disease, 
+particularly in human cancers. "Driver mutations," which precipitate the transition
+between a healthy and cancerous cell state, are often found in protein-coding genes
+that contribute to DNA replication or repair pathways. Identifying these driver
+mutations is critically important to early and accurate cancer diagnosis, and 
+I hypothesize that new methods for discovering mutator alleles can be adapted 
+for this purpose. Like the genomes of recombinant inbred lines, cancer genomes 
+present a remarkably well-powered system for mutator allele detection. In 
+sexually-reproducing populations of large effective population size, negative 
+selection will efficiently remove large-effect mutator alleles. In cancer, 
+however, the effects of negative selection are drastically attenuated, allowing 
+mutators to persist and exert effects over the course of many cell divisions. 
+In sexual species, recombination will also break up linkage between mutator 
+alleles and the excess deleterious mutations they cause, making it difficult to
+discover associations between the two; cancer genomes do not recombine, steadily
+accumulating mutations that remain perfectly linked to a mutator. 
+\break \break
+\underline{Cancer mutation spectra are a rich source of information about the mutation process}
+
+A number of methods have recently been developed to decompose cancer mutation data 
+into "mutational signatures," which describe the relative frequencies of particular 
+mutation types (e.g., TCC$\rightarrow$TTC, ATG$\rightarrow$AAG), and assign those signatures to particular 
+loss-of-function mutations in genes encoding DNA repair or replication proteins. 
+In many cases, these signatures reveal the subtle activities of exogenous or 
+endogenous mutation rate modifiers, and can even be used to accurately discriminate 
+subtypes of a single cancer. However, mutation signatures describe global features 
+of the mutation process, and cannot pinpoint causal genes or alleles that affect 
+mutation rates or spectra. The Cancer Genome Atlas (TCGA) has collected hundreds of 
+thousands of cancer biopsies from dozens of human tissues, and has made mutation 
+data from these cancer cells available to the academic community. By adapting 
+methods for mutator allele discovery to somatic mutation data from human cancers, 
+my group will search for novel drivers of cancer initiation and progression.
+\break \break
+\textbf{Aim 2: Develop scalable approaches to discover active mutator alleles in diverse human genomes}
+\underline{Germline mutator alleles likely shape mutation spectrum variation in human genomes}
+
+Germline mutator allele discovery has largely been limited to model systems, 
+including yeast, \emph{E. coli}, and mice. The degree to which mutator alleles shape 
+germline mutation rates in human populations, however, remains unclear. Candidate 
+germline mutator alleles have been discovered by identifying human 
+haplotypes with excess counts of derived alleles, but their effects could not be 
+replicated using de novo germline mutation data from other cohorts. The heritability
+of paternal de novo mutation rates is also estimated to be between 10 and 20\%, 
+and a number of recent studies have suggested that germline mutation rate 
+modifiers have shaped the evolution of the mutation spectrum in humans and 
+great apes. Simulations also demonstrate that given a sufficient number of 
+moderate- to large-effect segregating germline mutator alleles, a fraction 
+should be detectable using human trio data. 
+\break \break
+\underline{The utility of methods to detect mutation spectrum modifiers in human genomes}
+
+The mutation spectrum provides a rich source of information about the demographic 
+histories of populations, as well as the historical activities of exogenous and 
+endogenous mutation rate modifiers. To this end, my group will develop new methods
+to detect mutator alleles using mutation spectra derived from human pedigree 
+sequencing data and phased haplotype data from large cohorts of unrelated 
+individuals. Many research groups, including my own, have generated sequencing 
+data from large cohorts of human families, enabling the identification of a 
+large number of de novo germline mutations. Massive population sequencing efforts,
+such as those undertaken by the TOPMED consortium, have also provided massive 
+collections of derived singletons (mutations present on a single haplotype in 
+a population) that can serve as rough proxies for recent de novo mutations. 
+These efforts will involve a number of distinct projects, including simulations
+to assess our power to detect alleles that affect mutation spectra, and 
+refining my existing methods for mutator allele detection to operate on 
+segregating genetic variation instead of de novo mutation counts.
+\break \break
+
+\textbf{Aim 3: Improve mutation spectrum inference using pangenome graphs}
+
+\underline{Pangenome graphs capture more genetic variation than linear reference assemblies}
+
+
+As a representation of global genetic diversity, the linear human reference genome 
+is a crude approximation. The most recent reference assembly is mostly derived from
+the DNA of a single individual, and therefore captures a tiny sliver of the 
+sequence variation that exists across the globe. Pangenome representations have 
+recently emerged as an alternative to existing reference assemblies. A pangenome 
+is a directed graph in which nodes correspond to nucleotide sequences and edges 
+describe the connections between nodes that comprise a haplotype. As a result, 
+pangenomes can be iteratively updated with new haplotype information; and by 
+tracing new paths through a pangenome graph, we can represent far more of the 
+genetic diversity in a population. By including high-quality, haplotype-phased 
+assemblies in a pangenome, the graph can also capture genetic diversity in 
+structurally complex regions of the genome that are often absent from linear 
+reference sequences. 
+\break \break
+\underline{Pangenome graphs can enable more precise and comprehensive analyses of mutation rates and spectra}
+
+
+Pangenome representations offer a number of benefits for analyzing mutation rates 
+and spectra, including the ability to detect more mutations in more of the genome. 
+Since the current linear reference assembly is largely derived from a single 
+individual, the vast majority of human genetic variation is missing from the 
+reference. As a result, sequencing reads that harbor such variation often map 
+poorly to the linear reference assembly and are ignored when calling DNA variants;
+thus, the homogeneity of the linear reference assembly can thwart our ability 
+to discover new mutations in diverse, newly sequenced human genomes. Moreover, 
+mutation rates and spectra exhibit significant spatial variation throughout the 
+genome, and recent studies have suggested that mutation rates are elevated in 
+segmental duplications and other structurally complex regions that are largely 
+absent from the linear reference. By developing new methods for inferring mutation
+spectra from pangenome representations, my research group will more precisely 
+characterize the human mutation spectrum across diverse populations, investigate
+spatial variation in human mutation rates and spectra, and explore the mutation
+process in structurally complex regions of the genome.
+
+\end{document}
