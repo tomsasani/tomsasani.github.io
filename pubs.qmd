@@ -11,7 +11,7 @@ Ashbrook DG, **Sasani TA**, Maksimov M, Gunturkun MH, Ma N, Villani F, Ren Y, Ro
 
 ## Peer-reviewed Manuscripts
 
-Fixsen SM, Cone KR, Goldstein SA, **Sasani TA**, Quinlan AR, Rothenburg S, Elde NC. Poxviruses capture host genes by LINE-1 retrotransposition (2022). [*eLife.*](https://elifesciences.org/articles/63332)
+Fixsen SM, Cone KR, Goldstein SA, **Sasani TA**, Quinlan AR, Rothenburg S, Elde NC. Poxviruses capture host genes by LINE-1 retrotransposition (2022). [*eLife.*](https://elifesciences.org/articles/63332) \ [:book:](pdfs/fixsen_elife_2022.pdf)
 
 **Sasani TA**, Ashbrook DG, Beichman AC, Lu L, Palmer AA, Williams RW, Pritchard JK, Harris K. A natural mutator allele shapes mutation spectrum variation in mice (2022). [*Nature.*](https://www.nature.com/articles/s41586-022-04701-5) \ [:computer:](https://github.com/tomsasani/bxd_mutator_manuscript) \ [:book:](pdfs/sasani_nature_2022.pdf)
 
@@ -33,6 +33,6 @@ Jain M\*, Koren S\*, Miga K\*, Quick J\*, Rand AC\*, **Sasani TA**\*, Tyson JR*,
 
 Feusier J, Witherspoon DJ, Watkins SW, Goubert C, **Sasani TA**, Jorde LB. Discovery of rare, diagnostic AluYb8/9 elements in diverse human populations (2017). [*Mobile DNA.*](https://mobilednajournal.biomedcentral.com/articles/10.1186/s13100-017-0093-0) \ [:book:](pdfs/feusier_mobdna_2017.pdf)
 
-Piasecki BP, **Sasani TA**, Lessenger AT, Huth N, Farrell S. MAPK-15 is a ciliary protein required for PKD-2 localization and male mating behavior in Caenorhabditis elegans (2017). \ [*Cytoskeleton.*](https://doi.org/10.1002/cm.21387)
+Piasecki BP, **Sasani TA**, Lessenger AT, Huth N, Farrell S. MAPK-15 is a ciliary protein required for PKD-2 localization and male mating behavior in Caenorhabditis elegans (2017). \ [*Cytoskeleton.*](https://doi.org/10.1002/cm.21387) \ [:book:](pdfs/piasecki_cytoskeleton_2017.pdf)
 
 \* indicates equal contribution
