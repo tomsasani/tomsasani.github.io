@@ -20,6 +20,8 @@ title: "Talks"
 
 ## Contributed Presentations
 
+**Discovering epistasis between germline mutator alleles in mice.** The Biology of Genomes (2023). *Cold Spring Harbor, NY*.
+
 **Directly measuring the dynamics of the human mutation rate by sequencing large, multi-generational pedigrees.** American Society of Human Genetics annual meeting (2018). Plenary presentation. *San Diego, CA.*
 
 
