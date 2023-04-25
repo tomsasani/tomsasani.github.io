@@ -7,6 +7,8 @@ Click :computer: to access associated code and :book: for PDFs.
 
 ## Preprints
 
+**Sasani TA**, Quinlan AR, Harris K. Epistasis between mutator alleles contributes to germline mutation rate variability in laboratory mice (2023). [*bioRxiv.*](https://www.biorxiv.org/content/10.1101/2023.04.25.537217v1)
+
 Ashbrook DG, **Sasani TA**, Maksimov M, Gunturkun MH, Ma N, Villani F, Ren Y, Rothschild D, Chen H, Lu L, Colonna V, Dumont B, Harris K, Gymrek M, Pritchard JK, Palmer AA, Williams RW. Private and sub-family specific mutations of founder haplotypes in the BXD family reveal phenotypic consequences relevant to health and disease (2022). [*bioRxiv.*](https://www.biorxiv.org/content/10.1101/2022.04.21.489063v1.abstract)
 
 ## Peer-reviewed Manuscripts
