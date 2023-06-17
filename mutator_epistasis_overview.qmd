@@ -1,0 +1,203 @@
+---
+title: "Embracing the spectrum of DNA mutation"
+toc: true
+sidebar: false
+execute: 
+  enabled: true
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+Mutation is the spice of life. 
+Without it, our genomes would remain unchanged from generation to generation, and the forces of evolution would be powerless. 
+Every extraordinary adaptation we see in the natural world around us, and by the same token, every devastating genetic disease, owes its existence to *de novo* mutation.
+
+### We're all mutants, more or less
+
+Humans are pretty good at passing down our genetic material from generation to generation. 
+We inherit about three billion DNA nucleotides, neatly packaged into twenty-three chromosomes, from each of our parents. 
+Before those chromosomes find their way into a fertilized embryo, their contents must be precisely copied and pasted into a sperm or egg cell. 
+If a mistake happens during the copying process, or if one of those nucleotides is damaged and can't be repaired, a *de novo* germline mutation will be passed on to the next generation.
+
+Every one of our genomes contains around 70-100 of these *de novo* germline mutations.^[There are lots of ways to measure the mutation rate, from Haldane's early &mdash; and surprisingly accurate &mdash; attempts using [mutation-selection balance](https://doi.org/10.1007/bf02717891) to more direct approaches using human [pedigree](https://doi.org/10.7554/eLife.46922) [sequencing](https://doi.org/10.1038/nature24018).]
+Some of those mutations were the result of a problem with the "copy-and-paste" operation (called *replication*) in our parents' germline cells, and some were the result of unrepaired DNA damage. 
+The DNA in our cells is under constant threat; UV light from the sun can break up the bonds that hold nucleotides together, tobacco smoke can cause a buildup of damaging chemical modifications, and there may even be defects in the machinery that replicates our DNA to begin with. 
+With that in mind, an error rate of about 0.000000016 per generation ($\frac{100}{6,000,000,000}$) doesn't seem so bad.
+
+### Context is everything
+
+I've spent much of my scientific career trying to precisely measure the rate at which mutations occur in the human germline and figure out why that rate varies across individuals.
+<!-- We know, for example, that older parents tend to pass down more *de novo* germline mutations to their children.
+Dads contribute an extra 1.5 mutations with each additional year of age, and moms contribute around 0.5. -->
+But I'd argue that just measuring the *rate* of germline mutation is overly simplistic.
+<!-- The exogenous and endogenous sources of DNA mutation are numerous and complexa crude way to summarize the complex biology that underlies the mutation process. -->
+
+To generate a more complete picture of the mutation process, we can classify mutations by their context &mdash; that is, the specific nucleotides present on either side of the mutated base. 
+For example, at some random position in the genome, a cytosine might sit in the middle of an adenine and a guanine. 
+If that cytosine were mutated to a thymine, the 3-mer (or *triplet*) context of the resulting mutation would be: ACG $\to$ ATG. 
+Its 1-mer context, which wouldn't take into account any of the flanking nucleotides, would be even simpler: C $\to$ T.
+
+By classifying mutations according to $k$-mer context, we can turn a collection of mutations into a rich *mutation spectrum*. 
+Check out @fig-3mer and @fig-1mer for examples of 3-mer and 1-mer mutation spectra calculated using a collection of 1,000 randomly generated mutations.
+Broadly defined, the mutation spectrum contains either the relative or absolute frequency of each possible $k$-mer mutation type[For a given $k$, how many possible $k$-mer mutations are there? If we collapse by strand complement (that is, if we treat C $\to$ T and G $\to$ A as the same mutation), there are exactly $6 \times 4^{k - 1}$.]{.aside}. 
+These spectra can reveal a lot about the mechanisms that generate mutations in our cells. 
+When UV radiation damages DNA, it usually breaks the helix at NNN, leading to a characteristic "signature" of 3-mer mutations that occur in sun-exposed skin cells. 
+Similarly, cells that harbor loss-of-function mutations in the DNA polymerases POLD and POLE will often accumulate a distinct complement of mutations, dominated by NNN $\to$ NNN changes.
+
+```{python}
+#| label: fig-3mer
+#| fig-cap: "An example of a 3-mer mutation spectrum, calculated using a random collection of 1,000 single-nucleotide mutations. Bars are grouped by the 'central' mutation type within the 3-mer nucleotide context. Hover over a bar to view its 3-mer context."
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import plotly.express as px
+
+
+TOTAL_MUTS = 1_000
+
+base_mutations = ["C>T", "C>G", "C>A", "T>C", "T>G", "T>A"]
+nucs = ["A", "T", "C", "G"]
+freqs = np.array([0.45, 0.075, 0.075, 0.25, 0.075, 0.05])
+base_lambdas = freqs * TOTAL_MUTS
+
+# if we want to do the 3-mer spectrum, we'll just parcel out
+# mutation probabilities equally to every 3-mer associated with
+# a particular "base" mutation type
+expanded_mutation_probs = []
+for m, l in zip(base_mutations, base_lambdas):
+    per_k_l = l / 16
+    orig, new = m.split(">")
+    for fp in nucs:
+        for tp in nucs:
+            kmer = f"{fp}{orig}{tp}>{fp}{new}{tp}"
+            expanded_mutation_probs.append({"k-mer context": kmer, "lambda": per_k_l * 2 if m == "C>T" and tp == "G" else per_k_l})
+expanded_mutation_probs = pd.DataFrame(expanded_mutation_probs)
+
+# take a draw from the lambda for each mutation type
+expanded_mutation_probs["count"] = np.random.poisson(expanded_mutation_probs["lambda"].values)
+expanded_mutation_probs["Fraction"] = expanded_mutation_probs["count"] / np.sum(expanded_mutation_probs["count"])
+
+expanded_mutation_probs["Mutation type"] = expanded_mutation_probs["k-mer context"].apply(lambda m: ">".join([m[1], m[5]]))
+
+expanded_mutation_probs["base_kmer"] = expanded_mutation_probs["k-mer context"].apply(lambda m: m.split(">")[0])
+
+fig = px.bar(expanded_mutation_probs.sort_values("base_kmer"), x="k-mer context", y="Fraction", color="Mutation type", title="A 3-mer mutation spectrum")
+
+xaxis = dict(
+  tickmode = 'array',
+  tickvals = np.arange(96)[::2],
+  ticktext = expanded_mutation_probs["base_kmer"].to_list()[::2],
+)
+
+fig.update_layout(xaxis=xaxis)
+```
+
+```{python}
+#| label: fig-1mer
+#| fig-cap: "An example of a 1-mer mutation spectrum, calculated using the same random collection of mutations as in the figure above."
+
+collapsed_mutation_probs = expanded_mutation_probs.groupby("Mutation type").agg({"Fraction": sum}).reset_index()
+fig = px.bar(collapsed_mutation_probs, x="Mutation type", y="Fraction", color="Mutation type", title="A 1-mer mutation spectrum")
+fig.show()
+```
+
+### Mutations that beget more mutations
+
+Hundreds, if not thousands, of protein-coding genes work in concert to maintain the integrity of our genomes. 
+Loss-of-function variants in those genes could feasibly lead to increased mutation rates, altered mutation spectra, or both.
+One of our major research interests is discovering these variants, which we often refer to as *mutator alleles*.
+
+We've already had early success in our efforts to detect mutators. 
+Using a large family of inbred mice, we recently discovered a mutator allele in the DNA repair gene *Mutyh*.^[[Sasani et al. 2022](https://doi.org/10.1038/s41586-022-04701-5)] 
+Mice with the mutator allele accumulated C $\to$ A mutations at nearly 1.5 times the rate of mice without it, but didn't exhibit elevated rates of any other 1-mer mutation types. 
+Later, we found that some of these mice actually harbored *two* mutator alleles (one in *Mutyh*, and another in the DNA repair gene *Ogg1*), increasing their C $\to$ A mutation rates even further.^[[Sasani et al. 2023]()] 
+Even though some of these mice had extremely high rates of C $\to$ A mutations, their overall mutation rates weren't much higher than mice without the mutator alleles. 
+That's because C $\to$ A mutations are only expected to comprise around 10-15% of all *de novo* germline mutations in mice.
+Even a 50% increase in the C $\to$ A mutation rate would have a relatively modest effect on the total number of new mutations. 
+
+In general, we expect the strength of negative selection against a mutator allele to be proportional to the total number of extra mutations the mutator causes.^[Michael Lynch's [drift-barrier hypothesis](https://doi.org/10.1038/nrg.2016.104) is the most prominent theory of mutation rate evolution in eukaryotes.] 
+
+
+::: {.callout-note collapse="true"}
+## Estimating the strength of selection on a mutator allele
+Let's say that a mutator allele causes $\Delta U$ extra deleterious mutations each generation.
+Since recombination shuffles the contents of germline chromosomes during meiosis, that mutator will only remain linked to those extra mutations for an average of two generations.
+If the mean strength of selection against a deleterious mutation (a notoriously tough parameter to estimate) is denoted $s$, then the selection coefficient on the mutator should be roughly $2s \Delta U$. 
+Selection is considered to be "efficient" if the product of two terms (the selection coefficient and the effective population size $N_e$) is greater than one.
+Since the effective human population size is on the order of $N_e = 1 \times 10^5 - 2 \times 10^5$, our example mutator allele should be purged pretty efficiently ($N_{e}s >> 1$).
+The same logic applies to an *anti-mutator* allele; we'd just re-do the calculation with the number of excess mutations *prevented* by the anti-mutator allele, and consider the final product to be the selection coefficient favoring the allele.
+
+```{python}
+#| label: fig-selection
+#| fig-cap: "Estimated strength of selection on a mutator allele given the number of extra deleterious mutations it causes (genome-wide) and the strength of selection on a new deleterious mutation. We also assume that 2% of the genome is protein-coding, and is the only portion of genomic sequence in which a mutation would be deleterious."
+import numpy as np 
+import pandas as pd 
+import plotly.express as px 
+
+eff_pop_size = 10_000
+selection_coefs = np.arange(1e-6, 1e-2, 5e-4)
+extra_deleterious = np.arange(0, 10, 0.05)
+
+df = []
+for s in selection_coefs:
+  for u in extra_deleterious:
+    df.append({"s": s, "U": u, "selection": s * u * 2 * 0.02 * eff_pop_size})
+df = pd.DataFrame(df).pivot(index="U", columns="s", values="selection")
+fig = px.imshow(df, 
+                aspect=1, 
+                labels={"x": "s (strength of selection on a new deleterious mutation)", "y": "U (extra deleterious mutations caused by the mutator)"}, 
+                title="Estimated strength of selection against a mutator allele, multiplied by eff. pop. size")
+fig.show()
+```
+
+:::
+
+
+::: {.callout-tip}
+## Changing the spectrum, not the rate
+Spectrum-modifying mutator alleles might exert large effects on individual mutation types. But if those mutation types are infrequent to begin with, the mutators might be able to evade the forces of negative selection. Can we detect these alleles in eukaryotic genomes by developing new statistical methods that operate on mutation spectra?
+:::
+
+### Why cancer?
+
+Since DNA repair and replication are essential cellular functions, it's unsurprising that loss-of-function (LOF) variants in many of these genes can predispose to various forms of cancer. 
+Perhaps most famously, heterozygous LOF alleles in BRCA1 and BRCA2, two genes involved in DNA repair, confer between a 70 and 90% risk of developing breast cancer after the age of 50.
+Deleterious alleles of other genes involved in DNA repair and replication, including MUTYH, POLD/E, and NTHL1, can also predispose to specific, inherited forms of cancer. 
+We reckon that lots of these mutator alleles are present in our genomes, and that most of them probably exert very subtle effects.
+Genes involved in DNA repair and replication are frequently implicated in the development and metastasis of cancer, and we think that developing methods to identify mutator alleles with subtle effects on mutation spectra could help prioritize targets for treating human cancers, before those targets are even implicated as cancer drivers.
+
+Cancer is a devastating disease, but in its insidiousness hides the key to its own identification.
+Cancer cells behave a bit differently from the cells in our germline.
+Sperm cells and egg cells undergo a process called *recombination*, in which they shuffle the contents of the chromosomes they inherited from either mom or dad.
+This process makes it challenging to identify mutator alleles in the germline, since any extra mutations the mutator causes will quickly be "unlinked" from the mutator itself.
+Cancer cells, however, don't recombine, meaning that a mutator allele will remain linked to its resultant mutations for the duration of its existence.
+Cancer cells are also subject to relatively low levels of negative selection.
+
+::: {.callout-tip}
+## Future research question
+Cancer genomes may represent an ideal system for detecting mutator alleles.
+:::
+
+### Life history and the mutation rate
+
+<!-- ### Arms races to the bottom
+
+Once a large-effect mutator allele pops up, natural selection will presumably try to return the overall mutation rate back to an optimally low level.
+One of the most popular models of mutation rate evolution is the "drift-barrier hypothesis," which posits that selection will attempt to lower mutation rates as much as possible, until the resulting decrease in genetic diversity renders selection powerless in the face of random genetic drift.
+Presumably, an allele that *lowers* the germline mutation rate would be selected *for*, especially in a genome that harbors an existing mutator allele.
+This brings up an exciting possibility: if our genomes accumulated germline mutator alleles, the effects of those mutators might have been countered by the activities of anti-mutators.
+Human genome sequences may therefore harbor records of the myriad battles between mutators and anti-mutators, each fighting to raise or lower the germline mutation rate while historical mutation rates remained relatively constant.
+If this is the case, it might be quite challenging to detect the effects of individual mutator or anti-mutator alleles. 
+However, each of these individual alleles might still exert very subtle effects on *local* mutation spectra. -->
+
+
+
+
+
+
+
+

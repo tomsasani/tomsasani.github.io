@@ -1,0 +1,288 @@
+---
+title: "Mutator alleles in mice"
+toc: true
+sidebar: false
+execute: 
+  enabled: true
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+Mutation is the spice of life. 
+Without it, our genomes would remain unchanged from generation to generation, and the forces of evolution would be powerless. 
+Every extraordinary adaptation we see in the natural world around us, and by the same token, every devastating genetic disease, owes its existence to *de novo* mutation.
+
+### We're all mutants, more and less
+
+Humans are pretty good at passing down our genetic material from generation to generation. 
+We inherit about three billion DNA nucleotides, neatly packaged into twenty-three chromosomes, from each of our parents. 
+Before those chromosomes find their way into a fertilized embryo, their contents must be precisely copied and pasted into a sperm or egg cell. 
+If a mistake happens during the copying process, or if one of those nucleotides is damaged and can't be repaired, a *de novo* germline mutation will be passed on to the next generation.
+
+Every one of our genomes contains around 70-100 of these *de novo* germline mutations.^[There are lots of ways to measure the mutation rate, from Haldane's early &mdash; and surprisingly accurate &mdash; attempts using [mutation-selection balance](https://doi.org/10.1007/bf02717891) to more direct approaches using human [pedigree](https://doi.org/10.7554/eLife.46922) [sequencing](https://doi.org/10.1038/nature24018).]
+Some of those mutations were the result of a problem with the "copy-and-paste" operation (called *replication*) in our parents' germline cells, and some were the result of unrepaired DNA damage. 
+The DNA in our cells is under constant threat; UV light from the sun can break up the bonds that hold nucleotides together, tobacco smoke can cause a buildup of damaging chemical modifications, and there may even be defects in the machinery that replicates our DNA to begin with. 
+With that in mind, an error rate of about 0.000000016 per generation ($\frac{100}{6,000,000,000}$) doesn't seem so bad.^[For an excellent overview of the various factors that influence human germline mutation rates, check out this review by [Segurel et al.](https://doi.org/10.1146/annurev-genom-031714-125740)]
+
+### Context is everything
+
+*De novo* germline mutations underlie both heritable genetic diseases and evolutionary adaptations, so we're deeply interested in measuring the rate at which they occur in the human germline and figuring out why that rate varies across individuals.
+We know, for example, that older parents tend to pass down more *de novo* germline mutations to their children.
+Dads contribute an extra 1.5 mutations with each additional year of age, and moms contribute around 0.5.^[Here, we're just referring to single-nucleotide mutations, rather than larger structural variation.]
+But just measuring the *rate* of germline mutation is overly simplistic.
+
+To generate a more complete picture of the mutation process, we can classify mutations by their context &mdash; that is, the specific nucleotides present on either side of the mutated base. 
+For example, at some random position in the genome, a cytosine might sit in the middle of an adenine and a guanine. 
+If that cytosine were mutated to a thymine, the 3-mer (or *triplet*) context of the resulting mutation would be: ACG $\to$ ATG. 
+Its 1-mer context, which wouldn't take into account any of the flanking nucleotides, would be even simpler: C $\to$ T.
+
+By classifying mutations according to $k$-mer context, we can turn a collection of mutations into a rich *mutation spectrum*. 
+Check out @fig-1mer for an example of a 1-mer mutation spectra calculated using a collection of 1,000 randomly generated mutations.
+Broadly defined, the mutation spectrum contains either the relative or absolute frequency of each possible $k$-mer mutation type[For a given $k$, how many possible $k$-mer mutations are there? If we collapse by strand complement (that is, if we treat C $\to$ T and G $\to$ A as the same mutation), there are exactly $6 \times 4^{k - 1}$.]{.aside}. 
+These spectra can reveal a lot about the mechanisms that generate mutations in our cells. 
+UV radiation often leads to a characteristic "signature" of CC $\to$ TT mutations that occurs in sun-exposed skin cells. 
+Similarly, cells that harbor loss-of-function mutations in the DNA repair gene MUTYH will predominantly accumulate C $\to$ A mutations in an NCA or NCT 3-mer context.
+
+```{python}
+#| label: fig-1mer
+import numpy as np
+import pandas as pd
+import plotly.express as px
+
+TOTAL_MUTS = 1_000
+
+base_mutations = ["C>T", "C>G", "C>A", "T>C", "T>G", "T>A"]
+nucs = ["A", "T", "C", "G"]
+freqs = np.array([0.45, 0.075, 0.075, 0.25, 0.075, 0.05])
+base_lambdas = freqs * TOTAL_MUTS
+
+# if we want to do the 3-mer spectrum, we'll just parcel out
+# mutation probabilities equally to every 3-mer associated with
+# a particular "base" mutation type
+expanded_mutation_probs = []
+for m, l in zip(base_mutations, base_lambdas):
+    per_k_l = l / 16
+    orig, new = m.split(">")
+    for fp in nucs:
+        for tp in nucs:
+            kmer = f"{fp}{orig}{tp}>{fp}{new}{tp}"
+            expanded_mutation_probs.append({"kmer_context": kmer, "lambda": per_k_l * 2 if m == "C>T" and tp == "G" else per_k_l})
+expanded_mutation_probs = pd.DataFrame(expanded_mutation_probs)
+
+# take a draw from the lambda for each mutation type
+expanded_mutation_probs["count"] = np.random.poisson(expanded_mutation_probs["lambda"].values)
+expanded_mutation_probs["Fraction"] = expanded_mutation_probs["count"] / np.sum(expanded_mutation_probs["count"])
+expanded_mutation_probs["Mutation type"] = expanded_mutation_probs["kmer_context"].apply(lambda m: ">".join([m[1], m[5]]))
+expanded_mutation_probs["base_kmer"] = expanded_mutation_probs["kmer_context"].apply(lambda m: "".join([m.split(">")[0][0], "N", m.split(">")[0][2]]))
+
+expanded_mutation_probs.to_csv("mut.csv", index=False)
+
+collapsed_mutation_probs = expanded_mutation_probs.groupby("Mutation type").agg({"Fraction": sum}).reset_index()
+
+fig_spectrum = px.bar(collapsed_mutation_probs, y="Mutation type", x="Fraction", color="Mutation type", height=400)
+fig_spectrum.update_layout({"plot_bgcolor": "white"})
+fig_spectrum.update_xaxes(gridcolor='black', griddash="dash")
+fig_spectrum.show()
+```
+
+```{ojs}
+
+mutations = FileAttachment("mut.csv").csv({ typed: true })
+
+viewof kmer = Inputs.radio(["1-mer", "3-mer"], {label: "k-mer context"})
+
+Plot.plot({x: {
+    tickRotate: -30,
+  },
+  marks: [   
+    Plot.barY(mutations, {
+  x: "base_kmer",
+  y: "count", 
+  fill: "Mutation type", 
+  color: {scheme: "spectral", legend: true},
+  }).plot({
+    facet: {
+      data: mutations,
+      x: "Mutation type",
+    }, }
+    ),
+  ]})
+
+// Plot.barY(mutations, {
+//   x: "base_kmer",
+//   y: "count", 
+//   fill: "Mutation type", 
+//   color: {scheme: "spectral", legend: true},
+//   }).plot({
+//     facet: {
+//       data: mutations,
+//       x: "Mutation type",
+//     }, }
+//     )
+```
+
+
+### Mutations that beget more mutations
+
+Hundreds, if not thousands, of protein-coding genes work in concert to maintain the integrity of our genomes. 
+Loss-of-function variants in those genes could feasibly lead to increased mutation rates, altered mutation spectra, or both.
+One of our major research interests is discovering these variants, which we often refer to as *mutator alleles*.
+
+Mutator alleles are notoriously difficult to find in eukaryotic genomes.
+The more of an effect they have, the more likely they are to be purged by negative selection.
+In general, we expect the strength of negative selection against a mutator allele to be proportional to the total number of extra mutations the mutator causes.^[Michael Lynch's [drift-barrier hypothesis](https://doi.org/10.1038/nrg.2016.104) is arguably the most prominent theory of mutation rate evolution in eukaryotes.] 
+
+
+::: {.callout-note collapse="true"}
+## Estimating the strength of selection on a mutator allele
+Let's say that a mutator allele causes $\Delta U$ extra deleterious mutations each generation.
+Since recombination shuffles the contents of germline chromosomes during meiosis, that mutator will only remain linked to those extra mutations for an average of two generations.
+If the mean strength of selection against a deleterious mutation (a notoriously tough parameter to estimate) is denoted $s$, then the selection coefficient on the mutator should be roughly $2s \Delta U$. 
+Selection is considered to be "efficient" if the product of two terms (the selection coefficient and the effective population size $N_e$) is greater than one.
+Since the effective human population size is on the order of $N_e = 1 \times 10^5 - 2 \times 10^5$, our example mutator allele should be purged pretty efficiently ($N_{e}s >> 1$).
+The same logic applies to an *anti-mutator* allele; we'd just re-do the calculation with the number of excess mutations *prevented* by the anti-mutator allele, and consider the final product to be the selection coefficient favoring the allele.
+
+```{python}
+#| label: fig-selection
+#| fig-cap: "Estimated strength of selection on a mutator allele given the number of extra deleterious mutations it causes (genome-wide) and the strength of selection on a new deleterious mutation. We also assume that 2% of the genome is protein-coding, and is the only portion of genomic sequence in which a mutation would be deleterious."
+
+eff_pop_size = 10_000
+selection_coefs = np.arange(1e-6, 1e-2, 5e-4)
+extra_deleterious = np.arange(0, 10, 0.05)
+
+df = []
+for s in selection_coefs:
+  for u in extra_deleterious:
+    df.append({"s": s, "U": u, "selection": s * u * 2 * 0.02 * eff_pop_size})
+df = pd.DataFrame(df).pivot(index="U", columns="s", values="selection")
+fig_sel = px.imshow(df, 
+                aspect=1, 
+                labels={"x": "s (strength of selection on a new deleterious mutation)", "y": "U (extra deleterious mutations caused by the mutator)"}, 
+                title="Estimated strength of selection against a mutator allele, multiplied by eff. pop. size")
+fig_sel.show()
+```
+:::
+
+We recently developed a new statistical method to detect mutator alleles by examining mutation spectra.
+Let's walk through how it works.
+
+### A simple method for finding mutator alleles
+
+First, imagine that we've sequenced a collection of haplotypes.
+We've genotyped each of these haplotypes at three biallelic loci; genotypes are either <span style="color:firebrick;">red</span> or <span style="color:dodgerblue;">blue</span> at each locus.
+We've also identified *de novo* germline mutations on each haplotype.
+For simplicity's sake, we've also classified each haplotype's mutations into one of two possible mutation types: either C $\to$ A/T/G mutations (diamonds) or A $\to$ C/T/G (squares).
+
+We want to test whether genotypes at any of these loci are associated with variation in the mutation spectrum.
+Said another way, "do haplotypes with <span style="color:firebrick;">red</span> genotypes have significantly different mutation spectra than haplotypes with <span style="color:dodgerblue;">blue</span> genotypes?"
+
+```{python}
+#| label: fig-haplotype-dnms
+#| fig-cap: 
+#|  - "Simulated genotypes on a toy collection of 6 haplotypes"
+#|  - "Simulated *de novo* mutations on the same toy collection of 6 haplotypes. Mutations are classified into 2 possible mutation types."
+#| layout-ncol: 2
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.rc("font", size=12)
+
+rng = np.random.default_rng(42)
+
+N_HAPS = 6
+N_SITES = 20
+N_GENOS = 3
+MUT_PROB = 0.1
+
+MUT_LABELS = {0: None, 1: "C>A/T/G", 2: "A>T/C/G"}
+MUT_MARKERS = {0: "", 1: "v", 2: "s"}
+
+GEN_MARKER = {0: "firebrick", 1: "dodgerblue"}
+
+hap_dnms = np.zeros((N_HAPS, N_SITES))
+hap_genos = np.zeros((N_HAPS, N_GENOS))
+
+f, ax = plt.subplots(figsize=(3, 5))
+
+hap_genos_df = []
+for hap_idx in np.arange(N_HAPS):
+    ax.axhline(y=hap_idx, zorder=0, linestyle="--", color='k')
+    # draw mutations on this haplotype
+    for marker_idx in np.arange(N_GENOS):
+        genotype = rng.integers(low=0, high=2)
+        hap_genos[hap_idx, marker_idx] = genotype
+        ax.scatter(marker_idx, hap_idx, marker="o", s=150, color=GEN_MARKER[genotype])
+        
+
+ax.set_xticks(np.arange(N_GENOS))
+ax.set_xlabel("Marker number")
+ax.set_ylabel("Haplotype")
+sns.despine(ax=ax, top=True, right=True, bottom=True, left=True)
+
+f, ax = plt.subplots(figsize=(6, 5))
+
+hap_dnms_df = []
+for hap_idx in np.arange(N_HAPS):
+    ax.axhline(y=hap_idx, zorder=0, linestyle="-", color='k')
+    # draw mutations on this haplotype
+    for mut_idx in np.arange(N_SITES):
+        mutation = 0
+        if rng.random() <= MUT_PROB:
+          mutation = rng.integers(low=1, high=3)
+        hap_dnms[hap_idx, mut_idx] = mutation
+        ax.scatter(mut_idx, hap_idx, label=MUT_LABELS[mutation], marker=MUT_MARKERS[mutation], s=150, edgecolor="k" if MUT_MARKERS[mutation] != "" else None, color="gainsboro")
+
+ax.set_yticks([])
+ax.set_xticks([])
+sns.despine(ax=ax, top=True, right=True, bottom=True, left=True)
+```
+
+
+To answer this question, we'll do the following **at each marker**:
+
+1. Compute the *aggregate mutation spectrum* on haplotypes with either <span style="color:firebrick;">red</span> or <span style="color:dodgerblue;">blue</span> genotypes.
+2. Compute the cosine distance between those aggregate mutation spectra.
+
+In @fig-spectra-vectors, we represent the aggregate mutation spectrum on red and blue haplotypes as vectors.
+
+```{python}
+#| label: fig-spectra-vectors
+#| fig-cap: "Aggregate mutation spectra of haplotypes with either red or blue genotypes at Marker 0. Mutation spectra are represented as 2-dimensional vectors. The X-value of each vector is the total number of 'triangle' mutations on haplotypes with the specified genotype at Marker 0, and the Y-value of each vector is the total number of 'square' mutations."
+#| 
+a_haps = np.where(hap_genos[:, 0] == 0)[0]
+b_haps = np.where(hap_genos[:, 0] == 1)[0]
+
+a_muts = hap_dnms[a_haps, :].flatten()
+a_spectrum = [np.sum(a_muts == 1), np.sum(a_muts == 2)]
+
+b_muts = hap_dnms[b_haps, :].flatten()
+b_spectrum = [np.sum(b_muts == 1), np.sum(b_muts == 2)]
+
+vectors = np.array([[0, 0, a_spectrum[0], a_spectrum[1]], 
+                 [0, 0, b_spectrum[0], b_spectrum[1]]])
+
+X, Y, V, W = zip(*vectors)
+
+f, ax = plt.subplots(figsize=(8, 4))
+ax.quiver(X, Y, V, W, angles='xy', scale_units='xy', color=['firebrick','dodgerblue'], scale=1)
+ax.annotate(f'({a_spectrum[0]}, {a_spectrum[1]})', (a_spectrum[0], a_spectrum[1]), color="firebrick")
+ax.annotate(f'({b_spectrum[0]}, {b_spectrum[1]})', (b_spectrum[0], b_spectrum[1]), color="dodgerblue")
+
+ax.set_xlim(0, 6)
+ax.set_ylim(0, 6)
+
+ax.set_xlabel("Total number of triangle mutations on haplotypes")
+ax.set_ylabel("Total number of square\nmutations on haplotypes")
+ax.set_xticks([])
+ax.set_yticks([])
+sns.despine(ax=ax, top=True, right=True)
+```
+
+::: {.callout-note}
+## Identical mutation rates but variable spectra
+
+Even though the total number of mutations on <span style="color:firebrick;">red</span> and <span style="color:dodgerblue;">blue</span> haplotypes is the same, the composition of mutations (i.e., triangle vs. square) is different.
+:::
