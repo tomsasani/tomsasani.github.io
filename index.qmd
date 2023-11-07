@@ -11,17 +11,18 @@ about:
   #   - icon: github
   #     text: Github
   #     href: https://github.com/tomsasani
+toc: false
 ---
 
-**I’m a computational biologist using genetic data to better understand health and evolution.**
+I’m a computational biologist using genetic data to better understand health and evolution.
 
 ## Experience
 
 #### Staff Research Scientist with [Dr. Aaron Quinlan](http://quinlanlab.org/)
 
-> **2022 - present**: developing new methods to analyze germline mutation and genome evolution
+> **2022 - present**: developing new methods to analyze germline mutation and [find mutator alleles](https://doi.org/10.7554/eLife.89096.1)
 
-#### Senior Data Scientist @ [Recursion Pharma](https://www.recursion.com/)
+#### Senior Data Scientist @ [Recursion Pharmaceuticals](https://www.recursion.com/)
 
 > **2021 - 2022**: analyzed data from massive cellular imaging experiments to find new disease treatments
 
