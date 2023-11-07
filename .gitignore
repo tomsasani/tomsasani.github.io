@@ -6,3 +6,4 @@
 *.gz
 /.quarto/
 /_site/
+/_freeze/
