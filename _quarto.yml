@@ -32,13 +32,14 @@ website:
   sidebar:
 
     - id: notes
-      title: "Notes"
+      title: "Research notes"
       style: "docked"
       background: "light"
       collapse-level: 2
       contents: 
-        - href: snakemake.qmd
-        - href: gatk.qmd
+        - href: notes/snakemake.qmd
+        - href: notes/gatk.qmd
+        - href: notes/2023_11_2.qmd
 
     - id: cv 
       title: "CV/Resume"
@@ -53,10 +54,11 @@ website:
 format:
   html:
     theme:
-      light: [cosmo, theme.scss]
-      #light: cosmo
-      dark: [cosmo, theme-dark.scss]
-    mainfont: "Atkinson Hyperlegible"
+      # light: [default, theme.scss]
+      light: cosmo
+      # dark: [default, theme-dark.scss]
+      dark: cosmo
+    # mainfont: "Atkinson Hyperlegible"
     code-copy: true
     code-overflow: wrap
     toc: true
