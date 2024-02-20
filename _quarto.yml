@@ -21,6 +21,7 @@ website:
       - text: "Teaching"
         file: teaching.qmd
       - sidebar:notes
+      - sidebar:ml-reading-group
       - sidebar:cv
 
     right: 
@@ -39,7 +40,6 @@ website:
       contents: 
         - href: notes/snakemake.qmd
         - href: notes/gatk.qmd
-        - href: notes/2023_11_2.qmd
 
     - id: cv 
       title: "CV/Resume"
@@ -50,6 +50,14 @@ website:
           href: vitae/sasani_thomas_cv.pdf
         - text: "Resume"
           href: vitae/sasani_thomas_resume.pdf
+
+    - id: ml-reading-group
+      title: "ML reading group"
+      style: "docked"
+      background: "light"
+      collapse-level: 2
+      contents: 
+        - href: ml_reading_group/2024_intro.qmd
 
 format:
   html:
