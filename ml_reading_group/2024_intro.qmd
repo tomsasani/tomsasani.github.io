@@ -3,7 +3,7 @@ title: "ML for genomics, an evolving reading list"
 from: markdown+emoji
 ---
 
-# General ML 
+# Introductions to ML
 
 The [CS230 course](https://cs230.stanford.edu/) at Stanford has made slides and lectures available online.
 A fantastic resource.
@@ -12,40 +12,28 @@ The Amidi brothers have created [cheat sheets](https://stanford.edu/~shervine/te
 Also great.
 
 Andrej Karpathy's videos are also excellent introductions to ML concepts. 
-In his own words, the first video in his main series [*The spelled-out intro to neural networks and backpropagation: building micrograd*](https://www.youtube.com/watch?v=VMj-3S1tku0) "only assumes basic knowledge of Python and a vague recollection of calculus from high school."
+In his own words, the first video in his main series (called [*The spelled-out intro to neural networks and backpropagation: building micrograd*](https://www.youtube.com/watch?v=VMj-3S1tku0)) "only assumes basic knowledge of Python and a vague recollection of calculus from high school."
 Highly recommended.
 
-# Review articles
-
-::: {.callout-note icon="false" collapse="false" appearance="simple"}
-:star: [Deep learning: new computational modeling techniques for genomics](https://www.nature.com/articles/s41576-019-0122-6)
-
-An excellent and detailed overview, probably where I'd start.
-:::
-
 ::: {.callout-note icon="false" collapse="true" appearance="simple"}
+### Review articles
+
+[Deep learning: new computational modeling techniques for genomics](https://www.nature.com/articles/s41576-019-0122-6)
+
+> An excellent and detailed overview, probably where I'd start.
+
 [A primer on deep learning in genomics](https://www.nature.com/articles/s41588-018-0295-5)
-:::
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [Harnessing deep learning for population genetic inference](https://www.nature.com/articles/s41576-023-00636-3)
-:::
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
-:star: [Navigating the pitfalls of applying machine learning in genomics](https://www.nature.com/articles/s41576-021-00434-9)
+[Navigating the pitfalls of applying machine learning in genomics](https://www.nature.com/articles/s41576-021-00434-9)
 
-Excellent overview of pitfalls and possible mistakes that can confound ML analyses, with a particular focus on biological inference. 
-:::
+> Excellent overview of pitfalls and possible mistakes that can confound ML analyses, with a particular focus on biological inference. 
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [Opportunities and obstacles for deep learning in medicine](https://royalsocietypublishing.org/doi/10.1098/rsif.2017.0387)
-:::
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [Supervised machine learning for population genetics: a new paradigm](https://doi.org/10.1016/j.tig.2017.12.005)
-:::
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [To transformers and beyond: large language models for the genome](https://arxiv.org/abs/2311.07621)
 :::
 
@@ -53,90 +41,85 @@ Excellent overview of pitfalls and possible mistakes that can confound ML analys
 # Applications
 
 Papers are broadly grouped by ML architecture. 
-Many of these papers involve a mix of architectures, so the groups are "fuzzy."
+Many of these papers involve a mix of architectures, so the groups should be considered "fuzzy."
 
 
+::: {.callout-warning icon="false" collapse="true" appearance="simple"}
 ### Transformers
 
-
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [Effective gene expression prediction from sequence by integrating long-range interactions](https://www.nature.com/articles/s41592-021-01252-x)
 
-Describes the "Enformer" model, which utilizes a transformer-based architecture to predict gene expression from sequence alone.
+> Describes the "Enformer" model, which utilizes a transformer-based architecture to predict gene expression from sequence alone.
+> Also see a [suite](https://www.nature.com/articles/s41588-023-01524-6) [of](https://www.nature.com/articles/s41588-023-01517-5) [papers](https://www.nature.com/articles/s41588-023-01574-w) describing the limitations of "Enformer" for personal transcriptome inference.
 
-Also see a [suite](https://www.nature.com/articles/s41588-023-01524-6) [of](https://www.nature.com/articles/s41588-023-01517-5) [papers](https://www.nature.com/articles/s41588-023-01574-w) describing the limitations of "Enformer" for personal transcriptome inference.
-:::
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [Predicting RNA-seq coverage from DNA sequence as a unifying model of gene regulation](https://www.biorxiv.org/content/10.1101/2023.08.30.555582v1)
 :::
 
 
-
+::: {.callout-important icon="false" collapse="true" appearance="simple"}
 ### Generative adversarial networks (GANs)
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
-:star: [Automatic inference of demographic parameters using generative adversarial networks](https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13386)
+[Automatic inference of demographic parameters using generative adversarial networks](https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13386)
 
-The authors describe a novel GAN architecture that that features a population genetic simulator (in this case, the backwards-in-time `msprime` tool) as the "generator" and a convolutional neural network as the "discriminator".
-The parameters of the `msprime` generator are randomly initialized, and the discriminator is trained to differentiate between simulated and real "images" of haplotypes in genomic regions of a predefined size.
-Over time, the generator gets better at simulating realistic-looking data and the discriminator gets better at telling the two classes of data apart.
-By the end of training, the generator can be interpreted by examining the population genetic parameters (population size, mutation rate, etc.) that optimally confused the discriminator.
+> The authors describe a novel GAN architecture that that features a population genetic simulator (in this case, the backwards-in-time `msprime` tool) as the "generator" and a convolutional neural network as the "discriminator".
+> The parameters of the `msprime` generator are randomly initialized, and the discriminator is trained to differentiate between simulated and real "images" of haplotypes in genomic regions of a predefined size.
+> Over time, the generator gets better at simulating realistic-looking data and the discriminator gets better at telling the two classes of data apart.
+> By the end of training, the generator can be interpreted by examining the population genetic parameters (population size, mutation rate, etc.) that optimally confused the discriminator.
+> A well-written and clear overview of a cool (and interpretable) method.
 
-A well-written and clear overview of a cool (and interpretable) method.
-:::
-
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [Interpreting generative adversarial networks to infer natural selection from genetic data](https://www.biorxiv.org/content/10.1101/2023.03.07.531546v1)
 
-A follow-up the the paper listed above. 
-The authors fine-tune the trained discriminator from their GAN to infer regions of the genome under the effects of natural selection.
+> A follow-up the the paper listed above. 
+> The authors fine-tune the trained discriminator from their GAN to infer regions of the genome under the effects of natural selection.
 :::
 
 
+::: {.callout-tip icon="false" collapse="true" appearance="simple"}
 ### Language models (LMs)
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
-:star: [DNA language models are powerful predictors of genome-wide variant effects](https://www.pnas.org/doi/10.1073/pnas.2311219120)
+[DNA language models are powerful predictors of genome-wide variant effects](https://www.pnas.org/doi/10.1073/pnas.2311219120)
 
-A deceptively simple and clever approach to inferring variant effects.
-:::
-
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [GPN-MSA: an alignment-based DNA language model for genome-wide variant effect prediction](https://www.biorxiv.org/content/10.1101/2023.10.10.561776v1)
-:::
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [The nucleotide transformer: building and evaluating robust foundation models for human genomics](https://www.biorxiv.org/content/10.1101/2023.01.11.523679v1)
 
-A recent attempt to build a "foundation model" for genomics.
-The authors essentially adapt BERT for DNA sequence by developing an encoder-only architecture that attempts to reconstruct randomly-masked 6-mer DNA "tokens."
-The learned embeddings from an input DNA sequence can then be plugged into simple regression models to make predictions about chromatin accessibility, enhancer status, etc., or the model itself can be efficiently fine-tuned for a particular downstream classification task.
+> A recent attempt to build a "foundation model" for genomics.
+> The authors essentially adapt BERT for DNA sequence by developing an encoder-only architecture that attempts to reconstruct randomly-masked 6-mer DNA "tokens."
+> The learned embeddings from an input DNA sequence can then be plugged into simple regression models to make predictions about chromatin accessibility, enhancer status, etc., or the model itself can be efficiently fine-tuned for a particular downstream classification task.
 :::
 
 
+::: {.callout-caution icon="false" collapse="true" appearance="simple"}
 ### Convolutional neural networks (CNNs)
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [The unreasonable effectiveness of convolutional neural networks in population genetic inference](https://academic.oup.com/mbe/article/36/2/220/5229930)
-:::
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
+> Check this paper out for a nice introduction to CNNs and how they can be applied to "images" of haplotypes in genomic regions.
+> The associated GitHub repository includes a few simple models (written in TensorFlow/Keras), as well.
+
 [Basset: Learning the regulatory code of the accessible genome with deep convolutional neural networks](https://genome.cshlp.org/content/early/2016/05/03/gr.200535.115)
 
 [Sequential regulatory activity prediction across chromosomes with convolutional neural networks](https://genome.cshlp.org/content/early/2018/03/27/gr.227819.117)
-:::
 
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
-:star: [Localizing post-admixture adaptive variants with object detection on ancestry-painted chromosomes](https://academic.oup.com/mbe/article/40/4/msad074/7083730)
+[Localizing post-admixture adaptive variants with object detection on ancestry-painted chromosomes](https://academic.oup.com/mbe/article/40/4/msad074/7083730)
 
-The authors train an off-the-shelf object detection model to identify genomic regions with recent (adaptive) admixture events.
+> The authors train an off-the-shelf object detection model to identify genomic regions with recent (adaptive) admixture events.
+> Nice example of using off-the-shelf models, rather than building architectures from scratch.
 
-Nice example of using off-the-shelf models, rather than building architectures from scratch.
-:::
-
-::: {.callout-note icon="false" collapse="true" appearance="simple"}
 [Discovery of ongoing selective sweeps within *Anopholes* mosquito populations using deep learning](https://academic.oup.com/mbe/article/38/3/1168/5918472)
 
-A nice example of training CNNs to detect selection using pre-computed features (e.g., a large collection of population genetic summary statistics) rather than "painted haplotype" images.
+> A nice example of training CNNs to detect selection using pre-computed features (e.g., a large collection of population genetic summary statistics) rather than "painted haplotype" images.
+:::
+
+::: {.callout-note icon="false" collapse="true" appearance="simple"}
+### Autoencoders
+
+[Visualizing population structure with variational autoencoders](https://academic.oup.com/g3journal/article/11/1/jkaa036/6105578?login=false)
+
+> The authors use a variational autoencoder (VAE) to embed sample genotype vectors into a 2-dimensional latent space that reflects geographical origin.
+
+[Haplotype and population structure inference using neural networks in whole-genome sequencing data](https://genome.cshlp.org/content/32/8/1542.full)
+
+[A deep learning framework for characterization of genotype data](https://academic.oup.com/g3journal/article/12/3/jkac020/6515290)
 :::
