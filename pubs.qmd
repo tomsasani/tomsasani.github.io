@@ -11,7 +11,7 @@ Ashbrook DG, **Sasani TA**, Maksimov M, Gunturkun MH, Ma N, Villani F, Ren Y, Ro
 
 ## Peer-reviewed Manuscripts
 
-**Sasani TA**, Quinlan AR, Harris K. Epistasis between mutator alleles contributes to germline mutation rate variability in laboratory mice (2024). [*eLife.*](https://doi.org/10.7554/eLife.89096.1) \ [:computer:](https://github.com/quinlan-lab/proj-mutator-mapping)
+**Sasani TA**, Quinlan AR, Harris K. Epistasis between mutator alleles contributes to germline mutation rate variability in laboratory mice (2024). [*eLife.*](https://doi.org/10.7554/eLife.89096.3) \ [:computer:](https://github.com/quinlan-lab/proj-mutator-mapping)
 
 Fixsen SM, Cone KR, Goldstein SA, **Sasani TA**, Quinlan AR, Rothenburg S, Elde NC. Poxviruses capture host genes by LINE-1 retrotransposition (2022). [*eLife.*](https://elifesciences.org/articles/63332) \ [:book:](pdfs/fixsen_elife_2022.pdf)
 
