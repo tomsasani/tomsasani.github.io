@@ -198,15 +198,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#general-ml" id="toc-general-ml" class="nav-link active" data-scroll-target="#general-ml">General ML</a></li>
-  <li><a href="#review-articles" id="toc-review-articles" class="nav-link" data-scroll-target="#review-articles">Review articles</a></li>
-  <li><a href="#applications" id="toc-applications" class="nav-link" data-scroll-target="#applications">Applications</a>
-  <ul class="collapse">
-  <li><a href="#transformers" id="toc-transformers" class="nav-link" data-scroll-target="#transformers">Transformers</a></li>
-  <li><a href="#generative-adversarial-networks-gans" id="toc-generative-adversarial-networks-gans" class="nav-link" data-scroll-target="#generative-adversarial-networks-gans">Generative adversarial networks (GANs)</a></li>
-  <li><a href="#language-models-lms" id="toc-language-models-lms" class="nav-link" data-scroll-target="#language-models-lms">Language models (LMs)</a></li>
-  <li><a href="#convolutional-neural-networks-cnns" id="toc-convolutional-neural-networks-cnns" class="nav-link" data-scroll-target="#convolutional-neural-networks-cnns">Convolutional neural networks (CNNs)</a></li>
-  </ul></li>
+  <li><a href="#introductions-to-ml" id="toc-introductions-to-ml" class="nav-link active" data-scroll-target="#introductions-to-ml">Introductions to ML</a></li>
+  <li><a href="#applications" id="toc-applications" class="nav-link" data-scroll-target="#applications">Applications</a></li>
   </ul>
 </nav>
     </div>
@@ -232,82 +225,35 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="general-ml" class="level1">
-<h1>General ML</h1>
+<section id="introductions-to-ml" class="level1">
+<h1>Introductions to ML</h1>
 <p>The <a href="https://cs230.stanford.edu/">CS230 course</a> at Stanford has made slides and lectures available online. A fantastic resource.</p>
 <p>The Amidi brothers have created <a href="https://stanford.edu/~shervine/teaching/cs-221/">cheat sheets</a> for CS230 and other Stanford ML courses. Also great.</p>
-<p>Andrej Karpathy’s videos are also excellent introductions to ML concepts. In his own words, the first video in his main series <a href="https://www.youtube.com/watch?v=VMj-3S1tku0"><em>The spelled-out intro to neural networks and backpropagation: building micrograd</em></a> “only assumes basic knowledge of Python and a vague recollection of calculus from high school.” Highly recommended.</p>
-</section>
-<section id="review-articles" class="level1">
-<h1>Review articles</h1>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
+<p>Andrej Karpathy’s videos are also excellent introductions to ML concepts. In his own words, the first video in his main series (called <a href="https://www.youtube.com/watch?v=VMj-3S1tku0"><em>The spelled-out intro to neural networks and backpropagation: building micrograd</em></a>) “only assumes basic knowledge of Python and a vague recollection of calculus from high school.” Highly recommended.</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><span class="emoji" data-emoji="star">⭐</span> <a href="https://www.nature.com/articles/s41576-019-0122-6">Deep learning: new computational modeling techniques for genomics</a></p>
+<div class="callout-title-container flex-fill">
+Review articles
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://www.nature.com/articles/s41576-019-0122-6">Deep learning: new computational modeling techniques for genomics</a></p>
+<blockquote class="blockquote">
 <p>An excellent and detailed overview, probably where I’d start.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
+</blockquote>
 <p><a href="https://www.nature.com/articles/s41588-018-0295-5">A primer on deep learning in genomics</a></p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
 <p><a href="https://www.nature.com/articles/s41576-023-00636-3">Harnessing deep learning for population genetic inference</a></p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><span class="emoji" data-emoji="star">⭐</span> <a href="https://www.nature.com/articles/s41576-021-00434-9">Navigating the pitfalls of applying machine learning in genomics</a></p>
+<p><a href="https://www.nature.com/articles/s41576-021-00434-9">Navigating the pitfalls of applying machine learning in genomics</a></p>
+<blockquote class="blockquote">
 <p>Excellent overview of pitfalls and possible mistakes that can confound ML analyses, with a particular focus on biological inference.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
+</blockquote>
 <p><a href="https://royalsocietypublishing.org/doi/10.1098/rsif.2017.0387">Opportunities and obstacles for deep learning in medicine</a></p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
 <p><a href="https://doi.org/10.1016/j.tig.2017.12.005">Supervised machine learning for population genetics: a new paradigm</a></p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
 <p><a href="https://arxiv.org/abs/2311.07621">To transformers and beyond: large language models for the genome</a></p>
 </div>
 </div>
@@ -315,142 +261,123 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="applications" class="level1">
 <h1>Applications</h1>
-<p>Papers are broadly grouped by ML architecture. Many of these papers involve a mix of architectures, so the groups are “fuzzy.”</p>
-<section id="transformers" class="level3">
-<h3 class="anchored" data-anchor-id="transformers">Transformers</h3>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
+<p>Papers are broadly grouped by ML architecture. Many of these papers involve a mix of architectures, so the groups should be considered “fuzzy.”</p>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
+<div class="callout-title-container flex-fill">
+Transformers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p><a href="https://www.nature.com/articles/s41592-021-01252-x">Effective gene expression prediction from sequence by integrating long-range interactions</a></p>
-<p>Describes the “Enformer” model, which utilizes a transformer-based architecture to predict gene expression from sequence alone.</p>
-<p>Also see a <a href="https://www.nature.com/articles/s41588-023-01524-6">suite</a> <a href="https://www.nature.com/articles/s41588-023-01517-5">of</a> <a href="https://www.nature.com/articles/s41588-023-01574-w">papers</a> describing the limitations of “Enformer” for personal transcriptome inference.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
+<blockquote class="blockquote">
+<p>Describes the “Enformer” model, which utilizes a transformer-based architecture to predict gene expression from sequence alone. Also see a <a href="https://www.nature.com/articles/s41588-023-01524-6">suite</a> <a href="https://www.nature.com/articles/s41588-023-01517-5">of</a> <a href="https://www.nature.com/articles/s41588-023-01574-w">papers</a> describing the limitations of “Enformer” for personal transcriptome inference.</p>
+</blockquote>
 <p><a href="https://www.biorxiv.org/content/10.1101/2023.08.30.555582v1">Predicting RNA-seq coverage from DNA sequence as a unifying model of gene regulation</a></p>
 </div>
 </div>
 </div>
-</section>
-<section id="generative-adversarial-networks-gans" class="level3">
-<h3 class="anchored" data-anchor-id="generative-adversarial-networks-gans">Generative adversarial networks (GANs)</h3>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><span class="emoji" data-emoji="star">⭐</span> <a href="https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13386">Automatic inference of demographic parameters using generative adversarial networks</a></p>
-<p>The authors describe a novel GAN architecture that that features a population genetic simulator (in this case, the backwards-in-time <code>msprime</code> tool) as the “generator” and a convolutional neural network as the “discriminator”. The parameters of the <code>msprime</code> generator are randomly initialized, and the discriminator is trained to differentiate between simulated and real “images” of haplotypes in genomic regions of a predefined size. Over time, the generator gets better at simulating realistic-looking data and the discriminator gets better at telling the two classes of data apart. By the end of training, the generator can be interpreted by examining the population genetic parameters (population size, mutation rate, etc.) that optimally confused the discriminator.</p>
-<p>A well-written and clear overview of a cool (and interpretable) method.</p>
+<div class="callout-title-container flex-fill">
+Generative adversarial networks (GANs)
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13386">Automatic inference of demographic parameters using generative adversarial networks</a></p>
+<blockquote class="blockquote">
+<p>The authors describe a novel GAN architecture that that features a population genetic simulator (in this case, the backwards-in-time <code>msprime</code> tool) as the “generator” and a convolutional neural network as the “discriminator”. The parameters of the <code>msprime</code> generator are randomly initialized, and the discriminator is trained to differentiate between simulated and real “images” of haplotypes in genomic regions of a predefined size. Over time, the generator gets better at simulating realistic-looking data and the discriminator gets better at telling the two classes of data apart. By the end of training, the generator can be interpreted by examining the population genetic parameters (population size, mutation rate, etc.) that optimally confused the discriminator. A well-written and clear overview of a cool (and interpretable) method.</p>
+</blockquote>
 <p><a href="https://www.biorxiv.org/content/10.1101/2023.03.07.531546v1">Interpreting generative adversarial networks to infer natural selection from genetic data</a></p>
+<blockquote class="blockquote">
 <p>A follow-up the the paper listed above. The authors fine-tune the trained discriminator from their GAN to infer regions of the genome under the effects of natural selection.</p>
+</blockquote>
 </div>
 </div>
 </div>
-</section>
-<section id="language-models-lms" class="level3">
-<h3 class="anchored" data-anchor-id="language-models-lms">Language models (LMs)</h3>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><span class="emoji" data-emoji="star">⭐</span> <a href="https://www.pnas.org/doi/10.1073/pnas.2311219120">DNA language models are powerful predictors of genome-wide variant effects</a></p>
-<p>A deceptively simple and clever approach to inferring variant effects.</p>
+<div class="callout-title-container flex-fill">
+Language models (LMs)
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://www.pnas.org/doi/10.1073/pnas.2311219120">DNA language models are powerful predictors of genome-wide variant effects</a></p>
 <p><a href="https://www.biorxiv.org/content/10.1101/2023.10.10.561776v1">GPN-MSA: an alignment-based DNA language model for genome-wide variant effect prediction</a></p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
 <p><a href="https://www.biorxiv.org/content/10.1101/2023.01.11.523679v1">The nucleotide transformer: building and evaluating robust foundation models for human genomics</a></p>
+<blockquote class="blockquote">
 <p>A recent attempt to build a “foundation model” for genomics. The authors essentially adapt BERT for DNA sequence by developing an encoder-only architecture that attempts to reconstruct randomly-masked 6-mer DNA “tokens.” The learned embeddings from an input DNA sequence can then be plugged into simple regression models to make predictions about chromatin accessibility, enhancer status, etc., or the model itself can be efficiently fine-tuned for a particular downstream classification task.</p>
+</blockquote>
 </div>
 </div>
 </div>
-</section>
-<section id="convolutional-neural-networks-cnns" class="level3">
-<h3 class="anchored" data-anchor-id="convolutional-neural-networks-cnns">Convolutional neural networks (CNNs)</h3>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
+<div class="callout callout-style-simple callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
+<div class="callout-title-container flex-fill">
+Convolutional neural networks (CNNs)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p><a href="https://academic.oup.com/mbe/article/36/2/220/5229930">The unreasonable effectiveness of convolutional neural networks in population genetic inference</a></p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
+<blockquote class="blockquote">
+<p>Check this paper out for a nice introduction to CNNs and how they can be applied to “images” of haplotypes in genomic regions. The associated GitHub repository includes a few simple models (written in TensorFlow/Keras), as well.</p>
+</blockquote>
 <p><a href="https://genome.cshlp.org/content/early/2016/05/03/gr.200535.115">Basset: Learning the regulatory code of the accessible genome with deep convolutional neural networks</a></p>
 <p><a href="https://genome.cshlp.org/content/early/2018/03/27/gr.227819.117">Sequential regulatory activity prediction across chromosomes with convolutional neural networks</a></p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><span class="emoji" data-emoji="star">⭐</span> <a href="https://academic.oup.com/mbe/article/40/4/msad074/7083730">Localizing post-admixture adaptive variants with object detection on ancestry-painted chromosomes</a></p>
-<p>The authors train an off-the-shelf object detection model to identify genomic regions with recent (adaptive) admixture events.</p>
-<p>Nice example of using off-the-shelf models, rather than building architectures from scratch.</p>
-</div>
-</div>
-</div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
+<p><a href="https://academic.oup.com/mbe/article/40/4/msad074/7083730">Localizing post-admixture adaptive variants with object detection on ancestry-painted chromosomes</a></p>
+<blockquote class="blockquote">
+<p>The authors train an off-the-shelf object detection model to identify genomic regions with recent (adaptive) admixture events. Nice example of using off-the-shelf models, rather than building architectures from scratch.</p>
+</blockquote>
 <p><a href="https://academic.oup.com/mbe/article/38/3/1168/5918472">Discovery of ongoing selective sweeps within <em>Anopholes</em> mosquito populations using deep learning</a></p>
+<blockquote class="blockquote">
 <p>A nice example of training CNNs to detect selection using pre-computed features (e.g., a large collection of population genetic summary statistics) rather than “painted haplotype” images.</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Autoencoders
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><a href="https://academic.oup.com/g3journal/article/11/1/jkaa036/6105578?login=false">Visualizing population structure with variational autoencoders</a></p>
+<blockquote class="blockquote">
+<p>The authors use a variational autoencoder (VAE) to embed sample genotype vectors into a 2-dimensional latent space that reflects geographical origin.</p>
+</blockquote>
+<p><a href="https://genome.cshlp.org/content/32/8/1542.full">Haplotype and population structure inference using neural networks in whole-genome sequencing data</a></p>
+<p><a href="https://academic.oup.com/g3journal/article/12/3/jkac020/6515290">A deep learning framework for characterization of genotype data</a></p>
 </div>
 </div>
 </div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
