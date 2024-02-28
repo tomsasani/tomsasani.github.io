@@ -74,7 +74,7 @@
     "href": "teaching.html",
     "title": "Teaching",
     "section": "",
-    "text": "Title\nSlides\nRecording\n\n\n\n\nBasic data visualization using R.\nGoogle Slides: 🔗\n\n\n\nAn introduction to regression (Part I): basic linear models and interpretation.\nGoogle Slides: 🔗\n\n\n\nAn introduction to regression (Part II): multiple variables, interaction, and diagnostics.\nGoogle Slides: 🔗\n\n\n\nAn introduction to regression (Part III): approximating statistical tests as linear models.\nGoogle Slides: 🔗"
+    "text": "Basic data visualization using R.\nSlides Video\n\n\nIntro to regression (Part I): linear models and interpretation.\nSlides Video\n\n\nIntro to regression (Part II): multiple variables, interaction, and diagnostics.\nSlides\n\n\nIntro to regression (Part III): statistical tests as linear models.\nSlides"
   },
   {
     "objectID": "index.html",
