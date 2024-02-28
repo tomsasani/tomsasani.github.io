@@ -21,7 +21,7 @@ website:
       - text: "Teaching"
         file: teaching.qmd
       - sidebar:notes
-      - sidebar:ml-reading-group
+      # - sidebar:ml-reading-group
       - sidebar:cv
 
     right: 
@@ -51,22 +51,22 @@ website:
         - text: "Resume"
           href: vitae/sasani_thomas_resume.pdf
 
-    - id: ml-reading-group
-      title: "ML reading group"
-      style: "docked"
-      background: "light"
-      collapse-level: 2
-      contents: 
-        - href: ml_reading_group/2024_intro.qmd
+    # - id: ml-reading-group
+    #   title: "ML reading group"
+    #   style: "docked"
+    #   background: "light"
+    #   collapse-level: 2
+    #   contents: 
+    #     - href: ml_reading_group/2024_intro.qmd
 
 format:
   html:
     theme:
       # light: [default, theme.scss]
-      light: cosmo
+      light: default
       # dark: [default, theme-dark.scss]
-      dark: cosmo
-    # mainfont: "Atkinson Hyperlegible"
+      # dark: default
+    # mainfont: "Rubik"
     code-copy: true
     code-overflow: wrap
     toc: true

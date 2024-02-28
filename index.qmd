@@ -16,23 +16,14 @@ toc: false
 
 I’m a computational biologist using genetic data to better understand health and evolution.
 
-## Experience
+### Experience
 
-#### Staff Research Scientist with [Dr. Aaron Quinlan](http://quinlanlab.org/)
+I'm currently a (remote) **Staff Research Scientist** with [Dr. Aaron Quinlan](http://quinlanlab.org/) at the University of Utah, where I develop new methods to study the evolution of germline mutation rates and spectra.
 
-> **2022 - present**: developing new methods to analyze germline mutation and [find mutator alleles](https://doi.org/10.7554/eLife.89096.1)
+As a **Postdoctoral Fellow** with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home) at the University of Washington, I discovered genetic modifiers of the germline mutation rate in mice.
 
-#### Senior Data Scientist @ [Recursion Pharmaceuticals](https://www.recursion.com/)
+In between my academic roles I was also a **Senior Data Scientist** at [Recursion Pharmaceuticals](https://www.recursion.com/), where I analyzed data from massive cellular imaging experiments to identify new treatments for human disease.
 
-> **2021 - 2022**: analyzed data from massive cellular imaging experiments to find new disease treatments
-
-#### Postdoctoral Fellow with [Dr. Kelley Harris](https://sites.google.com/site/harriskelley/home)
-
-> **2020 - 2021**: discovered [genetic modifiers of the germline mutation rate in mice](https://www.nature.com/articles/s41586-022-04701-5)
-
-#### Graduate Student with [Dr. Aaron Quinlan](http://quinlanlab.org/)
-
-> **2015 - 2020**: characterized [patterns of germline mutation in large human families](https://elifesciences.org/articles/46922)
 
 <!-- ## Education 
 
