@@ -3,9 +3,9 @@ title: "Teaching"
 from: markdown+emoji
 ---
 
-| Title | Slides | Recording | 
-| - | - | - |
-| **Basic data visualization using R.** | Google Slides: [:link:](https://docs.google.com/presentation/d/1T2KTEdk1h18oxic728BqI4UvW6P0OZyvP7VUZKXsM8E/edit#slide=id.p) | [![](http://img.youtube.com/vi/4G4mvSWvwWo/0.jpg){width="200"}](https://www.youtube.com/watch?v=4G4mvSWvwWo) | 
-| **An introduction to regression (Part I): basic linear models and interpretation.** | Google Slides: [:link:](https://docs.google.com/presentation/d/1gTLq3FsRxv_kkgXCOiWPrVug2eOeP73gDnsdGnR5obc/edit#slide=id.g740a5ad5f6_0_0) | [![](http://img.youtube.com/vi/KekLyPeet3k/0.jpg){width="200"}](https://www.youtube.com/watch?v=KekLyPeet3k) | 
-| **An introduction to regression (Part II): multiple variables, interaction, and diagnostics.** | Google Slides: [:link:](https://docs.google.com/presentation/d/1P2g1P21lUjEHzIa7m__Ie-dnZHmmmotqGZ8z2ME9Tzw/edit#slide=id.g7a70e009d0_0_0) | |
-| **An introduction to regression (Part III): approximating statistical tests as linear models.** | Google Slides: [:link:](https://docs.google.com/presentation/d/1YH7PUMvG9aT4oojNtZz6oz7Dsnj_di0da34XDgR5dVs/edit#slide=id.g7bf758ea38_0_0) | |
+|  |  |
+| - | - |
+| **Basic data visualization using R.** | [Slides](https://docs.google.com/presentation/d/1T2KTEdk1h18oxic728BqI4UvW6P0OZyvP7VUZKXsM8E/edit#slide=id.p){.btn .btn-outline-primary} [Video](https://www.youtube.com/watch?v=4G4mvSWvwWo){.btn .btn-outline-danger} | 
+| **Intro to regression (Part I):** linear models and interpretation. | [Slides](https://docs.google.com/presentation/d/1gTLq3FsRxv_kkgXCOiWPrVug2eOeP73gDnsdGnR5obc/edit#slide=id.g740a5ad5f6_0_0){.btn .btn-outline-primary} [Video](https://www.youtube.com/watch?v=KekLyPeet3k){.btn .btn-outline-danger} | 
+| **Intro to regression (Part II):** multiple variables, interaction, and diagnostics. | [Slides](https://docs.google.com/presentation/d/1P2g1P21lUjEHzIa7m__Ie-dnZHmmmotqGZ8z2ME9Tzw/edit#slide=id.g7a70e009d0_0_0){.btn .btn-outline-primary} |
+| **Intro to regression (Part III):** statistical tests as linear models. | [Slides](https://docs.google.com/presentation/d/1YH7PUMvG9aT4oojNtZz6oz7Dsnj_di0da34XDgR5dVs/edit#slide=id.g7bf758ea38_0_0){.btn .btn-outline-primary} |
