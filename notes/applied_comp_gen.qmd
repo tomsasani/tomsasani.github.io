@@ -1,0 +1,319 @@
+---
+title: "Applied Computational Genomics"
+subtitle: "4/4/2024"
+author: "Tom Sasani"
+format: 
+    beamer:
+        fig-width: 5
+        fig-height: 3
+execute:
+  echo: false
+# include-in-header: 
+#     text: |
+#         \usepackage{fvextra}
+#         \DefineVerbatimEnvironment{OutputCode}{Verbatim}{breaklines,commandchars=\\\{\}}
+---
+
+## Goals for today's lecture
+
+1. An introduction to generalized linear models (GLMs)
+
+2. Fitting linear models
+
+## Linear models are powerful, but limited
+
+In a linear model, we model a response as a linear function of explanatory variables, along with an error term.
+
+$$Y = \beta_0 + \beta_{1}X + \epsilon$$
+
+<!-- ::: {.incremental} -->
+
+. . .
+
+$Y$: the *dependent variable*
+
+$\beta_0$: the *intercept*
+
+$\beta_1$: the *independent variable*
+
+$\epsilon$: residual error unexplained by $\beta_0$ and $\beta_1$
+<!-- ::: -->
+
+## We make a lot of assumptions when we fit linear models
+
+1. **Independence**: are the $Y$ observations independent of each other?
+
+2. **Homoscedasticity**: is the variance of $Y$ constant as a function of $X$?
+
+3. **Linearity**: is the relationship between $X$ and $Y$ linear?
+
+4. **Normality**: for any given value of $X$, are the $Y$ values normally distributed?
+
+
+## Checking the *independence* assumption
+
+1. **Independence**: are the $Y$ observations independent of each other?
+
+Example: AAPL stock price ($Y$) as a function of time ($X$).
+
+
+## Checking the *homoscedasticity* assumption
+
+`R` has a built-in function that lets us visually examine whether our model meets many of these assumptions.
+
+
+
+
+## Checking the *linearity* assumption
+
+
+## Checking the *normality* assumption
+
+
+## Modeling other kinds of data
+
+In biology, we're often interested in modeling data that don't conform to the assumptions of linear regression.
+
+For example, *count data* are ubiquitous in genetics.
+
+\
+
+* Number of transcribed RNA molecules present in a cell for each protein-coding gene
+
+* 
+
+* Number of *de novo* germline mutations observed in a child
+
+## *De novo* germline mutations in human genomes
+
+New mutations occur in germline (sperm or egg) cells and can be passed on to children.
+
+In humans, we typically identify *de novo* mutations by sequencing trios (two parents and their child).
+
+{fig}
+
+## We expect the number of germline mutations to increase with parental age
+
+Spermatagonial stem cells constantly self-renew throughout life (~20-30 cell divisions per year).
+
+Each time a stem cell undergoes mitotic DNA replication, there's an opportunity for mutations to occur.
+
+\
+
+**Question:** How many additional germline mutations do we expect to see with each year of paternal age?
+
+## Modeling *de novo* mutation accumulation with age
+
+Some basic assumptions:
+
+* Children can never have negative counts of *de novo* mutations
+
+* We expect the number of *de novo* mutations to increase with parental age
+
+. . .
+
+Let's model the 
+
+## The Poisson distribution is useful for modeling count data
+
+$$P(Y = k) = \frac{e^{-\lambda}\lambda^k}{k!} \ \text{for} \ k = 0,1,2...$$
+
+$\lambda$ is the *rate parameter* (e.g., how frequently do we expect the event to occur in an interval of time?)
+
+\
+
+In the Poisson distribution, $\lambda = E(Y) = Var(Y)$. 
+
+In other words, the variance of $Y$ is *not constant*, but is equal to the mean of $Y$.
+
+
+## Modeling count data with the Poisson
+
+We model the *logarithm* of our response variable as a linear combination of the independent variables.
+
+$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
+
+where $E[Y]$ is the expected value of $Y$, and $E[Y] = \lambda$.
+
+
+If we exponentiate both sides of the equation,
+
+$$E[Y] = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
+
+where $e$ is Euler's number (2.7182...).
+
+## Let's apply Poisson regression to *de novo* mutation data
+
+```{r}
+#| echo: false
+#| fig-cap: 
+#|   - "*De novo* mutation counts observed in children as a function of paternal age at birth. Data from Sasani et al. (2019) *eLife*."
+library(ggplot2)
+library(cowplot)
+
+dnms = read.csv("https://raw.githubusercontent.com/quinlan-lab/ceph-dnm-manuscript/master/data/second_gen.dnms.summary.csv")
+
+names(dnms)[names(dnms) == "autosomal_callable_fraction"] <- "callable_bp"
+
+ggplot(dnms, aes(x=dad_age, y=all_dnms)) +
+    geom_point() +
+    labs(x="Paternal age", y="Total number of DNMs") +
+    theme_cowplot()
+```
+
+## We can fit a simple Poisson model using `R`
+
+\footnotesize
+```{r}
+#| echo: true
+
+m = glm(all_dnms ~ dad_age, family="poisson", data=dnms)
+```
+
+## Interpreting our Poisson GLM in `R`
+
+Let's look at the model summary:
+
+\scriptsize
+```{r}
+summary(m)
+```
+
+## Interpreting our Poisson GLM in `R`
+
+Just like a typical `summary()` output, we can see the coefficient estimates and p-values for each of our independent variables.
+
+One key difference is that the coefficients are on a logarithmic scale.
+
+Recall that:
+
+$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
+
+and thus,
+
+$$E[Y] = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
+
+To convert our coefficients into a "more interpretable" value, we should exponentiate them.
+
+## Interpreting our Poisson GLM in `R`
+
+In our `summary()` output, let's look at the coefficients:
+
+\
+
+\footnotesize
+```{r}
+#| echo: true
+coef(summary(m))
+```
+
+\
+
+\normalsize
+
+For a unit increase in `dad_age`, there is a multiplicative effect of $e^{0.02479512} = 1.0251$ on the response variable (# of DNMs).
+
+In other words, the number of DNMs observed in a child born to a 25-year-old father is $1.0251$ times larger than the number of DNMs observed in a child born to a 24-year-old father.
+
+## Visualizing our Poisson model fit
+
+\tiny
+```{r}
+#| echo: true
+ggplot(dnms, aes(x=dad_age, y=all_dnms)) +
+    geom_point() +
+    geom_smooth(method="glm", method.args=list(family="poisson"), fullrange=TRUE, se=TRUE) +
+    labs(x="Paternal age", y="Number of DNMs")
+```
+
+## Explicitly modeling counts as *rates*
+
+Sometimes, count data are best understood as rates. 
+
+For example, we need to have enough sequencing data to reliably detect *de novo* mutations in human genomes.
+
+In Sasani et al. (2019), we only looked for mutations at genomic positions where at least 10 sequencing reads were aligned in mom, dad, and the child. 
+
+
+## Explicitly modeling counts as *rates*
+
+Our current model is:
+
+$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1}$$
+
+where $E[Y]$ is the expected number of DNMs observed in a child and $X$ is the age of the child's father.
+
+We actually want to model:
+$$\log(\frac{E[Y]}{N}) = \beta_0 + \beta_{1}X_{1}$$
+
+where $N$ is the number of genomic positions at which we had enough sequencing data in the trio to detect a mutation.
+
+In other words, we want to model the number of DNMs *per "callable" base pair* as a function of age.
+
+
+## Explicitly modeling counts as rates
+
+Thanks to logarithm rules (remember those?),
+
+$$\log(\frac{E[Y]}{N}) = \beta_0 + \beta_{1}X_{1}$$
+
+$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
+
+In the context of linear models, the $\log(N)$ term is sometimes referred to as "exposure" or "offset."
+
+## Modeling with offsets in `R`
+
+In `R`, we can easily update our linear model to account for an "offset."
+
+Recall that our new model is
+
+$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
+
+where $N$ is the number of callable base pairs per trio.
+
+In `R`, this looks like:
+
+\
+
+\footnotesize
+```{r}
+#| echo: true
+m = glm(
+    all_dnms ~ dad_age + offset(log(callable_bp)), 
+    family="poisson", 
+    data=dnms,
+)
+```
+
+## The ingredients of a GLM
+
+1. A linear predictor 
+
+How does the response depend on independent variables?
+
+$$\mu_i = \beta_0 + \beta_{1}x_{1i} + ... + \beta_{p}x_{pi}$$
+
+2. A "link" function $\eta(\mu)$
+
+How does the mean of the response variable depend on the linear predictor?
+
+For Poisson regression, $\eta(\mu) = \log(\mu)$.
+
+For "standard" linear regression, $\eta(\mu) = \mu$.
+
+## Lots of generalized linear models out there
+
+For example, logistic regression can be formulated as:
+
+```{r}
+#| eval: false
+#| echo: true
+m = glm(Y ~ X, family="binomial", link="logit")
+```
+
+
+## Goals for today's lecture
+
+1. An introduction to generalized linear models (GLMs)
+
+2. Fitting linear models
