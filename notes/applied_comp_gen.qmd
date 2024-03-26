@@ -8,17 +8,13 @@ format:
         fig-height: 3
 execute:
   echo: false
-# include-in-header: 
-#     text: |
-#         \usepackage{fvextra}
-#         \DefineVerbatimEnvironment{OutputCode}{Verbatim}{breaklines,commandchars=\\\{\}}
 ---
 
 ## Goals for today's lecture
 
 1. An introduction to generalized linear models (GLMs)
 
-2. Fitting linear models
+2. Fitting linear models like machine learning models
 
 ## Linear models are powerful, but limited
 
@@ -80,8 +76,6 @@ For example, *count data* are ubiquitous in genetics.
 
 * Number of transcribed RNA molecules present in a cell for each protein-coding gene
 
-* 
-
 * Number of *de novo* germline mutations observed in a child
 
 ## *De novo* germline mutations in human genomes
@@ -90,7 +84,12 @@ New mutations occur in germline (sperm or egg) cells and can be passed on to chi
 
 In humans, we typically identify *de novo* mutations by sequencing trios (two parents and their child).
 
-{fig}
+::: {#fig-elephants}
+
+![](../img/Artboard 9.png){width=40%}
+
+A single-nucleotide *de novo* mutation observed in a trio
+:::
 
 ## We expect the number of germline mutations to increase with parental age
 
@@ -155,7 +154,7 @@ dnms = read.csv("https://raw.githubusercontent.com/quinlan-lab/ceph-dnm-manuscri
 
 names(dnms)[names(dnms) == "autosomal_callable_fraction"] <- "callable_bp"
 
-ggplot(dnms, aes(x=dad_age, y=all_dnms)) +
+ggplot(dnms, aes(x=dad_age, y=snv_dnms)) +
     geom_point() +
     labs(x="Paternal age", y="Total number of DNMs") +
     theme_cowplot()
@@ -167,7 +166,7 @@ ggplot(dnms, aes(x=dad_age, y=all_dnms)) +
 ```{r}
 #| echo: true
 
-m = glm(all_dnms ~ dad_age, family="poisson", data=dnms)
+m = glm(snv_dnms ~ dad_age, family="poisson", data=dnms)
 ```
 
 ## Interpreting our Poisson GLM in `R`
@@ -220,7 +219,7 @@ In other words, the number of DNMs observed in a child born to a 25-year-old fat
 \tiny
 ```{r}
 #| echo: true
-ggplot(dnms, aes(x=dad_age, y=all_dnms)) +
+ggplot(dnms, aes(x=dad_age, y=snv_dnms)) +
     geom_point() +
     geom_smooth(method="glm", method.args=list(family="poisson"), fullrange=TRUE, se=TRUE) +
     labs(x="Paternal age", y="Number of DNMs")
@@ -230,9 +229,9 @@ ggplot(dnms, aes(x=dad_age, y=all_dnms)) +
 
 Sometimes, count data are best understood as rates. 
 
-For example, we need to have enough sequencing data to reliably detect *de novo* mutations in human genomes.
-
 In Sasani et al. (2019), we only looked for mutations at genomic positions where at least 10 sequencing reads were aligned in mom, dad, and the child. 
+
+There are roughly $3 \times 10^9$ nucleotides in the human genome, but many of them occur in low-complexity and repetitive sequence. We might only be able to sequence ~80-90% of those nucleotides, and that "callable" fraction will vary across trios.
 
 
 ## Explicitly modeling counts as *rates*
@@ -317,3 +316,79 @@ m = glm(Y ~ X, family="binomial", link="logit")
 1. An introduction to generalized linear models (GLMs)
 
 2. Fitting linear models
+
+(h/t to the [CS229 course notes](https://see.stanford.edu/materials/aimlcs229/cs229-notes1.pdf) from Andrew Ng)
+
+## Let's return to ordinary least squares
+
+Let's look at the relationship between beak length and flipper length among the Palmer Penguins.
+
+```{r}
+#| echo: false
+#| warning: false
+# install.packages("palmerpenguins", repos='http://cran.us.r-project.org')
+library(palmerpenguins)
+
+ggplot(penguins, aes(x=flipper_length_mm, y=body_mass_g, col=species)) +
+    geom_point() +
+    labs(x="Flipper length (mm)", y="Body mass (g)")
+```
+
+## We can easily fit a linear model to these data
+
+```{r}
+ggplot(penguins, aes(x=flipper_length_mm, y=body_mass_g)) +
+    geom_point() +
+    geom_smooth(method="lm") +
+    labs(x="Flipper length (mm)", y="Body mass (g)")
+```
+
+Our goal is to find a line that minimizes the residual sum of squares (RSS).
+
+But how exactly can we find the coefficients that produce that line?
+
+## Some setup and definitions
+
+We want to approximate $y$ as a linear function of our predictors $x$.
+
+$$h(x) = \theta_0 + \theta_{1}x_1$$
+
+The $\theta$ values are our coefficients, or in machine learning lingo, our "parameters."
+
+Given input values $x$, our function $h(x)$ will hopefully produce values that are very close to $y$. 
+
+## Defining our "cost function"
+
+In machine learning, we train models by finding model parameters that minimize a cost/loss function. 
+
+Since we want our function $h(x)$ to produce values very close to the "target" values $y$, we can measure that "closeness" using a cost function $J$:
+
+$$J(\theta) = \frac{1}{2}\sum_{i = 1}^{m}(h_{\theta}(x^i) - y^i)^2$$
+
+## Gradient descent
+
+To find the values of $\theta$ that minimize our cost function $J(\theta)$, we can start by picking a *totally random* initial value for $\theta$.
+
+Then, we can iteratively update $\theta$ values by asking: if we increase $\theta$, does $J(\theta)$ go up or down? 
+
+If increasing $\theta$ makes the cost function decrease, we should continue bumping up our values of $\theta$, and vice versa.
+
+More formally, we perform the following:
+
+$$\theta_j := \theta_j - \alpha\frac{\delta}{\delta\theta_j}J(\theta)$$
+
+where $\alpha$ is a term called the "learning rate."
+
+## Gradient descent (less formally)
+
+In plain-ish English:
+
+For the $j$th parameter, take the partial derivative of the cost function $J(\theta)$ with respect to $\theta_j$. That partial derivative will be negative if the cost function *decreases* when $\theta_j$ *increases*, and positive if the cost function *increases* when $\theta_j$ *increases*.
+
+Then, update $\theta_j$ by subtracting the partial derivative multiplied by the learning rate. If the learning rate is large, our "updates" to $\theta_j$ will be large, and if the learning rate is small, our updates will be small.
+
+**Note:** This will always update $\theta_j$ in the direction of decreasing the cost function!
+
+## Gradient descent (without partial derivatives)
+
+$$\theta_j := \theta_j - \alpha\sum_{i = 1}^{m}(y^i - h_\theta(x^i))x_j^i$$
