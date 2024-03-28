@@ -14,130 +14,107 @@ execute:
 
 1. An introduction to generalized linear models (GLMs)
 
-2. Ordinary least squares (OLS) as machine learning
+\ 
 
-## notes
+\
 
-lienar model assumes sepcifi form for mean
+\footnotesize
 
-u(X) = X.Tbeta
+Credit to Phillipe Rigolet's 18.650 (MIT) course notes for some of the slides.
 
-GLM
 
-lienar because X values get transformed by X.Tbeta -- applying linear transformation
-
-Random componeent
-
-before, Y belonged to gaussian, now we say that Y|X belongs to some specific distribution (exponential family)
-
-Link function
-
-before, u(X) = X.TB directly related. 
-
-now, we extend this such that some function g(u(X)) is equal to X.Tbeta
-
-why do we need a link function? 
-
-what is u(X) if we're dealing with Poisson data? 0, inf (positive)
-but what is X.Tb? could be anything on the real number line
-
-need a way to map our 
 ## Linear models are powerful, but limited
 
-In a simple linear model, we model a dependent (response) variable using an independent (explanatory) variable, along with an error term.
+In a simple linear model, we model the expected value of $Y$ (our response) given some input values $X$ (our explanatory variables), along with an error term $\epsilon$.
 
-$$Y = \beta_0 + \beta_{1}X_1 + \epsilon$$
+$$\mathbb{E}(Y | X) = \beta_0 + \beta_{1}X_1 + ... + \beta_{p}X_p + \epsilon$$
 
 . . .
 
-$Y$: the *dependent variable*
+
+$\mathbb{E}(Y | X) = \mu(X)$: the expected value of $Y$ given $X$
 
 $\beta_0$: the *intercept* term
 
-$\beta_1$: the coefficient associated with our *independent variable*
+$\beta_p$: the coefficient associated with independent variable $X_p$
 
-$X_1$: the *independent variable*
-
-$\epsilon$: residual error unexplained by $\beta_0$ and $\beta_1$
-<!-- ::: -->
-
-## We make a number of assumptions when we fit linear models
-
-1. **Linearity**: is the relationship between $X$ and $Y$ linear?
-
-2. **Independence**: are the $Y$ observations independent of each other?
-
-3. **Homoscedasticity**: is the variance of $Y$ constant as a function of $X$?
-
-4. **Normality**: for any given value of $X$, are the $Y$ values normally distributed?
+$\epsilon$: residual error unexplained by coefficients
 
 
-<!-- ## Checking the *linearity* assumption
+## We make a few basic assumptions when we fit linear models
 
-Enzymatic reaction velocity vs. substrate concentration in cells that were treated with puromycin.
+1. Our errors (residuals) $\epsilon$ are **normally distributed** and **homoscedastic**
+
+
+. . .
+
 
 ```{r}
-library(datasets)
+#| fig-width: 4
+#| fig-height: 2
+library(HistData)
+data(GaltonFamilies)
 library(ggplot2)
 library(cowplot)
 
-ggplot(subset(Puromycin, state == "treated"), aes(x=conc, y=rate)) +
-    geom_point() +
+ggplot(subset(GaltonFamilies, gender=="male"), aes(x=midparentHeight, y=childHeight)) +
+    geom_point(alpha=0.5) +
+    geom_smooth(method="lm") +
     theme_cowplot() +
-    theme(text = element_text(size = 9), 
-    axis.text.x = element_text(size=9), 
-    axis.text.y = element_text(size=9)) +
-    labs(x="Substrate concentration (ppm)", y="Reaction rate (counts/min/min)")
+    labs(x="Mid-parent height", y="Child height") +
+    theme(text = element_text(size = 9), axis.text.y = element_text(size=9), axis.text.x = element_text(size=9))
+
+
 ```
 
-## Checking the *linearity* assumption
+::: {.notes}
+For example, on Tuesday I believe Michael used Francis Galton's height measurements as a motivating example for linear regression.
 
-It seems like these data do *not* follow a linear trend, but we can check that more explicitly by looking at the model residuals.
+This dataset is a good example of one that fits our assumptions for linear regression. 
+If we fit a simple linear regression model to these data, we'd expect that the residuals (errors) -- the differences between our predictions and true values -- are normally distributed and have a constant variance as a function of our X-values.
 
-In `R`, if we fit a model `m = y ~ x`, we can simply type `plot(m)` to see diagnostic plots.
+Let's prove to ourselves that this is the case.
+:::
 
-\footnotesize
-```{r}
-m = lm(rate ~ conc, data=Puromycin)
-plot(m, which=c(1, 1))
-```
-
-
-## Checking the *homoscedasticity* assumption
+## We make a few basic assumptions when we fit linear models
 
 ```{r}
-m = lm(wt ~ mpg, data=mtcars)
-plot(m, which=c(3, 3))
+#| fig-cap: Distribution of residuals from a linear model predicting child height as a function of mid-parent height.
+m = lm(childHeight ~ midparentHeight, data=subset(GaltonFamilies, gender=="male"))
+
+hist(resid(m), breaks=50)
 ```
 
-## Checking the *normality* assumption
+::: {.notes}
+Here we're looking at a histogram of the residuals from our linear model fit to the Galton height data.
 
-```{r}
-m = lm(wt ~ mpg, data=mtcars)
-plot(m, which=c(2, 2))
-```
+We won't do a formal test here, but the residuals seem to be approximately normally distributed.
+:::
 
-## Checking the *independence* assumption
+## We make a few basic assumptions when we fit linear models
 
-```{r}
-library(tidyquant)
-library(cowplot)
+1. Our errors (residuals) $\epsilon$ are **normally distributed** and **homoscedastic**
 
-aapl <- tq_get('AAPL',
-               from = "2017-01-01",
-               to = "2018-03-01",
-               get = "stock.prices")
+2. We can model the expected value of $Y | X$ by applying a linear transformation to $X$
 
-ggplot(aapl, aes(x=date, y=adjusted)) +
-    geom_line() +
-    labs(x="Date", y="Adjusted AAPL stock price ($)") +
-    theme_cowplot() +
-    theme(text = element_text(size = 9), 
-    axis.text.x = element_text(size=9), 
-    axis.text.y = element_text(size=9))
-```
+$$\mathbb{E}(Y | X) = \mu(X) = \beta_0 + \beta_{1}X_1 + ... + \beta_{p}X_p$$
 
-Apple stock prices on consecutive days are not independent! -->
+. . .
+
+What if these assumptions are violated?
+
+::: {.notes}
+By *continuous* we mean that the variable can take any *real* value within some interval. 
+
+It's pretty easy to imagine that we'll encounter biological data with residuals that are not normally distributed.
+For example, a binary response or a count of something.
+
+The second assumption is less obvious as to why it's so restrictive
+Basically, in a linear model we assume that we can take our $X$ values, multiply them by coefficients, and directly get out
+the expected value (mean) of $Y$ given $X$.
+Here, I'm denoting the conditional expectation of Y given X as mu(X).
+Later, hopefully it'll become clearer why we might need to relax that assumption when we model data that don't conform to assumption 1.
+:::
 
 ## Modeling other kinds of data
 
@@ -159,6 +136,142 @@ In biology, we're often interested in modeling data that don't conform to the as
 
 To model these data types, we can turn to **generalized linear models** (GLMs).
 
+## The basic ingredients of a generalized linear model
+
+1. An expected distribution for the $Y$ values^[(belonging to the exponential family)]
+
+. . .
+
+2. A "link" $g$ between the our linear predictor and the conditional mean $E(Y | X) = \mu(X)$ of the distribution:
+
+$$g(\mu(X)) = \beta_0 + \beta_{1}X_1 + ... + \beta_{p}X_{p} $$
+
+or alternatively...
+
+$$\mu(X) = g^{-1}(\beta_0 + \beta_{1}X_1 + ... + \beta_{p}X_{p})$$
+
+. . .
+
+The link function makes sure that the values produced by our linear predictor are compatible with the distribution we're modeling.
+
+::: {.notes}
+We'll need two basic ingredients.
+
+The first ingredient (maybe the most important), is that we need to make a reasonable guess about the kind of statistical distribution that produced our Y values.
+So for example, if we're modeling count data, we might want to use the Poisson distribution. If binary data, maybe the Bernoulli distribution.
+
+The second ingredient (which often follows directly from the first) is called a link function. 
+Without getting too into the weeds, our link function basically makes sure that the values produced by our linear predictor (our linear combination of coefficients) are compatible with the distribution we've chosen.
+Maybe the easiest way of thinking about this is that the link function is "bending the curve" we've fit to the data so that our predictions aren't total nonsense with respect to the true Y values.
+
+As you can see in the second equation, whatever our link function is, we do the inverse of that to the values produced by our linear predictor to ensure that they aren't nonsense.
+:::
+
+## Why do we need a "link" function?
+
+```{r}
+#| fig-cap: Whether a passenger on the Titanic survived given the amount they paid for their fare.
+#| fig-height: 2
+#| fig-width: 4
+
+titanic = read.csv("https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv")
+
+ggplot(titanic, aes(x=Fare, y=Survived)) +
+    geom_point(alpha=0.1) +
+    theme_cowplot() 
+```
+
+::: {.notes}
+Let's walk through this a little more explicitly.
+
+Say we're modeling a binary variable. It's a little morbid, but say we're trying to predict whether someone survived the Titanic disaster as a function of how much they paid for their ticket.
+
+If we just fit a simple linear regression to these data, we get the following.
+:::
+
+## Why do we need a "link" function?
+
+```{r}
+#| fig-height: 2
+#| fig-width: 4
+
+ggplot(titanic, aes(x=Fare, y=Survived)) +
+    geom_point(alpha=0.25) +
+    geom_smooth(method="lm") +
+    theme_cowplot() 
+```
+
+The expected value of $Y | X$, &mdash; a.k.a $\mathbb{E}(Y | X) = \mu(X)$ &mdash; cannot be outside of the interval $(0, 1)$. But clearly, our linear predictor $\beta_0 + \beta_{1}X_1$ is predicting values outside of that interval.
+
+We need a link function to make the two things compatible.
+
+::: {.notes}
+There's no rule against fitting a line to these data, but it's pretty obvious that simple linear regression is the wrong choice here.
+
+The expected value of $Y | X$ (or as i've ben callin it \mu(X)) cannot possibly be less than 0 or greater than 1. Y is binary. But our linear predictor (beta_0 + beta_1X1) is clearly predicting values outside of that (0, 1) interval.
+Without a link function that ensures compatibility between our predictions and the expected value of $Y | X$, our predictions are nonsensical.
+:::
+
+## Why do we need a "link" function?
+
+```{r}
+#| fig-height: 2
+#| fig-width: 4
+
+ggplot(titanic, aes(x=Fare, y=Survived)) +
+    geom_point(alpha=0.25) +
+    geom_smooth(method="glm", method.args = list(family = binomial(link="logit"))) +
+    theme_cowplot() 
+```
+
+Using an appropriate link function, we make predictions that are compatible with the expected value of $Y | X$.
+
+The "canonical" link $g(\mu)$ for a logistic regression is $\log\left(\frac{\mu}{1 - \mu}\right)$. 
+
+We can apply the inverse of $g(\mu)$, denoted $g^{-1}(\mu)$, to our linear predictor $\beta_0 + \beta_{1}X_1$ to ensure that our predictions match the expected distribution.
+
+## Side note: picking link functions
+
+Assuming you already have ingredient #1 (an expected distribution for your $Y$ values), there is a "canonical" link function for that distribution.
+
+| GLM type | canonical link function |
+| - | - |
+| Simple linear regression | $g(\mu) = \mu$ |
+| Poisson regression | $g(\mu) = \log(\mu)$ |
+| Logistic regression | $g(\mu) = \log\frac{\mu}{1 - \mu}$ |
+
+Here, $\mu$ is shorthand for $\mu(X)$, which is the expected value of $Y$ given $X$.
+
+## Basic ingredients of a GLM *in practice*
+
+We've established that we need two things in order to fit a GLM:
+
+1. An expected distribution for the $Y$ values
+
+2. A "link" $g$ between the our linear predictor and the conditional mean $E(Y | X) = \mu(X)$ of the distribution
+
+When we fit a GLM in `R`, what does this involve?
+
+
+```{r}
+#| eval: false
+#| echo: true
+
+# this...
+m = glm(Y ~ X, family="poisson")
+
+# is the same as this...
+m = glm(Y ~ X, family=poisson(link="log"))
+```
+
+::: {.notes}
+
+When you fit GLMs in R, arguably the most important thing is to know #1. 
+There are default link functions for modeling most distributions (on the previous slide) -- these links are the ones that are the most natural for each distribution.
+You can always change the link function you use, depending on the expected domain of your the conditional mean.
+
+Biggest point here: think carefully about the distribution you expect your Y values to take on, and think carefully about the expected domain of your predictions.
+:::
 
 ## GLM case study: *de novo* mutations in human genomes
 
@@ -172,48 +285,25 @@ In humans, we typically identify *de novo* mutations by sequencing trios (two pa
 Example of a *de novo* single-nucleotide mutation
 :::
 
+::: {.notes}
+
+OK. now that we've talked through the ingredients of a GLM, let's walk through a biological case study.
+:::
+
 ## We expect to see around 70 DNMs per child
 
 ::: {fig-decode}
 
-![](../img/sasani_dnm_fig1.jpg){width=70%}
+![](../img/sasani_dnm_fig1.jpg){width=75% fig-align="center"}
 
 Data from Sasani et al. (2019) *eLife*
 :::
 
-Since *de novo* mutations are a form of *count data*, we can model them using Poisson models.
-
-
-## The Poisson distribution is useful for modeling count data
-
-$$P(Y = k) = \frac{e^{-\lambda}\lambda^k}{k!} \ \text{for} \ k = 0,1,2...$$
-
-where $\lambda$ is the expected number of "events."
-
-We expect to see an average of $\lambda = 70$ *de novo* mutations (DNMs) per child.
-
-. . . 
-
-The probability that a child has exactly $75$ DNMs is:
-
-$$P(Y = 75) = \frac{(e^{-70})(70^{75})}{75!}$$
-
-. . . 
-
-\footnotesize
-```{r}
-#| echo: true
-print ((exp(-70) * (70^75)) / factorial(75))
-```
-
-
 ## Modeling the dependence between DNM counts and parental age
 
-We expect *de novo* mutation counts to depend on parental age. 
+We also expect *de novo* mutation counts to depend on parental age. 
 
-Spermatagonial stem cells constantly self-renew throughout life (~20-30 cell divisions per year).
-
-Each time a stem cell undergoes mitotic DNA replication, there's an opportunity for mutations to occur.
+Each time a spermatogonial stem cell undergoes mitotic DNA replication, there's an opportunity for mutations to occur.
 
 DNA damage also accumulates in germ cells over time, leading to new mutations.
 
@@ -221,20 +311,17 @@ DNA damage also accumulates in germ cells over time, leading to new mutations.
 
 **Question:** How many additional germline mutations do we expect to see with each year of paternal age?
 
-<!-- ## Modeling *de novo* mutation accumulation with age
+Let's build a GLM to find out.
 
-Some basic assumptions:
-
-* Numbers of *de novo* mutations are not continuous
-
-* Children can never have negative counts of *de novo* mutations
-
-* We expect the number of *de novo* mutations to increase with parental age -->
 
 
 ## *De novo* mutation counts increase with age
 
+Let's look at our data first.
+
 ```{r}
+#| fig-cap: 
+#|   - "*De novo* mutation counts observed in children as a function of paternal age at birth. Data from Sasani et al. (2019) *eLife*."
 library(ggplot2)
 library(dplyr)
 library(cowplot)
@@ -254,84 +341,62 @@ Data from Sasani et al. (2019) *eLife*.
 
 It looks like there is a strong relationship between *de novo* mutation counts and paternal age.
 
-However, a simple linear model probably isn't appropriate for modeling the relationship.
+However, a linear model probably isn't appropriate for modeling the relationship.
 
-* *De novo* mutation counts are not continuous
+* *De novo* mutations are counts (can't be less than 0)
 
-* Variance of errors/residuals is not constant as a function of $X$
+* For count data, variance of errors/residuals is typically not constant as a function of $X$ (heteroscedasticity)
 
 This is where GLMs can come in handy.
 
+## The Poisson distribution is useful for modeling count data
 
-## The basic ingredients of a generalized linear model
+Remember the first ingredient we need to fit a GLM:
 
-1. An expected distribution for the $Y$ values (belonging to the exponential family)
+1. An expected distribution for the $Y$ values
 
-. . .
-
-2. A "link" $g$ between the conditional mean $E(Y | X) = \mu$ and our linear predictor:
-
-$$g(E(Y | X)) = g(\mu) = \beta_0 + \beta_{1}X_1 + ... + \beta_{p}X_{p} = X^{\top}\beta$$
-
-| GLM type | canonical link function |
-| - | - |
-| Simple linear regression | $g(\mu) = \mu$ |
-| Poisson regression | $g(\mu) = \log(\mu)$ |
-| Logistic regression | $g(\mu) = \log\frac{\mu}{1 - \mu}$ |
-
-## Why do we need a "link" function?
-
-In ordinary linear regression, we approximate the conditional mean $\mu = E(Y | X)$ by applying a linear transformation to our input variables $X$.
-
-$$E(Y | X) = \beta_0 + \beta_{1}X_1 + ... + \beta_{p}X_{p}$$
-
-But what if $E(Y | X)$ is restricted between e.g., $(0, 1)$ (binary data)?
+Since we're dealing with count data, the Poisson makes sense.
 
 . . .
 
-We need to make sure that the values on both sides of the $=$ sign are compatible, and our predictions (from the right side of the equation) aren't nonsense. 
-
-Our link function maps $E(Y | X)$ to the real number line so that we can use a *linear* predictor to find coefficients.
-<!-- ## Modeling count data with the Poisson
-
-Recall that the Poisson distribution is parameterized by $\lambda$ (the mean number of events):
+The Poisson distribution tells us:
 
 $$P(Y = k) = \frac{e^{-\lambda}\lambda^k}{k!} \ \text{for} \ k = 0,1,2...$$
 
-We want to model the expected value of $Y$ given our input $X$ values:
+where $\lambda$ is the expected number of "events."
 
-$$E(Y | X)$$
+We expect to see an average of $\lambda = 70$ *de novo* mutations (DNMs) per child.
 
-which, in Poisson regression, is the same as saying:
-
-$$E(\lambda | X)$$ -->
 
 ## Modeling count data with the Poisson
 
-In Poisson regression, the "canonical" link function $g(\mu)$ is the "log link" $\log(\mu)$, so we model the *logarithm* of $\mu = E(Y | X)$:
+Now that we've decided to model our data using the Poisson distribution, remember the second ingredient we need for a GLM:
 
-$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
+2. A "link" $g$ between the our linear predictor and the conditional mean $\mathbb{E}(Y | X) = \mu(X)$ of the distribution
+
+. . .
+
+In Poisson regression, the "canonical" link function $g(\mu(X))$ is the "log link" $\log(\mu(X))$:
+
+$$\log(\mu(X)) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
+
+. . .
 
 If we exponentiate both sides of the equation,
 
-$$E(Y | X) = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
+$$\mu(X) = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
 
-where $e$ is Euler's number (2.7182...).
+We see that we're applying the inverse of the link function to our linear predictor.
 
-<!-- ## Why not take the log of our dependent variable instead?
+::: {.notes}
 
-Given input data $X$ and $Y$, why not just take $\log(Y)$ and use simple linear regression to model our data?
+Why the "log link" for Poisson data? 
 
-```{r}
-dnms$log_snv_dnms = log(dnms$snv_dnms)
+My modeling the log of the expected value (or put another way, exponentiating our predictions), we ensure that our predicted values are never negative. E to the something can never be negative
+:::
 
-ggplot(dnms, aes(x=dad_age, y=log_snv_dnms)) +
-    geom_point() +
-    labs(x="Paternal age", y="Number of DNMs (log-transformed)") +
-    theme_cowplot()
-```
 
-## Why not log-transform our input data?
+<!-- ## Why not log-transform our input data?
 
 There's a subtle (but important) difference between log-transforming our $Y$ values and modeling the logarithm of the *expected value* of our $Y$ values.
 
@@ -339,32 +404,15 @@ In other words,
 
 $$E[\log(Y) | X] \neq \log(E[Y | X])$$ -->
 
-## Let's apply Poisson regression to *de novo* mutation data
-
-```{r}
-#| echo: false
-#| fig-cap: 
-#|   - "*De novo* mutation counts observed in children as a function of paternal age at birth. Data from Sasani et al. (2019) *eLife*."
-library(ggplot2)
-library(cowplot)
-
-dnms = read.csv("https://raw.githubusercontent.com/quinlan-lab/ceph-dnm-manuscript/master/data/second_gen.dnms.summary.csv")
-
-names(dnms)[names(dnms) == "autosomal_callable_fraction"] <- "callable_bp"
-
-ggplot(dnms, aes(x=dad_age, y=snv_dnms)) +
-    geom_point() +
-    labs(x="Paternal age", y="Total number of DNMs") +
-    theme_cowplot()
-```
-
 ## We can fit a simple Poisson model using `R`
 
-\footnotesize
 ```{r}
 #| echo: true
 
-m = glm(snv_dnms ~ dad_age, family=poisson(link = "log"), data=dnms)
+m = glm(snv_dnms ~ dad_age, 
+        family=poisson(link = "log"), 
+        data=dnms,
+        )
 ```
 
 ## Interpreting our Poisson GLM in `R`
@@ -384,11 +432,11 @@ One key difference is that the coefficients are on a logarithmic scale.
 
 Recall that:
 
-$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
+$$\log(\mu(X)) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
 
 and thus,
 
-$$E(Y | X) = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
+$$\mu(X) = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
 
 
 ## Interpreting our Poisson GLM in `R`
@@ -407,9 +455,9 @@ coef(summary(m))
 
 \normalsize
 
-For a unit increase in `dad_age`, there is a multiplicative effect of $e^{0.02479512} = 1.0251$ on the response variable (# of DNMs).
+For a unit increase in `dad_age`, there is a multiplicative effect of $e^{0.02581} = 1.0261$ on the response variable (expected # of DNMs).
 
-In other words, the number of DNMs observed in a child born to a 25-year-old father is $1.0251$ times larger than the number of DNMs observed in a child born to a 24-year-old father.
+In other words, the number of DNMs observed in a child born to a 25-year-old father is $1.0261$ times larger than the number of DNMs observed in a child born to a 24-year-old father.
 
 
 ## Visualizing our Poisson model fit
@@ -433,7 +481,7 @@ In Sasani et al. (2019), we only looked for mutations at genomic positions where
 #| fig-height: 1.5
 library(cowplot)
 
-dnms$callable_bp_bill = dnms$callable_bp / 1e9
+dnms$callable_bp_bill = dnms$autosomal_callable_fraction / 1e9
 
 # print (dnms$callable_bp_bill)
 
@@ -441,7 +489,7 @@ ggplot(dnms, aes(x=factor(sample_id), y=callable_bp_bill)) +
     geom_col() +
     labs(x = "Sample ID", y="Callable bp (billions)") +
     #ylim(c(2, 3)) +
-   coord_cartesian(ylim = c(2.45, 2.6)) +
+    coord_cartesian(ylim = c(2.45, 2.6)) +
     theme_cowplot() +
     theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), text = element_text(size = 9), axis.text.y = element_text(size=9))
 ```
@@ -455,12 +503,12 @@ Does this variable sequencing depth affect our observed DNM counts?
 
 Our current model is:
 
-$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1}$$
+$$\log(\mu(X)) = \beta_0 + \beta_{1}X_{1}$$
 
-where $E(Y | X)$ is the conditional mean number of DNMs observed in a child given the age of the child's father.
+where $\mu(X)$ is the expected number of DNMs observed in a child given the age of the child's father.
 
 We actually want to model:
-$$\log(\frac{E(Y | X)}{N}) = \beta_0 + \beta_{1}X_{1}$$
+$$\log(\frac{\mu(X)}{N}) = \beta_0 + \beta_{1}X_{1}$$
 
 where $N$ is the number of genomic positions at which we had enough sequencing data in the trio to detect a mutation.
 
@@ -471,11 +519,11 @@ In other words, we want to model the expected number of DNMs in a child *per "ca
 
 Thanks to logarithm rules (remember those?),
 
-$$\log(\frac{E(Y | X)}{N}) = \beta_0 + \beta_{1}X_{1}$$
+$$\log(\frac{\mu(X)}{N}) = \beta_0 + \beta_{1}X_{1}$$
 
-$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
+$$\log(\mu(X)) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
 
-In the context of linear models, the $\log(N)$ term is sometimes referred to as "exposure" or "offset."
+In the context of Poisson GLMs, the $\log(N)$ term is sometimes referred to as "exposure" or "offset."
 
 ## Modeling with offsets in `R`
 
@@ -483,7 +531,7 @@ In `R`, we can easily update our linear model to account for an "offset."
 
 Recall that our new model is
 
-$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
+$$\log(\mu(X)) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
 
 where $N$ is the number of callable base pairs per trio.
 
@@ -492,6 +540,7 @@ In `R`, this looks like:
 \small
 ```{r}
 #| echo: true
+#| eval: false
 m = glm(
     all_dnms ~ dad_age + offset(log(callable_bp)), 
     family="poisson", 
@@ -499,33 +548,25 @@ m = glm(
 )
 ```
 
-## Lots of generalized linear models out there
-
-For example, logistic regression can be formulated as:
-
-```{r}
-#| eval: false
-#| echo: true
-m = glm(Y ~ X, family="binomial", link="logit")
-```
-
-### Take-home big picture
+## Take-home big picture
 
 When fitting GLMs, you need to answer:
 
-1. What distribution are my $Y$ values expected to follow?
+### What distribution are my $Y$ values expected to follow?
 
-* i.e., what `family` do I choose in the `glm` function?
+#### what `family` do I choose in the `glm` function?
 
-2. How do I make the expected values of $Y$ compatible with my linear predictor?
+### How do I make the expected values of $Y$ compatible with my linear predictor?
 
-* i.e., what `link` do I choose?
+* what `link` do I choose?
+
+\
 
 Be careful to interpret coefficients accordingly!
 
 
 
-## Goals for today's lecture
+<!-- ## Goals for today's lecture
 
 1. An introduction to generalized linear models (GLMs)
 
@@ -605,4 +646,4 @@ Then, update $\theta_j$ by subtracting the partial derivative multiplied by the 
 
 ## Gradient descent (without partial derivatives)
 
-$$\theta_j := \theta_j - \alpha\sum_{i = 1}^{m}(y^i - h_\theta(x^i))x_j^i$$
+$$\theta_j := \theta_j - \alpha\sum_{i = 1}^{m}(y^i - h_\theta(x^i))x_j^i$$ -->
