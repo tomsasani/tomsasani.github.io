@@ -14,132 +14,330 @@ execute:
 
 1. An introduction to generalized linear models (GLMs)
 
-2. Fitting linear models like machine learning models
+2. Ordinary least squares (OLS) as machine learning
 
+## notes
+
+lienar model assumes sepcifi form for mean
+
+u(X) = X.Tbeta
+
+GLM
+
+lienar because X values get transformed by X.Tbeta -- applying linear transformation
+
+Random componeent
+
+before, Y belonged to gaussian, now we say that Y|X belongs to some specific distribution (exponential family)
+
+Link function
+
+before, u(X) = X.TB directly related. 
+
+now, we extend this such that some function g(u(X)) is equal to X.Tbeta
+
+why do we need a link function? 
+
+what is u(X) if we're dealing with Poisson data? 0, inf (positive)
+but what is X.Tb? could be anything on the real number line
+
+need a way to map our 
 ## Linear models are powerful, but limited
 
-In a linear model, we model a response as a linear function of explanatory variables, along with an error term.
+In a simple linear model, we model a dependent (response) variable using an independent (explanatory) variable, along with an error term.
 
-$$Y = \beta_0 + \beta_{1}X + \epsilon$$
-
-<!-- ::: {.incremental} -->
+$$Y = \beta_0 + \beta_{1}X_1 + \epsilon$$
 
 . . .
 
 $Y$: the *dependent variable*
 
-$\beta_0$: the *intercept*
+$\beta_0$: the *intercept* term
 
-$\beta_1$: the *independent variable*
+$\beta_1$: the coefficient associated with our *independent variable*
+
+$X_1$: the *independent variable*
 
 $\epsilon$: residual error unexplained by $\beta_0$ and $\beta_1$
 <!-- ::: -->
 
-## We make a lot of assumptions when we fit linear models
+## We make a number of assumptions when we fit linear models
 
-1. **Independence**: are the $Y$ observations independent of each other?
+1. **Linearity**: is the relationship between $X$ and $Y$ linear?
 
-2. **Homoscedasticity**: is the variance of $Y$ constant as a function of $X$?
+2. **Independence**: are the $Y$ observations independent of each other?
 
-3. **Linearity**: is the relationship between $X$ and $Y$ linear?
+3. **Homoscedasticity**: is the variance of $Y$ constant as a function of $X$?
 
 4. **Normality**: for any given value of $X$, are the $Y$ values normally distributed?
 
 
-## Checking the *independence* assumption
+<!-- ## Checking the *linearity* assumption
 
-1. **Independence**: are the $Y$ observations independent of each other?
+Enzymatic reaction velocity vs. substrate concentration in cells that were treated with puromycin.
 
-Example: AAPL stock price ($Y$) as a function of time ($X$).
+```{r}
+library(datasets)
+library(ggplot2)
+library(cowplot)
+
+ggplot(subset(Puromycin, state == "treated"), aes(x=conc, y=rate)) +
+    geom_point() +
+    theme_cowplot() +
+    theme(text = element_text(size = 9), 
+    axis.text.x = element_text(size=9), 
+    axis.text.y = element_text(size=9)) +
+    labs(x="Substrate concentration (ppm)", y="Reaction rate (counts/min/min)")
+```
+
+## Checking the *linearity* assumption
+
+It seems like these data do *not* follow a linear trend, but we can check that more explicitly by looking at the model residuals.
+
+In `R`, if we fit a model `m = y ~ x`, we can simply type `plot(m)` to see diagnostic plots.
+
+\footnotesize
+```{r}
+m = lm(rate ~ conc, data=Puromycin)
+plot(m, which=c(1, 1))
+```
 
 
 ## Checking the *homoscedasticity* assumption
 
-`R` has a built-in function that lets us visually examine whether our model meets many of these assumptions.
-
-
-
-
-## Checking the *linearity* assumption
-
+```{r}
+m = lm(wt ~ mpg, data=mtcars)
+plot(m, which=c(3, 3))
+```
 
 ## Checking the *normality* assumption
 
+```{r}
+m = lm(wt ~ mpg, data=mtcars)
+plot(m, which=c(2, 2))
+```
+
+## Checking the *independence* assumption
+
+```{r}
+library(tidyquant)
+library(cowplot)
+
+aapl <- tq_get('AAPL',
+               from = "2017-01-01",
+               to = "2018-03-01",
+               get = "stock.prices")
+
+ggplot(aapl, aes(x=date, y=adjusted)) +
+    geom_line() +
+    labs(x="Date", y="Adjusted AAPL stock price ($)") +
+    theme_cowplot() +
+    theme(text = element_text(size = 9), 
+    axis.text.x = element_text(size=9), 
+    axis.text.y = element_text(size=9))
+```
+
+Apple stock prices on consecutive days are not independent! -->
 
 ## Modeling other kinds of data
 
-In biology, we're often interested in modeling data that don't conform to the assumptions of linear regression.
+In biology, we're often interested in modeling data that don't conform to the assumptions of simple linear regression.
 
-For example, *count data* are ubiquitous in genetics.
+### Count data
+
+* Number of DNA sequencing reads aligned to a particular genomic position
+
+### Binary data
+
+* Presence or absence of a species in a microbiome sample
+
+### Discrete categorical data
+
+* Cell type identity in a large single-cell RNA-seq experiment
 
 \
 
-* Number of transcribed RNA molecules present in a cell for each protein-coding gene
+To model these data types, we can turn to **generalized linear models** (GLMs).
 
-* Number of *de novo* germline mutations observed in a child
 
-## *De novo* germline mutations in human genomes
+## GLM case study: *de novo* mutations in human genomes
 
 New mutations occur in germline (sperm or egg) cells and can be passed on to children.
 
 In humans, we typically identify *de novo* mutations by sequencing trios (two parents and their child).
 
-::: {#fig-elephants}
-
+::: {#fig-dnm}
 ![](../img/Artboard 9.png){width=40%}
 
-A single-nucleotide *de novo* mutation observed in a trio
+Example of a *de novo* single-nucleotide mutation
 :::
 
-## We expect the number of germline mutations to increase with parental age
+## We expect to see around 70 DNMs per child
 
-Spermatagonial stem cells constantly self-renew throughout life (~20-30 cell divisions per year).
+::: {fig-decode}
 
-Each time a stem cell undergoes mitotic DNA replication, there's an opportunity for mutations to occur.
+![](../img/sasani_dnm_fig1.jpg){width=70%}
 
-\
+Data from Sasani et al. (2019) *eLife*
+:::
 
-**Question:** How many additional germline mutations do we expect to see with each year of paternal age?
+Since *de novo* mutations are a form of *count data*, we can model them using Poisson models.
 
-## Modeling *de novo* mutation accumulation with age
-
-Some basic assumptions:
-
-* Children can never have negative counts of *de novo* mutations
-
-* We expect the number of *de novo* mutations to increase with parental age
-
-. . .
-
-Let's model the 
 
 ## The Poisson distribution is useful for modeling count data
 
 $$P(Y = k) = \frac{e^{-\lambda}\lambda^k}{k!} \ \text{for} \ k = 0,1,2...$$
 
-$\lambda$ is the *rate parameter* (e.g., how frequently do we expect the event to occur in an interval of time?)
+where $\lambda$ is the expected number of "events."
+
+We expect to see an average of $\lambda = 70$ *de novo* mutations (DNMs) per child.
+
+. . . 
+
+The probability that a child has exactly $75$ DNMs is:
+
+$$P(Y = 75) = \frac{(e^{-70})(70^{75})}{75!}$$
+
+. . . 
+
+\footnotesize
+```{r}
+#| echo: true
+print ((exp(-70) * (70^75)) / factorial(75))
+```
+
+
+## Modeling the dependence between DNM counts and parental age
+
+We expect *de novo* mutation counts to depend on parental age. 
+
+Spermatagonial stem cells constantly self-renew throughout life (~20-30 cell divisions per year).
+
+Each time a stem cell undergoes mitotic DNA replication, there's an opportunity for mutations to occur.
+
+DNA damage also accumulates in germ cells over time, leading to new mutations.
 
 \
 
-In the Poisson distribution, $\lambda = E(Y) = Var(Y)$. 
+**Question:** How many additional germline mutations do we expect to see with each year of paternal age?
 
-In other words, the variance of $Y$ is *not constant*, but is equal to the mean of $Y$.
+<!-- ## Modeling *de novo* mutation accumulation with age
 
+Some basic assumptions:
+
+* Numbers of *de novo* mutations are not continuous
+
+* Children can never have negative counts of *de novo* mutations
+
+* We expect the number of *de novo* mutations to increase with parental age -->
+
+
+## *De novo* mutation counts increase with age
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(cowplot)
+
+dnms = read.csv("https://raw.githubusercontent.com/quinlan-lab/ceph-dnm-manuscript/master/data/second_gen.dnms.summary.csv")
+
+ggplot(dnms, aes(x=dad_age, y=snv_dnms)) +
+    geom_point() +
+    labs(x="Paternal age", y="Number of DNMs in child") +
+    theme_cowplot()
+
+```
+
+Data from Sasani et al. (2019) *eLife*.
+
+## *De novo* mutation counts increase with age
+
+It looks like there is a strong relationship between *de novo* mutation counts and paternal age.
+
+However, a simple linear model probably isn't appropriate for modeling the relationship.
+
+* *De novo* mutation counts are not continuous
+
+* Variance of errors/residuals is not constant as a function of $X$
+
+This is where GLMs can come in handy.
+
+
+## The basic ingredients of a generalized linear model
+
+1. An expected distribution for the $Y$ values (belonging to the exponential family)
+
+. . .
+
+2. A "link" $g$ between the conditional mean $E(Y | X) = \mu$ and our linear predictor:
+
+$$g(E(Y | X)) = g(\mu) = \beta_0 + \beta_{1}X_1 + ... + \beta_{p}X_{p} = X^{\top}\beta$$
+
+| GLM type | canonical link function |
+| - | - |
+| Simple linear regression | $g(\mu) = \mu$ |
+| Poisson regression | $g(\mu) = \log(\mu)$ |
+| Logistic regression | $g(\mu) = \log\frac{\mu}{1 - \mu}$ |
+
+## Why do we need a "link" function?
+
+In ordinary linear regression, we approximate the conditional mean $\mu = E(Y | X)$ by applying a linear transformation to our input variables $X$.
+
+$$E(Y | X) = \beta_0 + \beta_{1}X_1 + ... + \beta_{p}X_{p}$$
+
+But what if $E(Y | X)$ is restricted between e.g., $(0, 1)$ (binary data)?
+
+. . .
+
+We need to make sure that the values on both sides of the $=$ sign are compatible, and our predictions (from the right side of the equation) aren't nonsense. 
+
+Our link function maps $E(Y | X)$ to the real number line so that we can use a *linear* predictor to find coefficients.
+<!-- ## Modeling count data with the Poisson
+
+Recall that the Poisson distribution is parameterized by $\lambda$ (the mean number of events):
+
+$$P(Y = k) = \frac{e^{-\lambda}\lambda^k}{k!} \ \text{for} \ k = 0,1,2...$$
+
+We want to model the expected value of $Y$ given our input $X$ values:
+
+$$E(Y | X)$$
+
+which, in Poisson regression, is the same as saying:
+
+$$E(\lambda | X)$$ -->
 
 ## Modeling count data with the Poisson
 
-We model the *logarithm* of our response variable as a linear combination of the independent variables.
+In Poisson regression, the "canonical" link function $g(\mu)$ is the "log link" $\log(\mu)$, so we model the *logarithm* of $\mu = E(Y | X)$:
 
-$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
-
-where $E[Y]$ is the expected value of $Y$, and $E[Y] = \lambda$.
-
+$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
 
 If we exponentiate both sides of the equation,
 
-$$E[Y] = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
+$$E(Y | X) = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
 
 where $e$ is Euler's number (2.7182...).
+
+<!-- ## Why not take the log of our dependent variable instead?
+
+Given input data $X$ and $Y$, why not just take $\log(Y)$ and use simple linear regression to model our data?
+
+```{r}
+dnms$log_snv_dnms = log(dnms$snv_dnms)
+
+ggplot(dnms, aes(x=dad_age, y=log_snv_dnms)) +
+    geom_point() +
+    labs(x="Paternal age", y="Number of DNMs (log-transformed)") +
+    theme_cowplot()
+```
+
+## Why not log-transform our input data?
+
+There's a subtle (but important) difference between log-transforming our $Y$ values and modeling the logarithm of the *expected value* of our $Y$ values.
+
+In other words,
+
+$$E[\log(Y) | X] \neq \log(E[Y | X])$$ -->
 
 ## Let's apply Poisson regression to *de novo* mutation data
 
@@ -166,7 +364,7 @@ ggplot(dnms, aes(x=dad_age, y=snv_dnms)) +
 ```{r}
 #| echo: true
 
-m = glm(snv_dnms ~ dad_age, family="poisson", data=dnms)
+m = glm(snv_dnms ~ dad_age, family=poisson(link = "log"), data=dnms)
 ```
 
 ## Interpreting our Poisson GLM in `R`
@@ -186,13 +384,12 @@ One key difference is that the coefficients are on a logarithmic scale.
 
 Recall that:
 
-$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
+$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
 
 and thus,
 
-$$E[Y] = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
+$$E(Y | X) = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
 
-To convert our coefficients into a "more interpretable" value, we should exponentiate them.
 
 ## Interpreting our Poisson GLM in `R`
 
@@ -214,49 +411,69 @@ For a unit increase in `dad_age`, there is a multiplicative effect of $e^{0.0247
 
 In other words, the number of DNMs observed in a child born to a 25-year-old father is $1.0251$ times larger than the number of DNMs observed in a child born to a 24-year-old father.
 
+
 ## Visualizing our Poisson model fit
 
-\tiny
 ```{r}
-#| echo: true
+#| echo: false
 ggplot(dnms, aes(x=dad_age, y=snv_dnms)) +
     geom_point() +
     geom_smooth(method="glm", method.args=list(family="poisson"), fullrange=TRUE, se=TRUE) +
-    labs(x="Paternal age", y="Number of DNMs")
+    labs(x="Paternal age", y="Number of DNMs") +
+    theme_cowplot()
 ```
 
 ## Explicitly modeling counts as *rates*
 
-Sometimes, count data are best understood as rates. 
-
 In Sasani et al. (2019), we only looked for mutations at genomic positions where at least 10 sequencing reads were aligned in mom, dad, and the child. 
 
-There are roughly $3 \times 10^9$ nucleotides in the human genome, but many of them occur in low-complexity and repetitive sequence. We might only be able to sequence ~80-90% of those nucleotides, and that "callable" fraction will vary across trios.
+
+```{r}
+#| fig-width: 4
+#| fig-height: 1.5
+library(cowplot)
+
+dnms$callable_bp_bill = dnms$callable_bp / 1e9
+
+# print (dnms$callable_bp_bill)
+
+ggplot(dnms, aes(x=factor(sample_id), y=callable_bp_bill)) +
+    geom_col() +
+    labs(x = "Sample ID", y="Callable bp (billions)") +
+    #ylim(c(2, 3)) +
+   coord_cartesian(ylim = c(2.45, 2.6)) +
+    theme_cowplot() +
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), text = element_text(size = 9), axis.text.y = element_text(size=9))
+```
+
+We were able to look for DNMs at ~2.6 billion positions in most children, but closer to ~2.4 billion in others.
+
+Does this variable sequencing depth affect our observed DNM counts?
 
 
 ## Explicitly modeling counts as *rates*
 
 Our current model is:
 
-$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1}$$
+$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1}$$
 
-where $E[Y]$ is the expected number of DNMs observed in a child and $X$ is the age of the child's father.
+where $E(Y | X)$ is the conditional mean number of DNMs observed in a child given the age of the child's father.
 
 We actually want to model:
-$$\log(\frac{E[Y]}{N}) = \beta_0 + \beta_{1}X_{1}$$
+$$\log(\frac{E(Y | X)}{N}) = \beta_0 + \beta_{1}X_{1}$$
 
 where $N$ is the number of genomic positions at which we had enough sequencing data in the trio to detect a mutation.
 
-In other words, we want to model the number of DNMs *per "callable" base pair* as a function of age.
+In other words, we want to model the expected number of DNMs in a child *per "callable" base pair* as a function of age.
 
 
 ## Explicitly modeling counts as rates
 
 Thanks to logarithm rules (remember those?),
 
-$$\log(\frac{E[Y]}{N}) = \beta_0 + \beta_{1}X_{1}$$
+$$\log(\frac{E(Y | X)}{N}) = \beta_0 + \beta_{1}X_{1}$$
 
-$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
+$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
 
 In the context of linear models, the $\log(N)$ term is sometimes referred to as "exposure" or "offset."
 
@@ -266,15 +483,13 @@ In `R`, we can easily update our linear model to account for an "offset."
 
 Recall that our new model is
 
-$$\log(E[Y]) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
+$$\log(E(Y | X)) = \beta_0 + \beta_{1}X_{1} - \log(N)$$
 
 where $N$ is the number of callable base pairs per trio.
 
 In `R`, this looks like:
 
-\
-
-\footnotesize
+\small
 ```{r}
 #| echo: true
 m = glm(
@@ -283,22 +498,6 @@ m = glm(
     data=dnms,
 )
 ```
-
-## The ingredients of a GLM
-
-1. A linear predictor 
-
-How does the response depend on independent variables?
-
-$$\mu_i = \beta_0 + \beta_{1}x_{1i} + ... + \beta_{p}x_{pi}$$
-
-2. A "link" function $\eta(\mu)$
-
-How does the mean of the response variable depend on the linear predictor?
-
-For Poisson regression, $\eta(\mu) = \log(\mu)$.
-
-For "standard" linear regression, $\eta(\mu) = \mu$.
 
 ## Lots of generalized linear models out there
 
@@ -309,6 +508,21 @@ For example, logistic regression can be formulated as:
 #| echo: true
 m = glm(Y ~ X, family="binomial", link="logit")
 ```
+
+### Take-home big picture
+
+When fitting GLMs, you need to answer:
+
+1. What distribution are my $Y$ values expected to follow?
+
+* i.e., what `family` do I choose in the `glm` function?
+
+2. How do I make the expected values of $Y$ compatible with my linear predictor?
+
+* i.e., what `link` do I choose?
+
+Be careful to interpret coefficients accordingly!
+
 
 
 ## Goals for today's lecture
