@@ -3,10 +3,6 @@ title: "Applied Computational Genomics"
 subtitle: "4/4/2024"
 author: "An introduction to GLMs"
 format: 
-    # beamer:
-    #     fig-width: 5
-    #     fig-height: 2.5
-    #     theme: Boadilla
     revealjs:
         theme: [default, theme.scss]
         html-math-method: mathjax
@@ -44,7 +40,7 @@ In a simple...
 :::
 
 
-## We make some basic assumptions when we fit linear models
+## We make a few assumptions when we fit linear models
 
 ::: {.callout-note icon="false" appearance="simple"}
 # *Linearity*: can the relationship between $X$ and $Y$ be approximated by a straight line?
@@ -136,7 +132,7 @@ df = as.data.frame(cbind(x, y))
 # plot
 ggplot(df, aes(x = x, y = y)) +
     geom_point() +
-    geom_smooth(method="lm") + 
+    geom_smooth(method="lm", se=FALSE) + 
     theme_cowplot() + 
     labs(x = "X", y = "Y")
 ```
@@ -186,7 +182,7 @@ galton_filt = subset(GaltonFamilies, gender=="male")
 
 ggplot(galton_filt, aes(x=midparentHeight, y=childHeight)) +
     geom_point(alpha=0.5, size=5) +
-    geom_smooth(method="lm") +
+    geom_smooth(method="lm", se=FALSE) +
     theme_cowplot() +
     labs(x="Mid-parent height", y="Child height")
 ```
@@ -222,7 +218,7 @@ hist(resid(m), breaks=50, main=NULL)
 ```
 
 
-## We make some basic assumptions when we fit linear models
+## We make a few assumptions when we fit linear models
 
 ::: {.callout-note icon="false" appearance="simple"}
 # *Linearity*: can the relationship between $X$ and $Y$ be approximated by a straight line?
@@ -357,14 +353,16 @@ ggplot(titanic, aes(x=Fare, y=Survived)) +
 
 The "canonical" link $g(\mu)$ for a logistic regression is $\log\left(\frac{\mu}{1 - \mu}\right)$. 
 
-We can do $g^{-1}(\beta_0 + \beta_{1}X_1)$ to ensure that our predictions match the expected distribution.
+If we define our linear predictor as $\eta$, we can do $g^{-1}(\eta) = \frac{e^{\eta}}{1 + e^{\eta}}$ to ensure that our predictions match the expected distribution.
 
 ::: {.notes}
 But, if we fit a GLM by telling it 1) we're modeling binary data and 2) we don't expect our Y values to be outside the (0, 1) range, we can produce reasonable predictions.
 
-We do this by applying something called the "logit link."
-More explicitly, we apply the inverse (g^-1) of the link to our lienar predictor (the mx + b part of the equation).
+We do this by applying something called the "logit link," defined as (this) with respect to the conditional mean of our Y distribution.
+More explicitly, if we define our linear predictor (the mx + b) part of the equation as eta, we apply the inverse (g^-1) of the link to eta.
 By doing that, we "bend the lien of best fit" so that our predicted values are between 0 and 1.
+
+You can see that if we apply this thing to our predicted values (produced by mx + b), there's no way for the output to exceed 1 or go below 0.
 :::
 
 ## Side note: picking link functions
@@ -377,23 +375,31 @@ Assuming you already have ingredients #1 (an expected distribution for your $Y$ 
 | - | - | - |
 | Simple linear regression | $g(\mu) = \mu$ | $\mu = \eta$ |
 | Poisson regression | $g(\mu) = \log(\mu)$ | $\mu = e^{\eta}$ |
-| Logistic regression | $g(\mu) = \log\frac{\mu}{1 - \mu}$ | $\mu = \frac{e^{\eta}}{1 + e^{\eta}}$|
+| Logistic regression | $g(\mu) = \log(\frac{\mu}{1 - \mu})$ | $\mu = \frac{e^{\eta}}{1 + e^{\eta}}$|
+
+. . .
+
+::: {.callout-note appearance="simple" icon="false"}
+**Note:** You can pick any link function you like, even if it's not the canonical or natural link &mdash; it just depends on how you want to model $Y | X$!
+:::
 
 ::: {.notes}
-As a side note, for every distribution you might want to model, there is something called a "canonical" link function -- basically, a natural way to transform your mx + b predictions to match the distribution.
+As a side note, for every distribution you might want to model, there is something called a "canonical" link function -- basically, a natural way to transform your mx + b predictions given that distribution.
 
 As mentioned before, we apply the inverse of the link function to our predictions.
+
+I should mention that you can technically use any link you want. It really just depends on how you want to model Y | X.
 :::
 
 ## Basic ingredients of a GLM *in practice*
 
 We've established that we need three things in order to fit a GLM:
 
-* An expected distribution for the $Y$ values
+* An expected distribution for the $Y$ values ($\mu$)
 
-* A linear predictor
+* A linear predictor ($\eta$)
 
-* A "link" between the our linear predictor and the response variable
+* A "link" between the our linear predictor and the response variable ($g$)
 
 When we fit a GLM in R, what does this involve?
 
@@ -406,19 +412,19 @@ In humans, we typically identify *de novo* mutations by sequencing trios (two pa
 
 ::: {#fig-dnm}
 ![](../img/Artboard 9.png){width=40%}
-
-Example of a *de novo* single-nucleotide mutation
 :::
 
 ::: {.notes}
 
 OK. now that we've talked through the ingredients of a GLM, let's walk through a biological case study.
+
+Selfishly, the example is based on data that I've previously analyzed myself, and has to do with the rate at which mutations occur in the human germline.
 :::
 
 ## We expect to see around 70 DNMs per child
 
 ```{r}
-#| fig-cap: De novo mutation counts in Utah families. Data from Sasani et al. (2019).
+#| fig-cap: De novo mutation counts in Utah families. Data from Sasani et al. (2019) *eLife*.
 library(dplyr)
 
 # read in DNM data
@@ -440,6 +446,12 @@ ggplot(merged, aes(x=phase, y=n, col=phase)) +
     theme_cowplot() +
     labs(x="Parent of origin", y="Count")
 ```
+
+### {.notes}
+If we sequence a bunch of these trios, we can look at the distribution of counts observed in the children.
+
+On average, we see that a child has about 70 new mutations that were absent from their parents. Most of these mutations come from dads.
+:::
 
 ## Modeling the dependence between DNM counts and parental age
 
@@ -476,8 +488,7 @@ ggplot(dnms, aes(x=dad_age, y=snv_dnms)) +
     theme_cowplot()
 ```
 
-## *De novo* mutation counts increase with age
-
+::: {.notes}
 It looks like there is a strong relationship between *de novo* mutation counts and paternal age.
 
 However, a simple linear model probably isn't appropriate for modeling the relationship.
@@ -487,12 +498,14 @@ However, a simple linear model probably isn't appropriate for modeling the relat
 * For count data, variance of errors/residuals is typically not constant as a function of $X$ (heteroscedasticity)
 
 This is where GLMs can come in handy.
+:::
+
 
 ## The Poisson distribution is useful for modeling count data
 
 Remember the first ingredient we need to fit a GLM:
 
-> An expected distribution for the $Y$ values
+> An expected distribution for the $Y$ values ($\mu$)
 
 Our model needs to appropriately model the mean and variance of our $Y$ values. Since we're dealing with count data, the **Poisson** makes sense.
 
@@ -503,6 +516,14 @@ The Poisson distribution tells us:
 $$P(Y = k) = \frac{e^{-\lambda}\lambda^k}{k!} \ \text{for} \ k = 0,1,2...$$
 
 where $\lambda$ is the expected number of "events" (the *mean* we want to model in our GLM).
+
+::: {.notes}
+Whenever we're thinking about modeling count data, the Poisson distribution is usually a good choice.
+
+As Aaron discussed...
+
+So, whenever you see a \mu in our later equations (the expected value of Y given X), that's basically just the \lambda parameter from the Poisson -- the average number of events.
+:::
 
 
 ## Modeling count data with the Poisson
@@ -519,12 +540,6 @@ $$\log(\mu) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
 
 The log link makes sense for count data because it ensures that our predictions are always greater than 0.
 
-. . .
-
-::: {.callout-note}
-# Note!
-You can pick any link function you like, even if it's not the canonical or natural link &mdash; it depends on how you want to model $Y | X$!
-:::
 
 ::: {.notes}
 
@@ -562,8 +577,6 @@ m = glm(snv_dnms ~ dad_age, family="poisson")
 
 Let's look at the model summary:
 
-\scriptsize
-
 ```{r}
 m = glm(snv_dnms ~ dad_age, family="poisson", data=dnms)
 
@@ -579,9 +592,7 @@ The major difference we'll focus on has to do with the coefficient estimates.
 
 ## Interpreting our Poisson GLM in `R`
 
-Just like a typical `summary()` output, we can see the coefficient estimates and p-values for each of our independent variables.
-
-One key difference is that the **coefficients are on a logarithmic scale.**
+One key difference is that the **coefficients are on a different scale.**
 
 Recall that our Poisson GLM is:
 
