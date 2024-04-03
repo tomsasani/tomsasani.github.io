@@ -3,31 +3,24 @@ title: "Applied Computational Genomics"
 subtitle: "4/4/2024"
 author: "An introduction to GLMs"
 format: 
-    beamer:
-        fig-width: 5
-        fig-height: 2.5
-        theme: Boadilla
-    # revealjs:
-    #     theme: default
-# header-includes: \setbeameroption{show notes on second screen=right} \setbeamercolor{math text}{fg=green}
+    # beamer:
+    #     fig-width: 5
+    #     fig-height: 2.5
+    #     theme: Boadilla
+    revealjs:
+        theme: [default, theme.scss]
+        html-math-method: mathjax
+        scrollable: true
+        code-block-height: 150px
+        code-fold: true
+        code-summary: "Show the code"
 execute:
-  echo: false
+  echo: true
 ---
 
-## Goals for today's lecture
-
-1. An introduction to generalized linear models (GLMs)
-
-\ 
+## Linear models are powerful, but limited
 
 \
-
-\footnotesize
-
-Credit to Phillipe Rigolet's 18.650 (MIT) course notes for some of the slides.
-
-
-## Linear models are powerful, but limited
 
 In a simple linear model, we model a response $Y$ as a function of some inputs $X$ (our independent variables), along with an error term $\epsilon$.
 
@@ -36,24 +29,150 @@ $$Y = \beta_0 + \beta_{1}X_1 + ... + \beta_{p}X_p + \epsilon$$
 . . .
 
 
-$Y$: our response variable
+$Y$ : our response variable
 
-$\beta_0$: the intercept term
+$\beta_0$ : the intercept term
 
-$\beta_p$: the coefficient associated with independent variable $X_p$
+$\beta_p$ : the coefficient associated with independent variable $X_p$
 
-$\epsilon$: error (residual) term
+$\epsilon$ : error (residual) term
+
+::: {.notes}
+On Tuesday, Michael introduced you to simple linear regression.
+
+In a simple...
+:::
 
 
 ## We make some basic assumptions when we fit linear models
 
-1. **Linearity**: can the relationship between $X$ and $Y$ be approximated by a straight line?
+::: {.callout-note icon="false" appearance="simple"}
+# *Linearity*: can the relationship between $X$ and $Y$ be approximated by a straight line?
+:::
 
-2. **Independence**: are the $Y$ observations independent of each other?
+::: {.callout-warning icon="false" appearance="simple"}
+# *Independence*: are the errors (residuals) independent of each other?
+:::
 
-3. **Homoscedasticity**: is the variance of the errors (residuals) constant as a function of $X$?
+::: {.callout-important icon="false" appearance="simple"}
+# *Homoscedasticity*: is the variance of the errors (residuals) constant as a function of $X$?
+:::
 
-4. **Normality**: are the errors (residuals) normally distributed? 
+::: {.callout-tip icon="false" appearance="simple"}
+# *Normality*: are the errors (residuals) normally distributed?
+:::
+
+::: {.notes}
+While simple linear models can be really powerful, we make a number of basic (and sometimes limiting) assumptions when we fit them.
+:::
+
+## Checking the *independence* assumption
+
+```{r}
+library(tidyquant) 
+library(ggplot2)
+library(cowplot)
+
+googl <- tq_get(x = "GOOG", from = '2020-01-01')
+
+ggplot(googl, aes(x=date, y=open)) +
+    geom_line() +
+    labs(x="Date", y="GOOGL opening stock price ($)") +
+    theme_cowplot()
+```
+
+::: {.notes}
+One of our first assumptions when we fit linear models is that our errors (residuals) are independent.
+
+Oftentimes, this assumption is violated when our data have a temporal component.
+
+We won't spend much time on this assumption today, but here's an example of data that violate the assumption.
+
+Since there's a temporal component to these data, it's pretty clear that 
+:::
+
+## Checking the *independence* assumption
+
+```{r}
+m = lm(open ~ as.numeric(date), data=googl)
+googl$pred = predict(m)
+
+ggplot(googl, aes(x=date, y=open)) +
+    geom_line() +
+    geom_smooth(method="lm", se=FALSE) +
+    geom_segment(aes(xend=date, yend=pred), col="firebrick") +
+    labs(x="Date", y="GOOGL opening stock price ($)") +
+    theme_cowplot()
+```
+
+::: {.notes}
+Since there's a temporal component to these data, it's pretty clear that if we fit a linear model to the data, our residuals will actually be correlated.
+
+A large residual (here) will likely be followed by another large residual.
+:::
+
+
+## Checking the *homoscedasticity* assumption
+
+```{r}
+library(ggplot2)
+library(cowplot)
+
+set.seed(12345)
+
+# number of observations
+n <- 100 
+# generate x values from 1 to n
+x <- 1:n
+# generate an error term, normally distributed with mean 0 and SD 4 
+sd <- runif(n, min = 0, max = 4)
+error <- rnorm(n, 0, sd*x) 
+# generate y values
+y <- (x * 10) + error 
+
+# put x and y into dataframe
+df = as.data.frame(cbind(x, y))
+
+# plot
+ggplot(df, aes(x = x, y = y)) +
+    geom_point() +
+    geom_smooth(method="lm") + 
+    theme_cowplot() + 
+    labs(x = "X", y = "Y")
+```
+
+::: {.notes}
+One assumption that is frequently violated in biological data is the *homoscedasticity* assumption, so let's spend a minute on that.
+
+Here's some toy X and Y data I've plotted. There appears to be a clear linear relationship between the two (assumption #1, check), but there's something kind of odd about the Y values.
+
+The "spread" increases as the Y values get bigger.
+:::
+
+## Checking the *homoscedasticity* assumption
+
+```{r}
+# make predictions using simple linear model
+m = lm(y ~ x, data=df)
+df$pred = predict(m)
+
+# plot residuals
+ggplot(df, aes(x = x, y = y)) +
+    geom_point() +
+    geom_smooth(method="lm", se=FALSE) + 
+    geom_segment(aes(xend = x, yend = pred), color="firebrick") +
+    theme_cowplot() + 
+    labs(x = "X", y = "Y")
+
+```
+
+::: {.notes}
+If we explicitly plot the residuals in red, we can see that they get larger as Y increases.
+
+This phenomenon (variance of our residuals is not constant) is called *heteroscedasticity*, and it generally means that a simple linear model is not appropriate.
+
+Heteroscedasticity is a common feature of count data, which is super common in biology.
+:::
 
 
 ## Checking the *normality* assumption
@@ -61,18 +180,26 @@ $\epsilon$: error (residual) term
 ```{r}
 library(HistData)
 data(GaltonFamilies)
-library(ggplot2)
-library(cowplot)
 
+# subset to male children
 galton_filt = subset(GaltonFamilies, gender=="male")
 
 ggplot(galton_filt, aes(x=midparentHeight, y=childHeight)) +
-    geom_point(alpha=0.5) +
+    geom_point(alpha=0.5, size=5) +
     geom_smooth(method="lm") +
     theme_cowplot() +
-    labs(x="Mid-parent height", y="Child height") +
-    theme(text = element_text(size = 9), axis.text.y = element_text(size=9), axis.text.x = element_text(size=9))
+    labs(x="Mid-parent height", y="Child height")
 ```
+
+::: {.notes}
+Let's look at another one of those assumptions in some more detail.
+
+The "normality" assumption states that the residuals in our fitted model should be normally distributed.
+
+To test this assumption, let's look at the Galton height data that Michael discussed on Tuesday.
+
+Here we have...
+:::
 
 ## Checking the *normality* assumption
 
@@ -81,33 +208,37 @@ m = lm(childHeight ~ midparentHeight, data=galton_filt)
 galton_filt$pred = predict(m)
 
 ggplot(galton_filt, aes(x=midparentHeight, y=childHeight)) +
-    geom_point(alpha=0.5) +
+    geom_segment(aes(xend = midparentHeight, yend = pred), color="firebrick") +
+    geom_point(alpha=0.5, size=5) +
     geom_smooth(method="lm", se=FALSE) +
-    geom_segment(aes(xend = midparentHeight, yend = pred), color="red", alpha=0.5) +
     theme_cowplot() +
-    labs(x="Mid-parent height", y="Child height") +
-    theme(text = element_text(size = 9), axis.text.y = element_text(size=9), axis.text.x = element_text(size=9))
+    labs(x="Mid-parent height", y="Child height")
 ```
 
 ## Checking the *normality* assumption
 
 ```{r}
-#| echo: false
-#| fig-height: 2.5
-#| fig-width: 5
 hist(resid(m), breaks=50, main=NULL)
 ```
 
 
 ## We make some basic assumptions when we fit linear models
 
-1. **Linearity**: can the relationship between $X$ and $Y$ be approximated by a straight line?
+::: {.callout-note icon="false" appearance="simple"}
+# *Linearity*: can the relationship between $X$ and $Y$ be approximated by a straight line?
+:::
 
-2. **Independence**: are the $Y$ observations independent of each other?
+::: {.callout-warning icon="false" appearance="simple"}
+# *Independence*: are the $Y$ observations independent of each other?
+:::
 
-3. **Homoscedasticity**: is the variance of the errors (residuals) constant as a function of $X$?
+::: {.callout-important icon="false" appearance="simple"}
+# *Homoscedasticity*: is the variance of the errors (residuals) constant as a function of $X$?
+:::
 
-4. **Normality**: are the errors (residuals) normally distributed? 
+::: {.callout-tip icon="false" appearance="minimal"}
+# *Normality*: are the errors (residuals) normally distributed?
+:::
 
 \
 
@@ -122,25 +253,27 @@ For example, a binary response or a count of something.
 
 In biology, we're often interested in modeling data that don't conform to the assumptions of simple linear regression.
 
-### Count data
-
-* Number of DNA sequencing reads aligned to a particular genomic position
-
-### Binary data
-
-* Presence or absence of a species in a microbiome sample
-
-### Discrete categorical data
-
-* Cell type identity in a large single-cell RNA-seq experiment
-
-
-::: {.notes}
-
-To model these data types, we can turn to **generalized linear models** (GLMs).
+::: {.callout-note icon="false"}
+# Count data
+Number of DNA sequencing reads aligned to a particular genomic position
 :::
 
-## The basic ingredients of a generalized linear model
+::: {.callout-tip icon="false"}
+# Binary data
+Presence or absence of a species in a microbiome sample
+:::
+
+::: {.callout-caution icon="false"}
+# Discrete categorical data
+Cell type identity in a large single-cell RNA-seq experiment
+:::
+
+. . .
+
+To model these data types, we can turn to *generalized linear models*.
+
+
+## The basic ingredients of a GLM
 
 1. An expected distribution for the $Y$ values
 
@@ -161,31 +294,32 @@ $$\textcolor{olive}{g}(\textcolor{teal}{\mu}) = \textcolor{violet}{\eta}$$
 $$\textcolor{teal}{\mu} = \textcolor{olive}{g}^{-1}(\textcolor{violet}{\eta})$$
 
 ::: {.notes}
-We'll need two basic ingredients.
+To extend linear models to other data distributions, we'll need three basic ingredients.
 
 The first ingredient (maybe the most important), is that we need to make a reasonable guess about the kind of statistical distribution that produced our Y values.
-So for example, if we're modeling count data, we might want to use the Poisson distribution. If we're modeling binary data, maybe the Bernoulli distribution.
+So for example...
 We need to give our GLM a statistical distribution so that it's able to appropriately model the mean and variance of our Y values.
+Must be exponential family.
 
-The second ingredient (which often follows directly from the first) is called a link function. 
+We also need a linear predictor.
+Basically, the mx + b part of our equation, that takes indepdnent varaibles, multiplies them by coefficients, and produces an output.
+
+The final ingredient (which often follows directly from the first) is called a link function. 
 Without getting too into the weeds, our link function basically makes sure that the values produced by our linear predictor (our linear combination of coefficients) are compatible with the distribution we've chosen.
 Maybe the easiest way of thinking about this is that the link function is "bending the curve" we've fit to the data so that our predictions aren't total nonsense with respect to the true Y values.
 
 As you can see in the second equation, whatever our link function is, we do the inverse of that (g^-1) to the values produced by our linear predictor to ensure that they aren't nonsense.
 :::
 
-## Why do we need a link function?
+## Why do we need GLMs?
 
 ```{r}
 #| fig-cap: Whether a passenger on the Titanic survived given the amount they paid for their fare.
-#| fig-height: 2.5
-#| fig-width: 5
 titanic = read.csv("https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv")
 
 ggplot(titanic, aes(x=Fare, y=Survived)) +
-    geom_point(alpha=0.1, size=2) +
-    theme_cowplot() +
-    theme(text = element_text(size = 9), axis.text.y = element_text(size=9), axis.text.x = element_text(size=9))
+    geom_point(alpha=0.1, size=5) +
+    theme_cowplot() 
 ```
 
 ::: {.notes}
@@ -196,16 +330,13 @@ Say we're modeling a binary variable. It's a little morbid, but say we're trying
 If we just fit a simple linear regression to these data, we get the following.
 :::
 
-## Why do we need a link function?
+## Why do we need GLMs?
 
 ```{r}
-#| fig-height: 2.5
-#| fig-width: 5
 ggplot(titanic, aes(x=Fare, y=Survived)) +
-    geom_point(alpha=0.25, size=2) +
+    geom_point(alpha=0.1, size=5) +
     geom_smooth(method="lm") +
-    theme_cowplot() +
-    theme(text = element_text(size = 9), axis.text.y = element_text(size=9), axis.text.x = element_text(size=9))
+    theme_cowplot()
 ```
 
 ::: {.notes}
@@ -215,26 +346,32 @@ The expected value of $Y | X$ (the conditional expectation of Y given X, or as i
 Without a link function that ensures compatibility between our predictions and the expected value (or mean) of our $Y | X$, our predictions are nonsensical.
 :::
 
-## Why do we need a link function?
+## Why do we need GLMs?
 
 ```{r}
-#| fig-height: 2.5
-#| fig-width: 5
-
 ggplot(titanic, aes(x=Fare, y=Survived)) +
-    geom_point(alpha=0.25, size=2) +
+    geom_point(alpha=0.1, size=5) +
     geom_smooth(method="glm", method.args = list(family = binomial(link="logit"))) +
-    theme_cowplot() +
-    theme(text = element_text(size = 9), axis.text.y = element_text(size=9), axis.text.x = element_text(size=9))
+    theme_cowplot()
 ```
 
 The "canonical" link $g(\mu)$ for a logistic regression is $\log\left(\frac{\mu}{1 - \mu}\right)$. 
 
-We can apply the inverse of $g$, denoted $g^{-1}$, to our linear predictor $\beta_0 + \beta_{1}X_1$ to ensure that our predictions match the expected distribution.
+We can do $g^{-1}(\beta_0 + \beta_{1}X_1)$ to ensure that our predictions match the expected distribution.
+
+::: {.notes}
+But, if we fit a GLM by telling it 1) we're modeling binary data and 2) we don't expect our Y values to be outside the (0, 1) range, we can produce reasonable predictions.
+
+We do this by applying something called the "logit link."
+More explicitly, we apply the inverse (g^-1) of the link to our lienar predictor (the mx + b part of the equation).
+By doing that, we "bend the lien of best fit" so that our predicted values are between 0 and 1.
+:::
 
 ## Side note: picking link functions
 
 Assuming you already have ingredients #1 (an expected distribution for your $Y$ values, denoted $\mu$) and #2 (a linear predictor, denoted $\eta$) there is a "canonical" link function for that distribution.
+
+\
 
 | GLM type | canonical link function | inverse of link function
 | - | - | - |
@@ -242,38 +379,24 @@ Assuming you already have ingredients #1 (an expected distribution for your $Y$ 
 | Poisson regression | $g(\mu) = \log(\mu)$ | $\mu = e^{\eta}$ |
 | Logistic regression | $g(\mu) = \log\frac{\mu}{1 - \mu}$ | $\mu = \frac{e^{\eta}}{1 + e^{\eta}}$|
 
+::: {.notes}
+As a side note, for every distribution you might want to model, there is something called a "canonical" link function -- basically, a natural way to transform your mx + b predictions to match the distribution.
+
+As mentioned before, we apply the inverse of the link function to our predictions.
+:::
+
 ## Basic ingredients of a GLM *in practice*
 
-We've established that we need two things in order to fit a GLM:
+We've established that we need three things in order to fit a GLM:
 
-1. An expected distribution for the $Y$ values
+* An expected distribution for the $Y$ values
 
-2. A linear predictor
+* A linear predictor
 
-3. A "link" between the our linear predictor and the conditional mean of the response variable
+* A "link" between the our linear predictor and the response variable
 
-When we fit a GLM in `R`, what does this involve?
+When we fit a GLM in R, what does this involve?
 
-
-```{r}
-#| eval: false
-#| echo: false
-
-# this...
-m = glm(Y ~ X, family="poisson")
-
-# is the same as this...
-m = glm(Y ~ X, family=poisson(link="log"))
-```
-
-::: {.notes}
-
-When you fit GLMs in R, arguably the most important thing is to know #1. 
-There are default link functions for modeling most distributions (on the previous slide) -- these links are the ones that are the most natural for each distribution.
-You can always change the link function you use, depending on the expected domain of your the conditional mean.
-
-Biggest point here: think carefully about the distribution you expect your Y values to take on, and think carefully about the expected domain of your predictions.
-:::
 
 ## GLM case study: *de novo* mutations in human genomes
 
@@ -295,15 +418,18 @@ OK. now that we've talked through the ingredients of a GLM, let's walk through a
 ## We expect to see around 70 DNMs per child
 
 ```{r}
-#| fig-height: 2.5
-#| fig-width: 5
 #| fig-cap: De novo mutation counts in Utah families. Data from Sasani et al. (2019).
 library(dplyr)
+
+# read in DNM data
 dnms = read.csv("https://raw.githubusercontent.com/quinlan-lab/ceph-dnm-manuscript/master/data/second_gen.dnms.txt", sep="\t")
 
+# remove unphased DNMs
 dnms = subset(dnms, phase != "na")
 
+# group DNMs by sample id and phase
 by_phase = dnms %>% count(new_sample_id, phase)
+# group by sample alone to get totals
 by_sample = dnms %>% count(new_sample_id)
 by_sample$phase = "total"
 merged = rbind(by_phase, by_sample)
@@ -312,8 +438,7 @@ ggplot(merged, aes(x=phase, y=n, col=phase)) +
     geom_boxplot(fill="white") +
     geom_jitter(size=2, width=0.15, alpha=0.5) +
     theme_cowplot() +
-    labs(x="Parent of origin", y="Count") +
-    theme(legend.position="none", text = element_text(size = 9), axis.text.y = element_text(size=9), axis.text.x = element_text(size=9))
+    labs(x="Parent of origin", y="Count")
 ```
 
 ## Modeling the dependence between DNM counts and parental age
@@ -324,9 +449,11 @@ Each time a spermatogonial stem cell undergoes mitotic DNA replication, there's 
 
 DNA damage also accumulates in germ cells over time, leading to new mutations.
 
+. . .
+
 \
 
-**Question:** How many additional germline mutations do we expect to see with each year of paternal age?
+##### How many additional germline mutations do we expect to see with each year of paternal age?
 
 Let's build a GLM to find out.
 
@@ -344,12 +471,9 @@ library(cowplot)
 dnms = read.csv("https://raw.githubusercontent.com/quinlan-lab/ceph-dnm-manuscript/master/data/second_gen.dnms.summary.csv")
 
 ggplot(dnms, aes(x=dad_age, y=snv_dnms)) +
-    geom_point() +
+    geom_point(size=5) +
     labs(x="Paternal age", y="Number of DNMs in child") +
-    theme_cowplot() +
-    theme(text = element_text(size = 9), axis.text.y = element_text(size=9), axis.text.x = element_text(size=9))
-
-
+    theme_cowplot()
 ```
 
 ## *De novo* mutation counts increase with age
@@ -368,9 +492,9 @@ This is where GLMs can come in handy.
 
 Remember the first ingredient we need to fit a GLM:
 
-1. An expected distribution for the $Y$ values
+> An expected distribution for the $Y$ values
 
-Our model needs to appropriately model the mean and variance of our $Y$ values. Since we're dealing with count data, the Poisson makes sense.
+Our model needs to appropriately model the mean and variance of our $Y$ values. Since we're dealing with count data, the **Poisson** makes sense.
 
 . . .
 
@@ -378,18 +502,18 @@ The Poisson distribution tells us:
 
 $$P(Y = k) = \frac{e^{-\lambda}\lambda^k}{k!} \ \text{for} \ k = 0,1,2...$$
 
-where $\lambda$ is the expected number of "events" (the *mean*).
+where $\lambda$ is the expected number of "events" (the *mean* we want to model in our GLM).
 
 
 ## Modeling count data with the Poisson
 
 Now we need the remaining ingredients for a GLM:
 
-A "link" $g$ between the our linear predictor $\eta$ and the conditional mean $\mathbb{E}(Y | X) = \mu$ of the response variable.
+> A "link" $g$ between the our linear predictor $\eta$ and the conditional mean $\mu$ of the response variable.
 
 . . .
 
-In Poisson regression, the "canonical" link function $g(\mu)$ is the "log link" $\log(\mu)$:
+In Poisson regression, the canonical link function $g(\mu)$ is the "log link":
 
 $$\log(\mu) = \beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}$$
 
@@ -397,7 +521,10 @@ The log link makes sense for count data because it ensures that our predictions 
 
 . . .
 
-**Note**: you can pick any link function you like, even if it's not the "canonical" or natural link &mdash; it depends on how you want to model $Y | X$!
+::: {.callout-note}
+# Note!
+You can pick any link function you like, even if it's not the canonical or natural link &mdash; it depends on how you want to model $Y | X$!
+:::
 
 ::: {.notes}
 
@@ -410,19 +537,14 @@ My modeling the log of the expected value (or put another way, exponentiating ou
 :::
 
 
-<!-- ## Why not log-transform our input data?
+## We can fit a simple Poisson model using R
 
-There's a subtle (but important) difference between log-transforming our $Y$ values and modeling the logarithm of the *expected value* of our $Y$ values.
-
-In other words,
-
-$$E[\log(Y) | X] \neq \log(E[Y | X])$$ -->
-
-## We can fit a simple Poisson model using `R`
+\
 
 ```{r}
 #| echo: true
 #| eval: false
+#| code-fold: false
 m = glm(snv_dnms ~ dad_age, family=poisson(link = "log"))
 ```
 
@@ -431,6 +553,7 @@ Since the log link is the default for Poisson GLMs, this is the same as:
 ```{r}
 #| echo: true
 #| eval: false
+#| code-fold: false
 m = glm(snv_dnms ~ dad_age, family="poisson")
 ```
 
@@ -445,13 +568,20 @@ Let's look at the model summary:
 m = glm(snv_dnms ~ dad_age, family="poisson", data=dnms)
 
 summary(m)
+
 ```
+
+::: {.notes}
+The summary output here looks pretty much the same as what we saw on Tuesday with Michael's intro to linear modeling.
+
+The major difference we'll focus on has to do with the coefficient estimates.
+:::
 
 ## Interpreting our Poisson GLM in `R`
 
 Just like a typical `summary()` output, we can see the coefficient estimates and p-values for each of our independent variables.
 
-One key difference is that the coefficients are on a logarithmic scale.
+One key difference is that the **coefficients are on a logarithmic scale.**
 
 Recall that our Poisson GLM is:
 
@@ -463,7 +593,12 @@ This is the same as saying:
 
 $$\mu = e^{\beta_0 + \beta_{1}X_{1} + ... + \beta_{p}X_{p}}$$
 
-a.k.a, applying the inverse of our link function to the linear predictor. 
+(applying the inverse of our link function to the linear predictor)
+
+
+::: {.notes}
+Basically, we're saying that we can predict our Y values (\mu) by doing e to the (mx + b)
+:::
 
 ## Interpreting our Poisson GLM in `R`
 
@@ -471,15 +606,13 @@ In our `summary()` output, let's look at the coefficients:
 
 \
 
-\footnotesize
 ```{r}
 #| echo: true
+#| code-fold: false
 coef(summary(m))
 ```
 
 \
-
-\normalsize
 
 For a unit increase in `dad_age`, there is a multiplicative effect of $e^{0.02581} = 1.0261$ on the response variable (mean # of DNMs).
 
@@ -489,13 +622,11 @@ In other words, the number of DNMs observed in a child born to a 25-year-old fat
 ## Visualizing our Poisson model fit
 
 ```{r}
-#| echo: false
 ggplot(dnms, aes(x=dad_age, y=snv_dnms)) +
-    geom_point() +
+    geom_point(size=5) +
     geom_smooth(method="glm", method.args=list(family="poisson"), fullrange=TRUE, se=TRUE) +
     labs(x="Paternal age", y="Number of DNMs") +
-    theme_cowplot() +
-    theme(text = element_text(size = 9), axis.text.y = element_text(size=9), axis.text.x = element_text(size=9))
+    theme_cowplot()
 
 ```
 
@@ -505,26 +636,34 @@ We only looked for mutations at genomic positions where at least 10 sequencing r
 
 
 ```{r}
-#| fig-width: 4
-#| fig-height: 1.5
+#| fig-width: 20
 library(cowplot)
 
 dnms$callable_bp_bill = dnms$autosomal_callable_fraction / 1e9
 
-# print (dnms$callable_bp_bill)
-
 ggplot(dnms, aes(x=factor(sample_id), y=callable_bp_bill)) +
     geom_col() +
     labs(x = "Sample ID", y="Callable bp (billions)") +
-    #ylim(c(2, 3)) +
     coord_cartesian(ylim = c(2.45, 2.6)) +
     theme_cowplot() +
-    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), text = element_text(size = 9), axis.text.y = element_text(size=9))
+    theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(), text = element_text(size = 24), axis.text.y = element_text(size=24))
+
 ```
 
 We were able to look for DNMs at ~2.6 billion positions in most children, but closer to ~2.4 billion in others.
 
 Does this variable sequencing depth affect our observed DNM counts?
+
+::: {.notes}
+One final piece of the Poisson GLM I'll introduce is the concept of an "offset" or "exposure."
+
+In our original de novo mutation study, we only looked for mutations at positions in the genome where we had at least 10 sequencing reads aligned in mom, dad, and the kid.
+
+Due to differences in sequencing depth, this meant that in some trios, we could look for de novo mutations at many more sites than in others.
+
+Now, we'd like to figure out whether that variable sequencing coverage may have impacted our ability to detect DNMs -- maybe the kids with lower numbers of DNMs simply had less sequencing coverage! This would be a huge problem! 
+:::
+ 
 
 
 ## Explicitly modeling counts as *rates*
@@ -571,10 +710,10 @@ where $N$ is the number of callable base pairs per trio.
 
 In `R`, this looks like:
 
-\small
 ```{r}
 #| echo: true
 #| eval: false
+#| code-fold: false
 m = glm(
     all_dnms ~ dad_age + offset(log(callable_bp)), 
     family="poisson", 
@@ -582,21 +721,39 @@ m = glm(
 )
 ```
 
+## *De novo* mutation rates are robust to coverage
+
+```{r}
+m_with_offset = glm(
+    all_dnms ~ dad_age + offset(log(autosomal_callable_fraction)), 
+    family="poisson", 
+    data=dnms,
+    )
+
+summary(m_with_offset)
+```
+
+The `dad_age` term is still significant, and the coefficient is very similar to its estimate in our "vanilla" Poisson model. 
+
+
 ## Take-home big picture
 
 When fitting GLMs, you need to answer:
 
-### What distribution are my $Y$ values expected to follow?
+::: {.callout-note icon="false"}
+## What distribution are my $Y$ values expected to follow?
 
-* This will determine the `family` you choose in the `glm` function
+This will determine the `family` you choose in the `glm` function
+:::
 
-### How do I make the expected values of $Y$ compatible with my linear predictor?
+::: {.callout-note icon="false"}
+## How do I make the expected values of $Y$ compatible with my linear predictor?
 
-* This will determine the `link` you choose
+This will determine the `link` you choose
+:::
 
 . . .
 
-\large
 
 Be careful to interpret coefficients accordingly!
 
@@ -605,6 +762,7 @@ Be careful to interpret coefficients accordingly!
 ```{r}
 #| echo: true
 #| eval: false
+#| code-fold: false
 
 # simple linear regression, same as lm(y ~ x)
 m = glm(y ~ x, family = gaussian(link = "identity"))
