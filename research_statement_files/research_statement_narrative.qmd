@@ -1,0 +1,150 @@
+---
+#title: "My document"
+format: 
+  pdf:
+    papersize: report
+    # mainfont: Optima
+    # sansfont: Optima
+    geometry:
+      - top=15mm
+      - left=10mm
+      - right=10mm
+      - bottom=10mm
+      - heightrounded
+execute:
+  freeze: auto
+  echo: false
+  warning: false
+# fig-cap-location: bottom
+---
+
+Life requires mistakes.
+If DNA replication machinery operated with perfect fidelity and every damaged nucleotide were faithfully repaired, the forces of selection, drift and gene flow would be completely powerless.
+Infrequently, the safeguards of genome integrity fail and germline mutations provide the raw material for both evolution and genetic disease. 
+<!-- Germline mutation rates are fine-tuned by a complex network of cellular machinery.
+If the mutation rate becomes too low, natural selection is unable to overcome the effects of random genetic drift. 
+Too high, and the genome is overwhelmed with deleterious mutations. -->
+I've long been fascinated by the myriad factors that influence germline and somatic mutation rates.
+I am keenly interested in discovering "mutator alleles," genetic variants that augment the mutation rate on haplotypes that carry them.
+Mutator alleles provide a powerful lens into the mutation process; they can reveal the limits of a cell's ability to reduce its mutation rate, and may represent novel drivers of heritable human cancer.
+Hundreds, if not thousands, of genes are involved in DNA repair, replication, and proofreading, but their collective effects on mutation rates and spectra remain poorly characterized.
+
+::: {.callout-tip icon="false" appearance="simple"}
+**Previous work**
+
+During my career, I've made important contributions to our knowledge of germline mutation. 
+As a graduate student I precisely measured germline mutation rates in human families ([Sasani et al., 2019, *eLife*](https://doi.org/10.7554/eLife.46922)), and observed high degrees of post-zygotic mosaicism in the developing embryo for the first time.
+Later, I discovered one of the first examples of a mammalian germline mutator allele ([Sasani et al., 2022, *Nature*](https://doi.org/10.1038/s41586-022-04701-5)) by appling quantitative trait locus mapping to a population of recombinant inbred mice.
+And more recently, I developed a novel statistical approach to map the first epistatic interaction between mutator alleles in a mammalian species ([Sasani et al., 2024, *eLife*](https://doi.org/10.1101/2023.04.25.537217)). 
+:::
+
+Although the list of genes involved in DNA replication, proofreading, and repair runs long, we know very little about the genetic factors that influence mutation rate evolution. To develop a comprehensive understanding of mutation rate evolution and its effects on human health, we will need to apply new statistical and computational methods to the right datasets. I'm confident that my background and research experience make me well-suited to the task.
+
+**Using innovative computational approaches, my group will answer major questions about germline mutation &mdash; one of life’s most fundamental phenotypes.**
+
+::: {.callout-note icon="false" appearance="simple"}
+**Theme 1:** Machine learning to find the genomic signatures of mutators (and more)
+:::
+
+<!-- **Previous work:**
+
+As a postdoctoral fellow with Kelley Harris, I discovered one of the first examples of a mammalian germline mutator allele ([Sasani et al., 2022, *Nature*](https://doi.org/10.1038/s41586-022-04701-5)) by appling quantitative trait locus (QTL) mapping to a population of recombinant inbred mice.
+Why was our search so successful?
+Compared to haplotypes that harbor a wild-type allele at a particular locus, those that harbor mutator alleles are expected to carry an excess total number of *de novo* germline mutations. 
+I hypothesized that germline mutator alleles might be detectable by instead analyzing the <u>mutation spectrum</u> &mdash; the frequency of each individual mutation type (C $\to$ T, A $\to$ G, etc.)
+This insight enabled us to map a germline mutator that increased the rate of C $\to$ A mutation by nearly 50%, even though its effect on the aggregate mutation rate was insignificant.
+
+**Future work:** -->
+
+Statistical approaches like QTL mapping require genotype and phenotype data from careful crosses of inbred model organisms.
+Large-effect mutators are also far more likely to reach high population allele frequencies in recombinant inbred lines (RILs), since the effects of negative selection are attenuated by strict inbreeding.
+With these complications in mind, how can we identify regions of the genome that have experienced (or are currently experiencing) the effects of a germline mutator allele in natural populations?
+I'm confident that new deep learning (DL) approaches, which have already proven "unreasonably effective" for population genetic inference^[Flagel et al. (2019) *Mol. Biol. & Evolution*], can help.
+
+<!-- Frame as "feature learning" for diverse tasks. -->
+
+<!-- *Local PCA methods to uncover unusual mutation spectrum histories* -->
+
+*Contrastive learning to uncover unusual mutation rate histories*
+
+Contrastive learning models are trained to embed data in multi-dimensional space so that similar pieces of data are closer together in that latent space, and dissimilar pieces of data are further apart (@fig-ml).
+These embeddings are expected to capture salient characteristics of input data types (say, the features that distinguish images of dogs from images of cats), and enable downstream classification of new, unseen inputs.
+Inspired by recent applications of DL to population genetics^[Wang et al. (2021) *Mol. Ecol. Resources*], my group will develop contrastive learning approaches to extract salient embeddings from images of haplotypes in genomic windows (@{fig-ml}a).
+These models will be trained to minimize the distance between *positive pairs* of haplotype images (e.g., empirically generated from the same Thousand Genomes population) and maximize the distance between *negative pairs* (e.g., consisting of one empirical image and one simulated image).
+In the process, the models should learn features of "real" genetic data that are impossible to simulate using a neutral, backwards-in-time model implemented in a tool like `msprime`, including patterns of selection, admixture, and the activities of mutator alleles. 
+Once trained, the model will be broadly useful for population genetics inference, and can be fine-tuned on images of regions with and without mutator alleles that have been simulated more rigorously with forwards-in-time methods, such as `SLiM`.
+
+![
+**(Deep) learning about the mutation process.**
+a) We can represent genomic regions as two-channel "images" in which rows correspond to haplotypes and columns to SNPs. The first channel encodes derived alleles as $1$s and ancestral alleles as $-1$s, while the second channel encodes absolute genomic positions or inter-SNP distances. b) Contrastive learning models seek to embed input images in multi-dimensional space such that an *anchor* is close to a image belonging to the same class and far apart from an image from a different class. c) Transformer models can learn useful embedding representations of haplotype images that have been augmented with additional data. Individual SNP columns from a haplotype image can be treated as "patches" and embedded in a latent space by a simple feedforward neural network, as can the $k$-mer mutation type corresponding to each SNP. These embeddings can then be summed and passed into a self-attention mechanism that learns about the relationships between SNPs and how those relationships depend on mutation spectra.
+](img/Artboard 7.png){#fig-ml width=80% align="left"}
+
+*Vision transformers to extract representations from haplotype images*
+
+Mutator alleles often change the rates of specific mutation types, rather than all mutation types in aggregate.
+By augmenting haplotype images to include $k$-mer information, we can further improve our power to detect germline mutators.
+Rather than making arbitrary decisions about when to incorporate this extra information in a deep neural network, we can leverage the *self-attention* mechanism^[Viswani et al. (2017), *arXiv*] to consider all features of the input haplotype data simultaneously.
+Taking inspiration from "encoder-only" transformer models^[Devlin et al. (2018), *arXiv*], we will extract meaningful representations of genomic regions that have been augmented with mutation spectrum information (@{fig-ml}c).
+We can represent haplotypes at individual SNPs as "patches" of the input image and linearly project those patches into multidimensional space.
+The SNP embeddings at each site can further augmented with a positional embedding (representing the relative genomic position of the SNP) and a mutation type embedding, which could be generated from a one-hot representation of the $k$-mer mutation type at that position.
+A learned embedding for each region can be generated by solving many *cloze* tasks, and can then be fed into a downstream dimensionality reduction pipeline (to identify outlier regions) or a simple linear classifier (to predict the activity of mutators).
+
+::: {.callout-caution icon="false" appearance="simple"}
+**Question 2:** How do inherited genetic variants affect mutation rates in cancer?
+:::
+
+**Previous work:**
+
+Following our discovery of a large-effect germline mutator locus in mice, I hypothesized that we could detect even subtler mutation rate modifiers in model systems.
+As a staff scientist with Aaron Quinlan, I developed a novel statistical approach (@fig-amsd) and discovered an additional mutator locus that further augments C $\to$ A mutation rates in the same family of inbred mice ([Sasani et al., 2024, *eLife*](https://doi.org/10.1101/2023.04.25.537217)). 
+The effects of mutator alleles at the new locus depended on the presence of mutator alleles at the original locus, providing evidence of epistasis between germline mutator alleles for the first time in a mammalian system.
+
+
+
+Our results demonstrated that even low and moderate-effect mutator alleles can be detected by closely examining mutation *spectra* in the right kind of dataset; namely, populations of haplotypes that exhibit strong linkage between nascent mutators and the excess mutations they cause.
+Much like RILs, cancer genomes present a remarkably well-powered system for mutator allele detection.
+In most sexually-reproducing populations, negative selection will efficiently remove large-effect mutator alleles and recombination will break up linkage between mutators and the excess deleterious mutations they cause. 
+Cancer genomes do not recombine, steadily accumulating mutations that remain perfectly linked to a mutator under the drastically attenuated effects of negative selection. 
+
+As a staff scientist with Aaron Quinlan, I developed a novel statistical approach (@fig-amsd) and discovered an additional mutator locus that further augments C $\to$ A mutation rates in the same family of inbred mice ([Sasani et al., 2024, *eLife*](https://doi.org/10.1101/2023.04.25.537217)). 
+By adapting my existing methods for mutator allele discovery to somatic mutation data from human cancers, my group will search for novel drivers of cancer initiation and progression. 
+
+![
+**The aggregate mutation spectrum distance approach.**
+a) A population of four haplotypes has been genotyped at three informative markers ($g_1$ through $g_3$); each haplotype also harbors unique de novo germline mutations. For simplicity in this toy example, de novo mutations are simply classified into two possible mutation types (squares or triangles). b) At each informative marker $g_n$, we calculate the total number of each mutation type observed on haplotypes that carry either parental allele (i.e., the aggregate mutation spectrum) using all genome-wide de novo mutations. We then calculate the cosine distance between the two aggregate mutation spectra, which we call the “aggregate mutation spectrum distance," and repeat this process for every informative marker. 
+](img/Artboard 2_1.png){#fig-amsd width=80% align="left"}
+
+We will first refine the *aggregate mutation spectrum distance* approach to test segregating genetic variants for their impacts on somatic mutation spectra, and implement approaches to account for the biased effects of genetic relatedness and population structure in mutator allele discovery. 
+We will apply these approaches to large collections of paired tumor-normal sequencing data, enabling the discovery of inherited mutator alleles that exert even subtle influences on the cancer mutation spectrum. 
+We will also characterize the effects of mutator alleles on tumor mutation spectra in a wide variety of tissues in order to understand why mutators active in one cancer subtype (e.g., colorectal) do not exert similar effects in others (e.g., breast). 
+By analyzing germline and tumor sequencing data from patients with either one or two copies of a particular mutator allele, we will also uncover the degree to which those mutators are dominant or recessive with respect to their effects on mutation rates and spectra, and potentially help inform genetic screening for carriers of LOF mutations in those genes. 
+
+<!-- ::: {.callout-tip icon="false" appearance="simple"}
+**Question 3:** How much mutation rate variation are we missing with existing technologies?
+:::
+
+**Previous work:**
+
+As a graduate student I used whole-genome sequencing data from large, three-generation pedigrees to precisely measure germline and post-zygotic mutation rates in human families ([Sasani et al., 2019, *eLife*](https://doi.org/10.7554/eLife.46922)).
+I discovered that germ cells accumulated additional *de novo* mutations with each year of paternal and maternal age, and that these parental age effects varied more than ten-fold across families. 
+Using short sequencing reads, our analyses were limited to single-nucleotide and small insertion/deletion mutations, and our mutation rate estimates excluded nearly 300 million base pairs of "inaccessible" sequence in which short reads cannot be accurately aligned.
+Now, I'm confident that novel methods for genome representation and DNA sequencing can revolutionize our understanding of mutation rate and spectrum variation across the genome.
+
+**Future work:**
+
+*Graph genome representations for mutation rate inference*
+
+Since the current linear reference assembly is largely derived from a single individual, the vast majority of human genetic variation is missing from the reference. 
+Sequencing reads that harbor such variation often map poorly to the linear reference assembly and are ignored when calling DNA variants, thwarting our ability to discover new mutations in diverse, newly sequenced human genomes. 
+My research group will develop new methods to infer mutation spectra from these pangenome representations in order to more precisely characterize human mutation spectrum variation within diverse populations and investigate spatial variation in human mutation rates and spectra.
+Long-read sequencing technologies have also dramatically improved our ability to assemble eukaryotic genomes, culminating in the recent release of a complete "telomere-to-telomere" human genome. 
+Hundreds of millions of base pairs in centromeric, duplicated, and repetitive regions of the genome &mdash; previously referred to as genomic "dark matter" &mdash; are now accessible to sequence analysis and can be incorporated into pangenome graph representations. 
+By leveraging new genome assemblies and novel pangenome representations, my group will explore the mutation process in structurally complex regions of the genome.
+
+*Rates and patterns of tandem repeat and large structural variants*
+
+Large structural variants (SVs), including duplications, deletions, and inversions, affect many more base pairs of the human genome than single-nucleotide variants (SNVs).
+However, 
+*Put figure with rates and spectra in complex regions, show associations between germline variants and those*
+Mutation rates and spectra in copy-number-neutral structural variations -- what if an inversion captured an existing mutator allele, or accumulated one over time. Easy to detect given strong linkage.
+In collaboration with groups at the University of Washington and Pacific Biosciences, we have re-sequenced a complete four-generation Utah pedigree using an array of long and short-read technologies. -->
