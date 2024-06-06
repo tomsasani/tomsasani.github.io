@@ -7,6 +7,8 @@ Click :computer: to access associated code and :book: for PDFs.
 
 ## Preprints
 
+Xu K, Zhang Y, Baldwin-Brown J, **Sasani TA**, Phadnis N, Miller MP, Rog O. Decoding chromosome organization using CheC-PLS: chromosome conformation by proximity labeling and long-read sequencing (2024). [*bioRxiv*](https://doi.org/10.1101/2024.05.31.596864)
+
 Ashbrook DG, **Sasani TA**, Maksimov M, Gunturkun MH, Ma N, Villani F, Ren Y, Rothschild D, Chen H, Lu L, Colonna V, Dumont B, Harris K, Gymrek M, Pritchard JK, Palmer AA, Williams RW. Private and sub-family specific mutations of founder haplotypes in the BXD family reveal phenotypic consequences relevant to health and disease (2022). [*bioRxiv.*](https://www.biorxiv.org/content/10.1101/2022.04.21.489063v1.abstract)
 
 ## Peer-reviewed Manuscripts
