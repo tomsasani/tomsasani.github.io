@@ -20,9 +20,6 @@ jobs:
       - name: Install tinytex
         run: quarto install tinytex
 
-      - name: Install R requirements
-        run: Rscript -e "install.packages('Rmarkdown', repos='https://ftp.belnet.be/mirror/CRAN')"
-
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
