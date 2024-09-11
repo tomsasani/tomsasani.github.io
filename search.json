@@ -1,10 +1,24 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Tom Sasani, PhD",
+    "objectID": "pubs.html",
+    "href": "pubs.html",
+    "title": "Publications",
     "section": "",
-    "text": "I’m a computational biologist using genetic data to better understand health and evolution.\n\nExperience\nI’m currently a (remote) Staff Research Scientist with Dr. Aaron Quinlan at the University of Utah, where I develop new methods to study the evolution of germline mutation rates and spectra.\nAs a Postdoctoral Fellow with Dr. Kelley Harris at the University of Washington, I discovered genetic modifiers of the germline mutation rate in mice.\nIn between my academic roles I was also a Senior Data Scientist at Recursion Pharmaceuticals, where I analyzed data from massive cellular imaging experiments to identify new treatments for human disease."
+    "text": "Click 💻 to access associated code and 📖 for PDFs."
+  },
+  {
+    "objectID": "pubs.html#preprints",
+    "href": "pubs.html#preprints",
+    "title": "Publications",
+    "section": "Preprints",
+    "text": "Preprints\nPorubsky D, Dashnow H, Sasani TA, Logsdon GA, Hallast P, Noyes MD, Kronenberg ZN, Mokveld T, et al. A familial, telomere-to-telomere reference for human de novo mutation and recombination from a four-generation pedigree (2024). bioRxiv\nMokveld T, Dolzhenko E, Dashnow H, Nicholas TJ, Sasani TA, van der Sanden B, Jadhav B, Pedersen B, Kronenberg S, Tucci A, Sharp AJ, Quinlan AR, Gilissen C, Hoischen A, Eberle MA. TRGT-denovo: accurate detection of de novo tandem repeat mutations (2024). bioRxiv\nXu K, Zhang Y, Baldwin-Brown J, Sasani TA, Phadnis N, Miller MP, Rog O. Decoding chromosome organization using CheC-PLS: chromosome conformation by proximity labeling and long-read sequencing (2024). bioRxiv\nAshbrook DG, Sasani TA, Maksimov M, Gunturkun MH, Ma N, Villani F, Ren Y, Rothschild D, Chen H, Lu L, Colonna V, Dumont B, Harris K, Gymrek M, Pritchard JK, Palmer AA, Williams RW. Private and sub-family specific mutations of founder haplotypes in the BXD family reveal phenotypic consequences relevant to health and disease (2022). bioRxiv."
+  },
+  {
+    "objectID": "pubs.html#peer-reviewed-manuscripts",
+    "href": "pubs.html#peer-reviewed-manuscripts",
+    "title": "Publications",
+    "section": "Peer-reviewed Manuscripts",
+    "text": "Peer-reviewed Manuscripts\nSasani TA, Quinlan AR, Harris K. Epistasis between mutator alleles contributes to germline mutation rate variability in laboratory mice (2024). eLife.  💻\nFixsen SM, Cone KR, Goldstein SA, Sasani TA, Quinlan AR, Rothenburg S, Elde NC. Poxviruses capture host genes by LINE-1 retrotransposition (2022). eLife.  📖\nSasani TA, Ashbrook DG, Beichman AC, Lu L, Palmer AA, Williams RW, Pritchard JK, Harris K. A natural mutator allele shapes mutation spectrum variation in mice (2022). Nature.  💻  📖\nBelyeu JR*, Sasani TA*, Pedersen BS, Quinlan AR. Unfazed: parent-of-origin detection for large and small de novo variants (2021). Bioinformatics.  💻  📖\nWallace AD, Sasani TA, Swanier J, Gates B, Greenland J, Pedersen BP, Varley KT, Quinlan AR. CaBagE: a Cas9-based Background Elimination strategy for targeted, long-read DNA sequencing (2021). PLoS One.  📖\nCawthon RM, Meeks HD, Sasani TA*, Smith KR, Kerber RA, O’Brien E, Baird L, Dixon MM, Peiffer AP, Leppert MF, Quinlan AR, Jorde LB. Germline mutation rates in young adults predict longevity and reproductive lifespan (2020). Scientific Reports.  📖\nSasani TA, Pedersen BS, Gao Z, Baird L, Przeworski M, Jorde LB, Quinlan AR. Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation (2019). eLife.  💻  📖\nGao Z, Moorjani P, Sasani TA, Pedersen BP, Quinlan AR, Jorde LB, Amster G, Przeworski MP. Overlooked roles of DNA damage and maternal age in generating human germline mutations (2019). PNAS.   📖\nSasani TA*, Cone KR*, Quinlan AR, Elde NC. Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays (2018). eLife.  💻  📖\nBelyeu JR, Nicholas TJ, Pedersen BS, Sasani TA, Havrilla JM, Kravitz SN, Conway ME, Lohman BK, Quinlan AR, Layer RM. SV-plaudit: a cloud-based framework for manually curating thousands of structural variants (2018). GigaScience.  💻  📖\nJain M*, Koren S*, Miga K*, Quick J*, Rand AC*, Sasani TA*, Tyson JR*, Beggs AD, Dilthey AT, Fiddes IT, Malla S, Marriott H, Nieto T, O’Grady J, Olsen HE, Pedersen BS, Rhie A, Richardson H, Quinlan AR, Snutch TP, Tee L, Paten B, Phillippy AM, Simpson JT, Loman NJ, Loose M. Nanopore sequencing and assembly of a human genome with ultra-long reads (2018). Nature Biotechnology.  📖\nFeusier J, Witherspoon DJ, Watkins SW, Goubert C, Sasani TA, Jorde LB. Discovery of rare, diagnostic AluYb8/9 elements in diverse human populations (2017). Mobile DNA.  📖\nPiasecki BP, Sasani TA, Lessenger AT, Huth N, Farrell S. MAPK-15 is a ciliary protein required for PKD-2 localization and male mating behavior in Caenorhabditis elegans (2017).  Cytoskeleton.  📖\n* indicates equal contribution"
   },
   {
     "objectID": "ml_reading_group/2024_intro.html",
@@ -12,13 +26,6 @@
     "title": "ML for genomics, an evolving reading list",
     "section": "",
     "text": "Introductions to ML\nThe CS230 course at Stanford has made slides and lectures available online. A fantastic resource.\nThe Amidi brothers have created cheat sheets for CS230 and other Stanford ML courses. Also great.\nAndrej Karpathy’s videos are also excellent introductions to ML concepts. In his own words, the first video in his main series (called The spelled-out intro to neural networks and backpropagation: building micrograd) “only assumes basic knowledge of Python and a vague recollection of calculus from high school.” Highly recommended.\n\n\n\n\n\n\nReview articles\n\n\n\n\n\nDeep learning: new computational modeling techniques for genomics\n\nAn excellent and detailed overview, probably where I’d start.\n\nA primer on deep learning in genomics\nHarnessing deep learning for population genetic inference\nNavigating the pitfalls of applying machine learning in genomics\n\nExcellent overview of pitfalls and possible mistakes that can confound ML analyses, with a particular focus on biological inference.\n\nOpportunities and obstacles for deep learning in medicine\nSupervised machine learning for population genetics: a new paradigm\nTo transformers and beyond: large language models for the genome\n\n\n\n\n\nApplications\nPapers are broadly grouped by ML architecture. Many of these papers involve a mix of architectures, so the groups should be considered “fuzzy.”\n\n\n\n\n\n\nTransformers\n\n\n\n\n\nEffective gene expression prediction from sequence by integrating long-range interactions\n\nDescribes the “Enformer” model, which utilizes a transformer-based architecture to predict gene expression from sequence alone. Also see a suite of papers describing the limitations of “Enformer” for personal transcriptome inference.\n\nPredicting RNA-seq coverage from DNA sequence as a unifying model of gene regulation\n\n\n\n\n\n\n\n\n\nGenerative adversarial networks (GANs)\n\n\n\n\n\nAutomatic inference of demographic parameters using generative adversarial networks\n\nThe authors describe a novel GAN architecture that that features a population genetic simulator (in this case, the backwards-in-time msprime tool) as the “generator” and a convolutional neural network as the “discriminator”. The parameters of the msprime generator are randomly initialized, and the discriminator is trained to differentiate between simulated and real “images” of haplotypes in genomic regions of a predefined size. Over time, the generator gets better at simulating realistic-looking data and the discriminator gets better at telling the two classes of data apart. By the end of training, the generator can be interpreted by examining the population genetic parameters (population size, mutation rate, etc.) that optimally confused the discriminator. A well-written and clear overview of a cool (and interpretable) method.\n\nInterpreting generative adversarial networks to infer natural selection from genetic data\n\nA follow-up the the paper listed above. The authors fine-tune the trained discriminator from their GAN to infer regions of the genome under the effects of natural selection.\n\n\n\n\n\n\n\n\n\n\nLanguage models (LMs)\n\n\n\n\n\nDNA language models are powerful predictors of genome-wide variant effects\nGPN-MSA: an alignment-based DNA language model for genome-wide variant effect prediction\nThe nucleotide transformer: building and evaluating robust foundation models for human genomics\n\nA recent attempt to build a “foundation model” for genomics. The authors essentially adapt BERT for DNA sequence by developing an encoder-only architecture that attempts to reconstruct randomly-masked 6-mer DNA “tokens.” The learned embeddings from an input DNA sequence can then be plugged into simple regression models to make predictions about chromatin accessibility, enhancer status, etc., or the model itself can be efficiently fine-tuned for a particular downstream classification task.\n\n\n\n\n\n\n\n\n\n\nConvolutional neural networks (CNNs)\n\n\n\n\n\nThe unreasonable effectiveness of convolutional neural networks in population genetic inference\n\nCheck this paper out for a nice introduction to CNNs and how they can be applied to “images” of haplotypes in genomic regions. The associated GitHub repository includes a few simple models (written in TensorFlow/Keras), as well.\n\nBasset: Learning the regulatory code of the accessible genome with deep convolutional neural networks\nSequential regulatory activity prediction across chromosomes with convolutional neural networks\nLocalizing post-admixture adaptive variants with object detection on ancestry-painted chromosomes\n\nThe authors train an off-the-shelf object detection model to identify genomic regions with recent (adaptive) admixture events. Nice example of using off-the-shelf models, rather than building architectures from scratch.\n\nDiscovery of ongoing selective sweeps within Anopholes mosquito populations using deep learning\n\nA nice example of training CNNs to detect selection using pre-computed features (e.g., a large collection of population genetic summary statistics) rather than “painted haplotype” images.\n\n\n\n\n\n\n\n\n\n\nAutoencoders\n\n\n\n\n\nVisualizing population structure with variational autoencoders\n\nThe authors use a variational autoencoder (VAE) to embed sample genotype vectors into a 2-dimensional latent space that reflects geographical origin.\n\nHaplotype and population structure inference using neural networks in whole-genome sequencing data\nA deep learning framework for characterization of genotype data"
-  },
-  {
-    "objectID": "research.html",
-    "href": "research.html",
-    "title": "Research",
-    "section": "",
-    "text": "I develop and apply computational methods to study mutation rate and spectrum evolution in mammalian genomes. Here are a few research questions I’ve pursued in the past:\n\nHow does inherited genetic variation impact the germline mutation rate?\n\nRelated paper: A natural mutator allele shapes mutation spectrum variation in mice\n\n\n\nTo what degree do mutation rates vary among human families?\n\nRelated paper: Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation\n\n\n\nHow do structural and single-nucleotide variants interact to promote rapid adaptation?\n\nRelated paper: Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays"
   },
   {
     "objectID": "notes/gatk.html",
@@ -98,25 +105,11 @@
     "text": "Basic data visualization using R.\nSlides Video\n\n\nIntro to regression (Part I): linear models and interpretation.\nSlides Video\n\n\nIntro to regression (Part II): multiple variables, interaction, and diagnostics.\nSlides\n\n\nIntro to regression (Part III): statistical tests as linear models.\nSlides"
   },
   {
-    "objectID": "talks.html",
-    "href": "talks.html",
-    "title": "Talks",
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
     "section": "",
-    "text": "Mapping mutator alleles in mice. Lawrence University, Recent Advances in Biology Lecture Series (2021). Virtual.\nMapping mutator alleles in mice. Pritchard Lab Mini-conference (2021). Virtual.\nA wild-derived antimutator drives germline mutation spectrum differences in a genetically diverse murine family. Columbia University, Przeworski Lab Meeting (2021). Virtual.\nLong read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays. Society for Molecular Biology and Evolution annual meeting (2019). Manchester, UK.\nTracking adaptive structural variation during host-pathogen conflict. London Calling, Oxford Nanopore Technologies annual meeting (2017). London, UK. Viewable here."
-  },
-  {
-    "objectID": "talks.html#invited-presentations",
-    "href": "talks.html#invited-presentations",
-    "title": "Talks",
-    "section": "",
-    "text": "Mapping mutator alleles in mice. Lawrence University, Recent Advances in Biology Lecture Series (2021). Virtual.\nMapping mutator alleles in mice. Pritchard Lab Mini-conference (2021). Virtual.\nA wild-derived antimutator drives germline mutation spectrum differences in a genetically diverse murine family. Columbia University, Przeworski Lab Meeting (2021). Virtual.\nLong read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays. Society for Molecular Biology and Evolution annual meeting (2019). Manchester, UK.\nTracking adaptive structural variation during host-pathogen conflict. London Calling, Oxford Nanopore Technologies annual meeting (2017). London, UK. Viewable here."
-  },
-  {
-    "objectID": "talks.html#contributed-presentations",
-    "href": "talks.html#contributed-presentations",
-    "title": "Talks",
-    "section": "Contributed Presentations",
-    "text": "Contributed Presentations\nDiscovering epistasis between germline mutator alleles in mice. The Biology of Genomes (2023). Cold Spring Harbor, NY.\nDirectly measuring the dynamics of the human mutation rate by sequencing large, multi-generational pedigrees. American Society of Human Genetics annual meeting (2018). Plenary presentation. San Diego, CA.\nHuman immune defense mechanisms drive rapid genome evolution in vaccinia virus. American Society of Human Genetics annual meeting (2017). Platform presentation. Orlando, FL."
+    "text": "I develop and apply computational methods to study mutation rate and spectrum evolution in mammalian genomes. Here are a few research questions I’ve pursued in the past:\n\nHow does inherited genetic variation impact the germline mutation rate?\n\nRelated paper: A natural mutator allele shapes mutation spectrum variation in mice\n\n\n\nTo what degree do mutation rates vary among human families?\n\nRelated paper: Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation\n\n\n\nHow do structural and single-nucleotide variants interact to promote rapid adaptation?\n\nRelated paper: Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays"
   },
   {
     "objectID": "notes/snakemake.html",
@@ -219,24 +212,31 @@
     ]
   },
   {
-    "objectID": "pubs.html",
-    "href": "pubs.html",
-    "title": "Publications",
+    "objectID": "talks.html",
+    "href": "talks.html",
+    "title": "Talks",
     "section": "",
-    "text": "Click 💻 to access associated code and 📖 for PDFs."
+    "text": "Mapping mutator alleles in mice. Lawrence University, Recent Advances in Biology Lecture Series (2021). Virtual.\nMapping mutator alleles in mice. Pritchard Lab Mini-conference (2021). Virtual.\nA wild-derived antimutator drives germline mutation spectrum differences in a genetically diverse murine family. Columbia University, Przeworski Lab Meeting (2021). Virtual.\nLong read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays. Society for Molecular Biology and Evolution annual meeting (2019). Manchester, UK.\nTracking adaptive structural variation during host-pathogen conflict. London Calling, Oxford Nanopore Technologies annual meeting (2017). London, UK. Viewable here."
   },
   {
-    "objectID": "pubs.html#preprints",
-    "href": "pubs.html#preprints",
-    "title": "Publications",
-    "section": "Preprints",
-    "text": "Preprints\nPorubsky D, Dashnow H, Sasani TA, Logsdon GA, Hallast P, Noyes MD, Kronenberg ZN, Mokveld T, et al. A familial, telomere-to-telomere reference for human de novo mutation and recombination from a four-generation pedigree (2024). bioRxiv\nXu K, Zhang Y, Baldwin-Brown J, Sasani TA, Phadnis N, Miller MP, Rog O. Decoding chromosome organization using CheC-PLS: chromosome conformation by proximity labeling and long-read sequencing (2024). bioRxiv\nAshbrook DG, Sasani TA, Maksimov M, Gunturkun MH, Ma N, Villani F, Ren Y, Rothschild D, Chen H, Lu L, Colonna V, Dumont B, Harris K, Gymrek M, Pritchard JK, Palmer AA, Williams RW. Private and sub-family specific mutations of founder haplotypes in the BXD family reveal phenotypic consequences relevant to health and disease (2022). bioRxiv."
+    "objectID": "talks.html#invited-presentations",
+    "href": "talks.html#invited-presentations",
+    "title": "Talks",
+    "section": "",
+    "text": "Mapping mutator alleles in mice. Lawrence University, Recent Advances in Biology Lecture Series (2021). Virtual.\nMapping mutator alleles in mice. Pritchard Lab Mini-conference (2021). Virtual.\nA wild-derived antimutator drives germline mutation spectrum differences in a genetically diverse murine family. Columbia University, Przeworski Lab Meeting (2021). Virtual.\nLong read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays. Society for Molecular Biology and Evolution annual meeting (2019). Manchester, UK.\nTracking adaptive structural variation during host-pathogen conflict. London Calling, Oxford Nanopore Technologies annual meeting (2017). London, UK. Viewable here."
   },
   {
-    "objectID": "pubs.html#peer-reviewed-manuscripts",
-    "href": "pubs.html#peer-reviewed-manuscripts",
-    "title": "Publications",
-    "section": "Peer-reviewed Manuscripts",
-    "text": "Peer-reviewed Manuscripts\nSasani TA, Quinlan AR, Harris K. Epistasis between mutator alleles contributes to germline mutation rate variability in laboratory mice (2024). eLife.  💻\nFixsen SM, Cone KR, Goldstein SA, Sasani TA, Quinlan AR, Rothenburg S, Elde NC. Poxviruses capture host genes by LINE-1 retrotransposition (2022). eLife.  📖\nSasani TA, Ashbrook DG, Beichman AC, Lu L, Palmer AA, Williams RW, Pritchard JK, Harris K. A natural mutator allele shapes mutation spectrum variation in mice (2022). Nature.  💻  📖\nBelyeu JR*, Sasani TA*, Pedersen BS, Quinlan AR. Unfazed: parent-of-origin detection for large and small de novo variants (2021). Bioinformatics.  💻  📖\nWallace AD, Sasani TA, Swanier J, Gates B, Greenland J, Pedersen BP, Varley KT, Quinlan AR. CaBagE: a Cas9-based Background Elimination strategy for targeted, long-read DNA sequencing (2021). PLoS One.  📖\nCawthon RM, Meeks HD, Sasani TA*, Smith KR, Kerber RA, O’Brien E, Baird L, Dixon MM, Peiffer AP, Leppert MF, Quinlan AR, Jorde LB. Germline mutation rates in young adults predict longevity and reproductive lifespan (2020). Scientific Reports.  📖\nSasani TA, Pedersen BS, Gao Z, Baird L, Przeworski M, Jorde LB, Quinlan AR. Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation (2019). eLife.  💻  📖\nGao Z, Moorjani P, Sasani TA, Pedersen BP, Quinlan AR, Jorde LB, Amster G, Przeworski MP. Overlooked roles of DNA damage and maternal age in generating human germline mutations (2019). PNAS.   📖\nSasani TA*, Cone KR*, Quinlan AR, Elde NC. Long read sequencing reveals poxvirus evolution through rapid homogenization of gene arrays (2018). eLife.  💻  📖\nBelyeu JR, Nicholas TJ, Pedersen BS, Sasani TA, Havrilla JM, Kravitz SN, Conway ME, Lohman BK, Quinlan AR, Layer RM. SV-plaudit: a cloud-based framework for manually curating thousands of structural variants (2018). GigaScience.  💻  📖\nJain M*, Koren S*, Miga K*, Quick J*, Rand AC*, Sasani TA*, Tyson JR*, Beggs AD, Dilthey AT, Fiddes IT, Malla S, Marriott H, Nieto T, O’Grady J, Olsen HE, Pedersen BS, Rhie A, Richardson H, Quinlan AR, Snutch TP, Tee L, Paten B, Phillippy AM, Simpson JT, Loman NJ, Loose M. Nanopore sequencing and assembly of a human genome with ultra-long reads (2018). Nature Biotechnology.  📖\nFeusier J, Witherspoon DJ, Watkins SW, Goubert C, Sasani TA, Jorde LB. Discovery of rare, diagnostic AluYb8/9 elements in diverse human populations (2017). Mobile DNA.  📖\nPiasecki BP, Sasani TA, Lessenger AT, Huth N, Farrell S. MAPK-15 is a ciliary protein required for PKD-2 localization and male mating behavior in Caenorhabditis elegans (2017).  Cytoskeleton.  📖\n* indicates equal contribution"
+    "objectID": "talks.html#contributed-presentations",
+    "href": "talks.html#contributed-presentations",
+    "title": "Talks",
+    "section": "Contributed Presentations",
+    "text": "Contributed Presentations\nDiscovering epistasis between germline mutator alleles in mice. The Biology of Genomes (2023). Cold Spring Harbor, NY.\nDirectly measuring the dynamics of the human mutation rate by sequencing large, multi-generational pedigrees. American Society of Human Genetics annual meeting (2018). Plenary presentation. San Diego, CA.\nHuman immune defense mechanisms drive rapid genome evolution in vaccinia virus. American Society of Human Genetics annual meeting (2017). Platform presentation. Orlando, FL."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Tom Sasani, PhD",
+    "section": "",
+    "text": "I’m a computational biologist using genetic data to better understand health and evolution.\n\nExperience\nI’m currently a (remote) Staff Research Scientist with Dr. Aaron Quinlan at the University of Utah, where I develop new methods to study the evolution of germline mutation rates and spectra.\nAs a Postdoctoral Fellow with Dr. Kelley Harris at the University of Washington, I discovered genetic modifiers of the germline mutation rate in mice.\nIn between my academic roles I was also a Senior Data Scientist at Recursion Pharmaceuticals, where I analyzed data from massive cellular imaging experiments to identify new treatments for human disease."
   }
 ]
