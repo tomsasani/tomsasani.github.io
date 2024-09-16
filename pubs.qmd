@@ -7,6 +7,8 @@ Click :computer: to access associated code and :book: for PDFs.
 
 ## Preprints
 
+Kunisaki J, Goldberg ME, Lulla S, **Sasani TA**, Hiatt L, Nicholas TJ, Liu L, Torres-Arce E, Guo Y, James E, Horns JJ, Ramsay JM, Chen W, Hotaling JM, Aston KI, Quinlan AR. Sperm from infertile, oligozoospermic men have elevated mutation rates (2024). [*medRxiv*](https://www.medrxiv.org/content/10.1101/2024.08.22.24312232v1).
+
 Porubsky D, Dashnow H, **Sasani TA**, Logsdon GA, Hallast P, Noyes MD, Kronenberg ZN, Mokveld T, et al. A familial, telomere-to-telomere reference for human *de novo* mutation and
 recombination from a four-generation pedigree (2024). [*bioRxiv*](https://www.biorxiv.org/content/10.1101/2024.08.05.606142v1)
 
