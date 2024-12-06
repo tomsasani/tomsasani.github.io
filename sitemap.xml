@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tomsasani.github.io/pubs.html</loc>
-    <lastmod>2024-09-16T14:19:56.585Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/ml_reading_group/2024_intro.html</loc>
-    <lastmod>2024-09-16T14:19:56.421Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/notes/gatk.html</loc>
-    <lastmod>2024-09-16T14:19:56.421Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/tutorials.html</loc>
-    <lastmod>2024-09-16T14:19:56.589Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/teaching.html</loc>
-    <lastmod>2024-09-16T14:19:56.585Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/research.html</loc>
-    <lastmod>2024-09-16T14:19:56.585Z</lastmod>
+    <loc>https://tomsasani.github.io/index.html</loc>
+    <lastmod>2024-12-06T16:05:35.958Z</lastmod>
   </url>
   <url>
     <loc>https://tomsasani.github.io/notes/snakemake.html</loc>
-    <lastmod>2024-09-16T14:19:56.421Z</lastmod>
+    <lastmod>2024-12-06T16:05:35.962Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/ml_reading_group/2024_intro.html</loc>
+    <lastmod>2024-12-06T16:05:35.958Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/research.html</loc>
+    <lastmod>2024-12-06T16:05:36.122Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/pubs.html</loc>
+    <lastmod>2024-12-06T16:05:36.122Z</lastmod>
   </url>
   <url>
     <loc>https://tomsasani.github.io/talks.html</loc>
-    <lastmod>2024-09-16T14:19:56.585Z</lastmod>
+    <lastmod>2024-12-06T16:05:36.126Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/index.html</loc>
-    <lastmod>2024-09-16T14:19:56.421Z</lastmod>
+    <loc>https://tomsasani.github.io/teaching.html</loc>
+    <lastmod>2024-12-06T16:05:36.126Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/notes/gatk.html</loc>
+    <lastmod>2024-12-06T16:05:35.962Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/tutorials.html</loc>
+    <lastmod>2024-12-06T16:05:36.126Z</lastmod>
   </url>
 </urlset>
