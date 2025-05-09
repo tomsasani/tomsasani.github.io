@@ -20,6 +20,8 @@ title: "Talks"
 
 ## Contributed Presentations
 
+**Fast and furious mutation at tandem repeats in a large, four-generation human family.** The Biology of Genomes (2025). *Cold Spring Harbor, NY*.
+
 **Discovering epistasis between germline mutator alleles in mice.** The Biology of Genomes (2023). *Cold Spring Harbor, NY*.
 
 **Directly measuring the dynamics of the human mutation rate by sequencing large, multi-generational pedigrees.** American Society of Human Genetics annual meeting (2018). Plenary presentation. *San Diego, CA.*
