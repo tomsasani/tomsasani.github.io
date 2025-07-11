@@ -1,0 +1,672 @@
+---
+title: "Testing out transformers for population genetic inference"
+# subtitle: "Yes!"
+execute:
+  echo: true
+  eval: true
+fig-cap-location: bottom
+
+format:
+
+  html:
+      code-fold: false
+      code-overflow: wrap
+      code-summary: "Show the code"
+---
+
+
+## Introduction
+
+### Representing genetic variation with PNGs
+
+Take a look at the two images below.
+These images are of shape $(H = 64, W = 36)$ &mdash; each row represents a human haplotype, and each column represents a single-nucleotide polymorphism (SNP).
+Each "pixel" location $H_i, W_j$ can take a value of $0$ (meaning haplotype $i$ possesses the ancestral allele at site $j$) or $1$ (meaning it possesses the derived allele).
+
+![](../img/0.png)
+
+Both images were simulated using a backwards-in-time simulation engine called `msprime`, and each image represents the genetic variation present in collection of $H = 64$ haplotypes sampled at $W = 36$ consecutive SNPs.
+The genomes in the first image were simulated from a demographic model in the `stdpopsim` [catalog](https://popsim-consortium.github.io/stdpopsim-docs/stable/catalog.html)^[precisely, a CEU population from the `OutOfAfrica_3G09` demography], assuming a recombination rate $\rho = 10^{-9}$.
+The genomes in the second image were simulated from the same demographic model, but assuming $\rho = 10^{-8}$.
+
+### Classifying images of genetic variation with machine learning
+
+By eye, we might be able to tell a difference between the two images, but what if we wanted to classify tens or hundreds of thousands of them?
+This example is totally contrived, but it represents an important kind of inference challenge in population genetics: distinguishing between the patterns of genetic variation observed in different regions of the genome.
+For example, we might want to discriminate between regions of the genome undergoing positive or negative selection and those evolving neutrally or near-neutrally.
+Although numerous statistical methods exist for doing this kind of inference, machine learning methods may be particularly well-suited to the task.
+
+Machine learning approaches &mdash; in particular, convolutional neural networks (CNNs) &mdash; have proven "unreasonably effective"^[for an overview of the utility of CNNs in popgen, see [Flagel et al. 2019](https://academic.oup.com/mbe/article/36/2/220/5229930)] for population genetic inference.
+CNNs can be trained to detect population genetic phenomena (e.g., selection^[see [Xue et al. (2020)](https://academic.oup.com/mbe/article/38/3/1168/5918472)], adaptive admixture^[see [Hamid et al. (2023)](https://academic.oup.com/mbe/article/40/4/msad074/7083730)], incomplete lineage sorting^[see [Rosenzweig et al. (2022)](https://www.biorxiv.org/content/10.1101/2022.11.09.515828v2)]) and predict various summary statistics (e.g., recombination rate) by ingesting lots of labeled training data.
+These training data often comprise 1- or 2-channel "images" of haplotypes in genomic windows of a defined SNP length (see @fig-images), much like the ones shown above.
+
+![
+**Learning from images of haplotypes.**
+We can represent genomic regions as one- or two-channel "images" in which rows correspond to haplotypes and columns to SNPs. 
+The first channel typically encodes derived alleles as $1$s and ancestral alleles as $0$s, while the second channel can encode either absolute genomic positions or inter-SNP distances. 
+In the absence of phased haplotype data, the first channel can also represent diploid genotypes as $0$ (homozygous for the ancestral allele), $0.5$ (heterozygous), and $1$ (homozygous for the derived allele).
+](../img/Artboard 1.png){#fig-images width=60% align="left"}
+
+
+### Images of human haplotypes aren't like images of cats
+
+#### Exchangability and permutation-invariance
+
+Unlike images of cats, dogs, or handwritten digits, these images of human genetic variation are "row-invariant."
+In other words, the information in the image is exactly the same regardless of how you permute the haplotypes^[of course, the order of SNPs almost always matters, and local patterns of, say, linkage can be highly informative for machine learning classifiers].
+If you were to shuffle the rows of an image of a cat, on the other hand, that image would look dramatically different, and the spatial correlations between pixels would be totally broken.
+We'd like to develop machine learning methods that are agnostic to the order of haplotypes in our images.
+
+To address this "exchangability problem", [Chan et al.]((https://pubmed.ncbi.nlm.nih.gov/33244210/)) developed the `defiNETti` architecture.
+
+::: {.callout-note icon="false" appearance="simple" collapse="true"}
+# **The defiNETti architecture**: a powerful, yet conceptually simple, machine learning approach designed for images of genetic variation
+
+![
+First, a series of strided 1D convolutions are applied to an input image of genetic variation (optionally followed by activation functions and pooling) to create high-dimensional feature maps and reduce the width of the input image.
+These 1D convolutions can presumably capture "interesting" features, like linkage disequilibrium between nearby SNPs, as well as build higher-level combinations of those features.
+After the convolutional layers we're left with a batch of tensors of shape $(B, D, H, W')$, where $B$ is the batch size, $D$ is the number of feature maps produced by the convolutional operations, $H$ is the original height of the image (i.e., the number of haplotypes) and $W'$ is the width of the image after strided convolutions and pooling operations are taken into account.
+To make the model agnostic to both the order *and* number of haplotypes in the input image, a "permutation-invariant" aggregation operation is then applied along the $H$ dimension (typically, `max` or `mean`).
+Then, the resulting tensor of shape $(B, D, 1, W)$ can be flattened and passed through a series of fully-connected layers and a final classification head.
+](https://cdn.ncbi.nlm.nih.gov/pmc/blobs/3c45/7687905/9803621765bc/nihms-1646873-f0001.jpg)
+
+From [Chan et al. (2019) *Advances in NeurIPS*](https://pubmed.ncbi.nlm.nih.gov/33244210/).
+:::
+
+Chan et al. demonstrate that their approach is highly effective for a number of population genetics inference tasks, and outperforms established statistical methods for e.g., the detection of recombination hotspots.
+In addition to being permutation-invariant, the aggregation operation applied before its fully-connected layers means that `defiNETti` is also (mostly) agnostic to sample size.
+Even if `defiNETti` is trained on images of height $H = 512$, it is insensitive to the sizes of images at test time, working quite well even when images contain as few as 64 haplotypes.
+In the population genetics setting, permutation-invariance and sample size indifference are extremely attractive properties of a machine learning method.
+For example, we might want to train a machine learning model using data from one cohort (say, a subpopulation of the Thousand Genomes consortium), and test that model on haplotypes sampled from another cohort with fewer or more samples.
+
+#### Transformers as permutation-invariant architectures
+
+Although the `defiNETti` approach demonstrated that permutation-invariant CNNs are powerful, lightweight tools for population genetic inference, other architectures may be even better.
+For example, the transformer architecture, and the self-attention mechanism in particular, is a natural choice for embedding images of human genetic variation.
+However, transformers are relatively unexplored in the population genetics space. 
+
+In the parlance of the vision transformer (ViT)^[see [Dosovitskiy et al. (2021) *arXiv*](https://arxiv.org/abs/2010.11929)], we can treat input images of genetic variation as collections of "haplotype patches."
+Each patch $P$ is shape $(1, W)$, where $W$ is the number of SNPs and $P \in \{0, 1\}$.
+We first embed each patch in a new, $d$-dimensional feature space using a single fully-connected layer (@fig-tokenizer).
+
+![
+**Tokenizing haplotype images.** 
+Given an image of genetic variation, we embed every haplotype "patch" into a new $d$-dimensional embedding space using a single fully-connected layer (essentially, just a linear transformation of the $0$s and $1$s each haplotype possesses at the $W$ SNPs.)
+](../img/Artboard%203.png){#fig-tokenizer width=80% align="left"}
+
+I won't spend much time on the details here^[for a nice overview of the transformer architecture, check out the [Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)], but the basic conceit of self-attention is that the embedding of each patch is compared to the embedding *of every other patch*, and the weights associated with these pairwise comparisons can be tuned to capture the important relationships between patches.
+The transformer outputs an updated set of haplotype patch embeddings that should reflect these inter-haplotype relationships (@fig-transformer).
+
+![
+**Applying transformers to haplotype images.** 
+For a given image, we pass the haplotype patch embeddings from @fig-tokenizer to a transformer with self-attention. 
+The transformer model outputs a new, "updated" set of haplotype patch embeddings. 
+We can create a final image embedding by simply aggregating across haplotype patches at each dimension $d_i$ of the embedding space, then add a fully-connected layer on top of that final image embedding for classification purposes. 
+Alternatively, we could include a special `[CLS]` classification token when training the transformer and use its output embedding for classification tasks.
+](../img/Artboard%205.png){#fig-transformer align="left"}
+
+What's more, the self-attention mechanism is inherently invariant to the order of the patch embeddings, though we could introduce learned positional/rotary embeddings into our model if their order *does* matter.
+
+
+**So, how well do transformers work for population genetic inference?**
+
+## Materials and Methods
+
+Let's compare a simple transformer model to a simple implementation of the `defiNETti` architecture.
+I've included `pytorch` code for replicating the two models below.
+
+
+### Architectural details
+
+CNN model architectures were adapted from Chan et al. (`defiNETti`) and [Wang et al. (2021)](https://onlinelibrary.wiley.com/doi/10.1111/1755-0998.13386).
+Convolutional operations used a kernel of shape `(1, 5)`, stride of `(1, 1)`, and no zero-padding.
+All convolutional operations were followed by `ReLU` activations.
+In the Wang et al. architecture, convolutional operations were further followed by `MaxPool` with a stride and kernel of `(1, 2)`.
+The first convolutional layer always outputs a feature map with 32 channels, and feature maps increased in dimension by a factor of 2 with each subsequent convolutional layer.
+I used `max` as the permutation-invariant function (to collapse along the height dimension) in all cases; empirically, I found that `max` outperformed `mean` as an aggregation function.
+After applying the permutation-invariant function, feature maps were flattened and passed to two fully-connected layers of 128 dimensions each, with `ReLU` activations after each.
+
+Our transformer model architecture follows the same general structure as in the [Vision Transformer (ViT)](https://arxiv.org/pdf/2010.11929) paper &mdash; see Equations 1-4 in the ViT preprint (or the code samples below) for details.
+Briefly, we embedded haplotype patches using a single fully-connected layer with 128 dimensions and passed the resulting tensor of patch embeddings to a single multi-headed self-attention block with 8 heads, `LayerNorm`, a multi-layer perceptron (MLP) and residual connections. 
+
+| model type  | kernel size  | stride | max-pool | convolutional layers | fully-connected dimension  | trainable params (hotspot task) | trainable params (rate task) |
+|-|-|-|-|-|-|-|-|
+| CNN (`defiNETti`)  | 5  | 1 | False | 2 | 128 | 256,770 | 256,899 |
+| CNN (`Wang et al.`)  | 5  | 1 | True | 2 | 128 | 76,546 |  76,675 |
+
+: CNN model architecture
+
+| model type  | depth  | hidden size | MLP size | heads | trainable params (hotspot task) | trainable params (rate task) |
+|-|-|-|-|-|-|-|
+| Transformer | 1  | 128 | 256 | 8 | 137,603 | 137,732 |
+: Transformer architecture
+
+All models were trained with the Adam optimizer.
+As in Chan et al., we used the following learning rate schedule: $10^{-3} \times 0.9^{\frac{m}{I}}$, where $m$ is the current minibatch and $I$ is the total number of training iterations.
+
+::: {.callout-tip icon="false" collapse="true"}
+# "Tokenizer" for embedding haplotype patches
+
+```{python}
+#| eval: false
+#| echo: true
+
+from torch import nn
+
+class HaplotypeTokenizer(nn.Module):
+
+    def __init__(
+        self,
+        input_channels: int = 1,
+        input_width: int = 32,
+        hidden_size: int = 192,
+    ):
+        super().__init__()
+
+        self.input_dim = input_channels * input_width
+        self.hidden_size = hidden_size
+        # simple linear projection
+        self.proj = torch.nn.Linear(self.input_dim, hidden_size)
+
+    def forward(self, x):
+        # shape should be (B, C, H, W) where H is the number
+        # of haplotypes and W is the number of SNPs
+        B, C, H, W = x.shape
+        # permute to (B, H, C, W)
+        x = x.permute(0, 2, 1, 3)
+        # then, flatten each "patch" of C * W such that
+        # each patch is 1D and size (C * W).
+        x = x.reshape(B, H, -1)
+        # embed "patches" of size (C * W, effectively a 1d
+        # array equivalent to the number of SNPs)
+        tokens = self.proj(x)
+        return tokens
+```
+:::
+
+::: {.callout-tip icon="false" collapse="true"}
+# A simple transformer model with self-attention
+
+```{python}
+# | eval: false
+# | echo: true
+
+
+class SelfAttention(nn.Module):
+    def __init__(
+        self,
+        embed_dim: int = 192,
+        num_heads: int = 1,
+        mlp_hidden_dim_ratio: int = 2,
+    ):
+        super().__init__()
+
+        self.attn = nn.MultiheadAttention(
+            embed_dim,
+            num_heads,
+            batch_first=True,
+        )
+        self.norm = nn.LayerNorm(embed_dim)
+
+        self.mlp = nn.Sequential(
+            nn.Linear(embed_dim, embed_dim * mlp_hidden_dim_ratio),
+            nn.GELU(),
+            nn.Linear(embed_dim * mlp_hidden_dim_ratio, embed_dim),
+        )
+
+    def forward(self, x):
+        # layernorm before self-attention
+        x_norm = self.norm(x)
+        # self-attention (Q, K, and V are identical)
+        attn_out, _ = self.attn(x_norm, x_norm, x_norm)
+        # residual connection
+        x = x + attn_out
+        # layer norm
+        x_norm = self.norm(x)
+        # return w/ res connection
+        return x + self.mlp(x_norm)
+
+
+class Transformer(torch.nn.Module):
+    def __init__(
+        self,
+        width: int = 32,
+        in_channels: int = 1,
+        num_heads: int = 1,
+        hidden_size: int = 128,
+        num_classes: int = 2,
+        depth: int = 4,
+        mlp_ratio: int = 2,
+    ):
+        super().__init__()
+
+        self.hidden_size = hidden_size
+        self.attention_pool = attention_pool
+        self.norm = nn.LayerNorm(hidden_size)
+
+        # we use a "custom" tokenizer that takes
+        # patches of size (C * W), where W is the
+        # number of SNPs
+        self.tokenizer = HaplotypeTokenizer(
+            input_channels=in_channels,
+            input_width=width,
+            hidden_size=hidden_size,
+        )
+
+        # blocks of multi-headed self-attention
+        self.attention = nn.Sequential(
+            *[
+                SelfAttention(
+                    embed_dim=hidden_size,
+                    num_heads=num_heads,
+                    mlp_hidden_dim_ratio=mlp_ratio,
+                )
+                for _ in range(depth)
+            ]
+        )
+
+        # linear classifier head
+        self.classifier = torch.nn.Linear(
+            hidden_size,
+            num_classes,
+        )
+
+    def forward(self, x):
+        B, C, H, W = x.shape
+        x = self.tokenizer(x)  # (B, H, hidden_size)
+        # pass through transformer encoder
+        x = self.attention(x)
+        # classification head on the average or attention-pooled
+        # final embeddings (no CLS token)
+        x = self.norm(x)
+        # max pool along H dimension
+        cls_output = torch.amax(x, dim=1)
+        logits = self.classifier(cls_output)
+
+        return logits
+```
+:::
+
+::: {.callout-tip icon="false" collapse="true"}
+# The `defiNETti` architecture
+
+```{python}
+# | eval: false
+# | echo: true
+
+
+class DeFinetti(nn.Module):
+
+    def __init__(
+        self,
+        *,
+        in_channels: int = 1,
+        kernel_size: int = 5,
+        hidden_dims: List[int] = [32, 64],
+        agg: Union[str, None] = "mean",
+        width: int = 36,
+        pool: bool = True,
+        num_classes: int = 3,
+        encoding_dim: int = 128,
+    ) -> None:
+
+        super(DeFinetti, self).__init__()
+
+        self.agg = agg
+        self.width = width
+
+        _stride = (1, 1)
+        _padding = (0, 0)
+        _kernel = (1, kernel_size)
+
+        # calculate out dimensions given stride
+        out_H = 1
+        out_W = width
+
+        encoder_blocks = []
+        for hi, h_dim in enumerate(hidden_dims):
+            block = [
+                nn.Conv2d(
+                    in_channels,
+                    h_dim,
+                    kernel_size=_kernel,
+                    stride=_stride,
+                    padding=_padding,
+                ),
+                nn.ReLU(),
+            ]
+            if pool:
+                block.append(
+                    nn.MaxPool2d(
+                        kernel_size=(1, 2),
+                        stride=(1, 2),
+                    ),
+                )
+            in_channels = h_dim
+
+            encoder_blocks.extend(block)
+            # calculate output width after conv and pool ops
+            out_W = (
+                math.floor((out_W - _kernel[1] + (2 * (_padding[1]))) / _stride[1]) + 1
+            )
+            out_W //= 2
+
+        # convolutional layers
+        self.conv = nn.Sequential(*encoder_blocks)
+        # MLP layers following permutation-invariant function
+        self.mlp = nn.Sequential(
+            nn.Linear(hidden_dims[-1] * out_W * out_H, encoding_dim),
+            nn.ReLU(),
+            nn.Linear(encoding_dim, encoding_dim),
+            nn.ReLU(),
+        )
+        # projection layers for classification
+        self.clf = nn.Sequential(
+            nn.Linear(encoding_dim, num_classes),
+        )
+        self.flatten = nn.Flatten()
+
+    def forward(self, x):
+        x = self.conv(x)
+        # agg across haplotypes
+        if self.agg == "mean":
+            x = torch.mean(x, dim=2)
+        elif self.agg == "max":
+            x = torch.amax(x, dim=2)
+        # flatten, but ignore batch
+        x = self.flatten(x)
+        x = self.mlp(x)
+        x = self.clf(encoded)
+
+        return x
+```
+:::
+
+
+### Training datasets and classification tasks
+
+I compared the performance of CNNs and transformers on two simple classification tasks.
+
+#### Recombination hotspot detection
+
+The first task was adapted from Chan et al.
+Training data belonged to one of two classes: regions that either contained or did not contain a recombination hotspot.
+All regions were simulated using a simple `msprime` demographic model and an `msprime` recombination [`RateMap`](https://tskit.dev/msprime/docs/stable/rate_maps.html) object as follows:
+
+::: {.callout-tip icon="false" collapse="true"}
+# Simulating recombination hotspots
+
+```{python}
+# | echo: true
+
+import msprime
+import numpy as np
+
+rng = np.random.default_rng(42)
+
+# interval length
+L = 25_000
+# hotspot length
+HOTSPOT_L = 2_000
+
+# define background recomb rate
+background = rng.uniform(1e-8, 1.5e-8)
+
+class_label = rng.choice(2)
+heat = 1 if class_label == 0 else rng.uniform(10, 100)
+
+# starts and ends of the hotspot given length of simulated inderval
+hs_s, hs_e = (
+    (L - HOTSPOT_L) / 2,
+    (L + HOTSPOT_L) / 2,
+)
+rho_map = msprime.RateMap(
+    position=[
+        0,
+        hs_s,
+        hs_e,
+        L,
+    ],
+    rate=[background, background * heat, background],
+)
+
+seed = rng.integers(0, 2**32)
+ts = msprime.simulate(
+    sample_size=200,
+    Ne=1e4,
+    recombination_map=rho_map,
+    mutation_rate=1.1e-8,
+    random_seed=seed,
+)
+```
+:::
+
+In all rate maps, $\rho_{bg} \sim \mathcal{U}\{1 \times 10^{-8}, 1.5 \times 10^{-8}\}$.
+
+| left | right | mid | span | rate |
+|-|-|-|-|-|-|
+| 0 | 11,500 | 5,750 | 11,500 | $\rho_{bg}$ |
+| 11,500 | 13,500 | 12,500 | 2,000 | $\rho_{bg} \times \mathcal{U}\{10, 100\}$ |
+| 13,500 | 25,000 | 19,250 | 11,500 | $\rho_{bg}$ |
+
+: Regions with recombination hotspots
+
+| left | right | mid | span | rate |
+|-|-|-|-|-|-|
+| 0 | 25,000 | 12,500 | 25,000 | $\rho_{bg}$ |
+
+: Regions without recombination hotspots
+
+
+#### Recombination rate classification
+
+In the second task, training data belonged to one of three classes: regions with one of three different recombination rates ($10^{-7}$, $10^{-8}$, or $10^{-9}$).
+All regions were simulated using a CEU population from the `OutOfAfrica_3G09` model in the `stdpopsim` catalog.
+
+
+::: {.callout-tip icon="false" collapse="true"}
+# Simulating variable recombination rates
+```{python}
+#| eval: false
+
+import stdpopsim
+
+# choose species and model
+species = stdpopsim.get_species("HomSap")
+demography = species.get_demographic_model("OutOfAfrica_3G09")
+RHO = [1e-9, 1e-8, 1e-7]
+
+contigs = [
+    species.get_contig(
+        length=50_000,
+        recombination_rate=r,
+        mutation_rate=2.35e-8,
+    )
+    for r in RHO
+]
+
+# msprime by default
+engine = stdpopsim.get_default_engine()
+
+samples_per_population = [0, 0, 0]
+# use a CEU population
+samples_per_population[1] = n_smps
+samples = dict(
+    zip(
+        ["YRI", "CEU", "CHB"],
+        samples_per_population,
+    )
+)
+
+class_label = rng.choice(3)
+
+ts = engine.simulate(
+    demography,
+    contig=contigs[class_label],
+    samples=samples,
+)
+```
+:::
+
+#### Simulation "on-the-fly"
+
+Rather than train these models with a fixed dataset of $N$ images, I simulated training examples "on the fly" as described in Chan et al.
+In each training iteration, I simulated a fresh minibatch of 256 haplotype images of shape $(1, 200, 36)$ &mdash; with approximately equal contribution from each class &mdash; passed the minibatch through the model, and updated the model weights using cross-entropy loss.
+As the models never saw the same image twice during training, there was no need to run them on a "held out" validation or test set.
+Models were trained for 1,000 iterations (one minibatch per iteration); therefore, each model saw a total of 25,600 unique images during training.
+I used random seeds to ensure that each model saw the same 25,600 images during training.
+
+
+## Results
+
+### Transformer models outperform CNNs for recombination rate classification
+
+Despite having fewer trainable parameters, the transformer exhibits higher accuracy than the CNN on the recombination rate classification task (@fig-rho-performance).
+
+```{python}
+# | echo: false
+# | label: fig-rho-performance
+# | fig-cap: ""
+
+
+import pandas as pd
+import glob
+import plotly.express as px
+
+
+dfs = []
+for fh in glob.glob("../data/*.tsv"):
+    if not ("solar" in fh or "wandering" in fh or "warm" in fh):
+        continue
+    df = pd.read_csv(fh, sep="\t")
+    df["Model"] = df.apply(
+        lambda row: (
+            "Transformer"
+            if row["use_vit"]
+            else "CNN (Wang et al.)" if row["pool"] else "CNN (defiNETti)"
+        ),
+        axis=1,
+    )
+    dfs.append(df)
+dfs = pd.concat(dfs)
+
+f = px.scatter(
+    dfs,
+    x="iteration",
+    y="train_loss",
+    color="Model",
+    opacity=0.2,
+    trendline="rolling",
+    trendline_options={"window": 10},
+    labels={
+        "iteration": "# of minibatches",
+        "train_loss": "Cross-entropy loss",
+        "use_vit": "Is transformer?",
+    },
+)
+f.show()
+
+f = px.scatter(
+    dfs,
+    x="iteration",
+    y="train_acc",
+    color="Model",
+    opacity=0.2,
+    trendline="rolling",
+    trendline_options={"window": 10},
+    labels={
+        "iteration": "# of minibatches",
+        "train_acc": "Accuracy",
+        "use_vit": "Is transformer?",
+    },
+)
+f.show()
+```
+
+### Transformer models slightly outperform CNNs for recombination hotspot detection
+
+Transformer and CNN performance is more similar on the recombination hotspot detection task (@fig-hotspot-performance), though the former still exhibits better accuracy.
+
+```{python}
+#| echo: false
+#| label: fig-hotspot-performance
+#| fig-cap: ""
+
+
+import pandas as pd
+import glob
+import plotly.express as px
+
+
+dfs = []
+for fh in glob.glob("../data/*.tsv"):
+    if ("solar" in fh or "wandering" in fh or "warm" in fh): continue
+    df = pd.read_csv(fh, sep="\t")
+    df["Model"] = df.apply(
+        lambda row: (
+            "Transformer"
+            if row["use_vit"]
+            else "CNN (Wang et al.)" if row["pool"] else "CNN (defiNETti)"
+        ),
+        axis=1,
+    )
+    dfs.append(df)
+dfs = pd.concat(dfs)
+
+dfs_tidy = dfs[["Model", "iteration", "train_loss", "train_acc"]].melt(
+    id_vars=["Model", "iteration"],
+    value_vars=["train_loss", "train_acc"],
+    var_name="statistic",
+)
+dfs_tidy["statistic"] = dfs_tidy["statistic"].apply(lambda s: s.split("_")[1])
+
+dfs = dfs.sort_values(["iteration", "Model"])
+
+f = px.scatter(
+    dfs,
+    x="iteration",
+    y="train_loss",
+    color="Model",
+    opacity=0.2,
+    trendline="rolling",
+    trendline_options={"window": 10},
+    labels={
+        "iteration": "# of minibatches",
+        "train_loss": "Cross-entropy loss",
+        "use_vit": "Is transformer?",
+    },
+)
+f.show()
+
+f = px.scatter(
+    dfs,
+    x="iteration",
+    y="train_acc",
+    color="Model",
+    opacity=0.2,
+    trendline="rolling",
+    trendline_options={"window": 10},
+    labels={
+        "iteration": "# of minibatches",
+        "train_acc": "Accuracy",
+        "use_vit": "Is transformer?",
+    },
+)
+f.show()
+```
+
+## Future work
+
+This was a very simple experiment, and involved very little hyper-parameter or model tuning.
+At the very least, it suggests that **simple transformers with self-attention are useful architectures for population genetics inference.**
+There are many ways to investigate their utility further.
+
+* test models on more complex and realistic classification tasks
+* tweak both CNNs and transformers to find optimal hyper-parameters
+    * perhaps we could engineer CNNs to have comparable performance?
+* compare performance on phased vs. unphased data
+* fine-tune pre-trained transformer models (e.g., from `huggingface`) instead of training from scratch
+    * we'll need to modify these pre-trained models to ignore positional embeddings to ensure permutation-invariance
+* examine the "representations" learned by each model to see if the transformer representation space is *generally* more or less useful for diverse classification tasks
+* ensure that both models are robust to the number of haplotypes in images at test time
+    * randomly downsample each batch of haplotype images at test time by taking a batch of $(B, C, H, W)$ and randomly subsampling $H' \sim \mathcal{U}\{32, H\}$ so that the new batch is $(B, C, H', W)$

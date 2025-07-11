@@ -38,8 +38,9 @@ website:
       background: "light"
       collapse-level: 2
       contents: 
-        - href: notes/snakemake.qmd
+        # - href: notes/fine_tuning.qmd
         - href: notes/gatk.qmd
+        - href: notes/snakemake.qmd
 
     - id: cv 
       title: "CV/Resume"
@@ -49,7 +50,7 @@ website:
         - text: "CV"
           href: vitae/sasani_thomas_cv.pdf
         - text: "Resume"
-          href: vitae/sasani_thomas_resume.pdf
+          href: vitae/sasani_thomas_resume_longform.pdf
 
     # - id: ml-reading-group
     #   title: "ML reading group"
@@ -63,10 +64,11 @@ format:
   html:
     theme:
       # light: [default, theme.scss]
-      light: default
+      # - default
+      - theme.scss
       # dark: [default, theme-dark.scss]
       # dark: default
-    # mainfont: "Rubik"
+    mainfont: "Puritan"
     code-copy: true
     code-overflow: wrap
     toc: true
