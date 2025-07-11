@@ -7,7 +7,6 @@ execute:
 fig-cap-location: bottom
 
 format:
-
   html:
       code-fold: false
       code-overflow: wrap
@@ -398,6 +397,7 @@ All regions were simulated using a simple `msprime` demographic model and an `ms
 
 ```{python}
 # | echo: true
+#| eval: false
 
 import msprime
 import numpy as np
