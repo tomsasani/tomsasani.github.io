@@ -545,7 +545,6 @@ Overall, the transformer exhibits higher accuracy than the CNNs on the recombina
 ```{python}
 #| echo: false
 #| label: fig-rho-performance
-#| layout-nrow: 2
 
 
 import pandas as pd
@@ -611,7 +610,6 @@ Transformer and CNN performance is more similar on the recombination hotspot det
 ```{python}
 # | echo: false
 # | label: fig-hotspot-performance
-# | fig-cap: ""
 
 
 import pandas as pd

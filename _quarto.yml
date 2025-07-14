@@ -38,7 +38,7 @@ website:
       background: "light"
       collapse-level: 2
       contents: 
-        # - href: notes/fine_tuning.qmd
+        - href: notes/tiny_transformers.qmd
         - href: notes/gatk.qmd
         - href: notes/snakemake.qmd
 
