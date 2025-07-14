@@ -1,6 +1,6 @@
 ---
-title: "Testing out transformers for population genetic inference"
-# subtitle: "Yes!"
+title: "Tiny transformers for population genetic inference"
+subtitle: "The self-attention mechanism works quite well for recombination rate classification"
 execute:
   echo: true
   eval: true
@@ -52,13 +52,15 @@ In the absence of phased haplotype data, the first channel can also represent di
 #### Exchangability and permutation-invariance
 
 Unlike images of cats, dogs, or handwritten digits, these images of human genetic variation are "row-invariant."
-In other words, the information in the image is exactly the same regardless of how you permute the haplotypes^[of course, the order of SNPs almost always matters, and local patterns of, say, linkage can be highly informative for machine learning classifiers].
+In other words, the information in the image is exactly the same regardless of how you permute the haplotypes.
+[The order of haplotypes in an image *might* matter if the haplotypes are derived from two or more highly structured populations, or if we've introduced structure into the image by e.g., sorting haplotypes by genetic similarity.
+In general, though, we'd like to develop machine learning methods that are agnostic to both haplotype order and number.
+]{.aside}
 If you were to shuffle the rows of an image of a cat, on the other hand, that image would look dramatically different, and the spatial correlations between pixels would be totally broken.
-We'd like to develop machine learning methods that are agnostic to the order of haplotypes in our images.
 
-To address this "exchangability problem", [Chan et al.]((https://pubmed.ncbi.nlm.nih.gov/33244210/)) developed the `defiNETti` architecture.
+To enable permutation-invariant population genetic inference on images of human haplotypes, [Chan et al.]((https://pubmed.ncbi.nlm.nih.gov/33244210/)) developed the `defiNETti` architecture (details in @nte-definetti).
 
-::: {.callout-note icon="false" appearance="simple" collapse="true"}
+::: {#nte-definetti .callout-note icon="false" appearance="simple" collapse="true"}
 # **The defiNETti architecture**: a powerful, yet conceptually simple, machine learning approach designed for images of genetic variation
 
 ![
@@ -82,7 +84,7 @@ For example, we might want to train a machine learning model using data from one
 
 Although the `defiNETti` approach demonstrated that permutation-invariant CNNs are powerful, lightweight tools for population genetic inference, other architectures may be even better.
 For example, the transformer architecture, and the self-attention mechanism in particular, is a natural choice for embedding images of human genetic variation.
-However, transformers are relatively unexplored in the population genetics space. 
+To my knowledge, though, transformers are relatively unexplored in the population genetics space. 
 
 In the parlance of the vision transformer (ViT)^[see [Dosovitskiy et al. (2021) *arXiv*](https://arxiv.org/abs/2010.11929)], we can treat input images of genetic variation as collections of "haplotype patches."
 Each patch $P$ is shape $(1, W)$, where $W$ is the number of SNPs and $P \in \{0, 1\}$.
@@ -93,19 +95,34 @@ We first embed each patch in a new, $d$-dimensional feature space using a single
 Given an image of genetic variation, we embed every haplotype "patch" into a new $d$-dimensional embedding space using a single fully-connected layer (essentially, just a linear transformation of the $0$s and $1$s each haplotype possesses at the $W$ SNPs.)
 ](../img/Artboard%203.png){#fig-tokenizer width=80% align="left"}
 
-I won't spend much time on the details here^[for a nice overview of the transformer architecture, check out the [Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)], but the basic conceit of self-attention is that the embedding of each patch is compared to the embedding *of every other patch*, and the weights associated with these pairwise comparisons can be tuned to capture the important relationships between patches.
-The transformer outputs an updated set of haplotype patch embeddings that should reflect these inter-haplotype relationships (@fig-transformer).
+I won't spend much time on the details here, but the basic conceit of self-attention is that the embedding of each patch is compared to the embedding *of every other patch*, and the weights associated with these pairwise comparisons can be tuned to capture the important relationships between patches.
+[For a great overview of the transformer architecture, including the building blocks of self-attention, check out the [Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/).]{.aside}
+The transformer outputs an updated set of haplotype patch embeddings that should reflect these inter-haplotype relationships (@fig-model).
 
 ![
 **Applying transformers to haplotype images.** 
 For a given image, we pass the haplotype patch embeddings from @fig-tokenizer to a transformer with self-attention. 
-The transformer model outputs a new, "updated" set of haplotype patch embeddings. 
+A transformer module (details in @nte-transformer) outputs a new, "updated" set of haplotype patch embeddings. 
 We can create a final image embedding by simply aggregating across haplotype patches at each dimension $d_i$ of the embedding space, then add a fully-connected layer on top of that final image embedding for classification purposes. 
 Alternatively, we could include a special `[CLS]` classification token when training the transformer and use its output embedding for classification tasks.
-](../img/Artboard%205.png){#fig-transformer align="left"}
+](../img/Artboard%205.png){#fig-model align="left"}
 
-What's more, the self-attention mechanism is inherently invariant to the order of the patch embeddings, though we could introduce learned positional/rotary embeddings into our model if their order *does* matter.
 
+::: {#nte-transformer .callout-note icon="false" collapse="true"}
+# The transformer module in more detail
+
+![
+    Each transformer "module" comprises multiple layers of normalization, residual connections and multi-layer-perceptrons (MLPs).
+    First, the input embeddings are normalized using `LayerNorm`.
+    Next, the normalized embeddings are fed into a multi-headed self-attention block.
+    A residual skip connection adds the output of that self-attention block to the original input embeddings.
+    Those embeddings are normalized again, and then each haplotype (token) embedding is passed through a fully-connected feed-forward (FCFF) network with one hidden layer (in these experiments, the FCFF network has a hidden layer of size $2d$, where $d$ is the dimensionality of the input embeddings).
+    A final residual connection sums the output of the FCFF network and the output of the first skip connection to produce the final haplotype embeddings.
+    ](../img/Artboard%2012.png){width=60%}
+:::
+
+The self-attention mechanism is inherently invariant to the order of the patch embeddings, though we could introduce learned positional/rotary embeddings into our model if their order *does* matter.
+It can also be applied to images with any number of haplotypes (assuming our CPU/GPU hardware can handle the sequence length).
 
 **So, how well do transformers work for population genetic inference?**
 
@@ -113,7 +130,6 @@ What's more, the self-attention mechanism is inherently invariant to the order o
 
 Let's compare a simple transformer model to a simple implementation of the `defiNETti` architecture.
 I've included `pytorch` code for replicating the two models below.
-
 
 ### Architectural details
 
@@ -157,8 +173,8 @@ class HaplotypeTokenizer(nn.Module):
     def __init__(
         self,
         input_channels: int = 1,
-        input_width: int = 32,
-        hidden_size: int = 192,
+        input_width: int = 36,
+        hidden_size: int = 128,
     ):
         super().__init__()
 
@@ -191,10 +207,11 @@ class HaplotypeTokenizer(nn.Module):
 # | echo: true
 
 
-class SelfAttention(nn.Module):
+class Transformer(nn.Module):
+
     def __init__(
         self,
-        embed_dim: int = 192,
+        embed_dim: int = 128,
         num_heads: int = 1,
         mlp_hidden_dim_ratio: int = 2,
     ):
@@ -214,48 +231,49 @@ class SelfAttention(nn.Module):
         )
 
     def forward(self, x):
-        # layernorm before self-attention
+        # layernorm initial embeddings
         x_norm = self.norm(x)
-        # self-attention (Q, K, and V are identical)
-        attn_out, _ = self.attn(x_norm, x_norm, x_norm)
-        # residual connection
-        x = x + attn_out
-        # layer norm
-        x_norm = self.norm(x)
-        # return w/ res connection
-        return x + self.mlp(x_norm)
+        # self-attention on normalized embeddings
+        attn_out, _ = self.attn(x_norm, x_norm, x_norm)  
+        # residual connection + layernorm
+        x = self.norm(x + attn_out)
+        # mlp on each haplotype token
+        x_mlp = self.mlp(x)
+        # final residual connection + layernorm
+        return self.norm(x + x_mlp)
 
 
-class Transformer(torch.nn.Module):
+class TinyTransformer(torch.nn.Module):
     def __init__(
         self,
-        width: int = 32,
+        width: int = 36,
         in_channels: int = 1,
         num_heads: int = 1,
         hidden_size: int = 128,
         num_classes: int = 2,
-        depth: int = 4,
+        depth: int = 1,
         mlp_ratio: int = 2,
+        agg: str = "max",
     ):
         super().__init__()
 
         self.hidden_size = hidden_size
-        self.attention_pool = attention_pool
         self.norm = nn.LayerNorm(hidden_size)
+        self.agg = agg
 
         # we use a "custom" tokenizer that takes
         # patches of size (C * W), where W is the
         # number of SNPs
-        self.tokenizer = HaplotypeTokenizer(
+        
+        self.tokenizer = ColumnTokenizer(
             input_channels=in_channels,
             input_width=width,
             hidden_size=hidden_size,
         )
 
-        # blocks of multi-headed self-attention
         self.attention = nn.Sequential(
             *[
-                SelfAttention(
+                Transformer(
                     embed_dim=hidden_size,
                     num_heads=num_heads,
                     mlp_hidden_dim_ratio=mlp_ratio,
@@ -275,11 +293,10 @@ class Transformer(torch.nn.Module):
         x = self.tokenizer(x)  # (B, H, hidden_size)
         # pass through transformer encoder
         x = self.attention(x)
-        # classification head on the average or attention-pooled
-        # final embeddings (no CLS token)
-        x = self.norm(x)
-        # max pool along H dimension
-        cls_output = torch.amax(x, dim=1)
+        if self.agg == "max":
+            cls_output = torch.amax(x, dim=1)
+        elif self.agg == "mean":
+            cls_output = torch.mean(x, dim=1)
         logits = self.classifier(cls_output)
 
         return logits
@@ -299,14 +316,16 @@ class DeFinetti(nn.Module):
     def __init__(
         self,
         *,
-        in_channels: int = 1,
-        kernel_size: int = 5,
+        in_channels: int,
+        kernel: Union[int, Tuple[int]] = (1, 5),
         hidden_dims: List[int] = [32, 64],
-        agg: Union[str, None] = "mean",
+        agg: str = "max",
         width: int = 36,
-        pool: bool = True,
-        num_classes: int = 3,
-        encoding_dim: int = 128,
+        num_classes: int = 2,
+        fc_dim: int = 128,
+        padding: int = 0,
+        stride: int = 1,
+        pool: bool = False,
     ) -> None:
 
         super(DeFinetti, self).__init__()
@@ -314,21 +333,19 @@ class DeFinetti(nn.Module):
         self.agg = agg
         self.width = width
 
-        _stride = (1, 1)
-        _padding = (0, 0)
-        _kernel = (1, kernel_size)
+        _stride = (1, stride)
+        _padding = (0, padding)
 
-        # calculate out dimensions given stride
-        out_H = 1
         out_W = width
 
-        encoder_blocks = []
-        for hi, h_dim in enumerate(hidden_dims):
+        conv = []
+        for h_dim in hidden_dims:
+            # initialize convolutional block
             block = [
                 nn.Conv2d(
                     in_channels,
                     h_dim,
-                    kernel_size=_kernel,
+                    kernel_size=kernel,
                     stride=_stride,
                     padding=_padding,
                 ),
@@ -341,43 +358,45 @@ class DeFinetti(nn.Module):
                         stride=(1, 2),
                     ),
                 )
-            in_channels = h_dim
-
-            encoder_blocks.extend(block)
-            # calculate output width after conv and pool ops
+            
             out_W = (
-                math.floor((out_W - _kernel[1] + (2 * (_padding[1]))) / _stride[1]) + 1
+                math.floor((out_W - kernel[1] + (2 * (padding))) / _stride[1]) + 1
             )
-            out_W //= 2
 
-        # convolutional layers
-        self.conv = nn.Sequential(*encoder_blocks)
-        # MLP layers following permutation-invariant function
-        self.mlp = nn.Sequential(
-            nn.Linear(hidden_dims[-1] * out_W * out_H, encoding_dim),
+            # account for max pooling
+            if pool:
+                out_W //= 2
+            in_channels = h_dim
+            conv.extend(block)
+
+        self.conv = nn.Sequential(*conv)
+        self.fc = nn.Sequential(
+            nn.Linear(hidden_dims[-1] * out_W, fc_dim),
             nn.ReLU(),
-            nn.Linear(encoding_dim, encoding_dim),
+            nn.Linear(fc_dim, fc_dim),
             nn.ReLU(),
         )
-        # projection layers for classification
-        self.clf = nn.Sequential(
-            nn.Linear(encoding_dim, num_classes),
+        # two projection layers with batchnorm
+        self.project = nn.Sequential(
+            nn.Linear(fc_dim, num_classes),
         )
         self.flatten = nn.Flatten()
 
     def forward(self, x):
         x = self.conv(x)
-        # agg across haplotypes
+        # take the average across haplotypes
         if self.agg == "mean":
             x = torch.mean(x, dim=2)
         elif self.agg == "max":
             x = torch.amax(x, dim=2)
+        elif self.agg is None:
+            pass
         # flatten, but ignore batch
         x = self.flatten(x)
-        x = self.mlp(x)
-        x = self.clf(encoded)
+        encoded = self.fc(x)
+        projection = self.project(encoded)
 
-        return x
+        return projection
 ```
 :::
 
@@ -461,7 +480,7 @@ In all rate maps, $\rho_{bg} \sim \mathcal{U}\{1 \times 10^{-8}, 1.5 \times 10^{
 #### Recombination rate classification
 
 In the second task, training data belonged to one of three classes: regions with one of three different recombination rates ($10^{-7}$, $10^{-8}$, or $10^{-9}$).
-All regions were simulated using a CEU population from the `OutOfAfrica_3G09` model in the `stdpopsim` catalog.
+All regions were simulated using a CEU population from the `OutOfAfrica_3G09` model^[based on [Gutenkunst et al. (2009), *PLoS Genetics*](https://doi.org/10.1371/journal.pgen.1000695)] in the `stdpopsim` catalog.
 
 
 ::: {.callout-tip icon="false" collapse="true"}
@@ -521,12 +540,12 @@ I used random seeds to ensure that each model saw the same 25,600 images during 
 
 ### Transformer models outperform CNNs for recombination rate classification
 
-Despite having fewer trainable parameters, the transformer exhibits higher accuracy than the CNN on the recombination rate classification task (@fig-rho-performance).
+Overall, the transformer exhibits higher accuracy than the CNNs on the recombination rate classification task (@fig-rho-performance).
 
 ```{python}
-# | echo: false
-# | label: fig-rho-performance
-# | fig-cap: ""
+#| echo: false
+#| label: fig-rho-performance
+#| layout-nrow: 2
 
 
 import pandas as pd
@@ -536,7 +555,7 @@ import plotly.express as px
 
 dfs = []
 for fh in glob.glob("../data/*.tsv"):
-    if not ("solar" in fh or "wandering" in fh or "warm" in fh):
+    if not ("confused" in fh or "cerulean" in fh or "royal" in fh):
         continue
     df = pd.read_csv(fh, sep="\t")
     df["Model"] = df.apply(
@@ -549,6 +568,8 @@ for fh in glob.glob("../data/*.tsv"):
     )
     dfs.append(df)
 dfs = pd.concat(dfs)
+
+dfs = dfs.sort_values(["iteration", "Model"])
 
 f = px.scatter(
     dfs,
@@ -588,9 +609,9 @@ f.show()
 Transformer and CNN performance is more similar on the recombination hotspot detection task (@fig-hotspot-performance), though the former still exhibits better accuracy.
 
 ```{python}
-#| echo: false
-#| label: fig-hotspot-performance
-#| fig-cap: ""
+# | echo: false
+# | label: fig-hotspot-performance
+# | fig-cap: ""
 
 
 import pandas as pd
@@ -600,7 +621,8 @@ import plotly.express as px
 
 dfs = []
 for fh in glob.glob("../data/*.tsv"):
-    if ("solar" in fh or "wandering" in fh or "warm" in fh): continue
+    if "confused" in fh or "cerulean" in fh or "royal" in fh:
+        continue
     df = pd.read_csv(fh, sep="\t")
     df["Model"] = df.apply(
         lambda row: (
@@ -612,13 +634,6 @@ for fh in glob.glob("../data/*.tsv"):
     )
     dfs.append(df)
 dfs = pd.concat(dfs)
-
-dfs_tidy = dfs[["Model", "iteration", "train_loss", "train_acc"]].melt(
-    id_vars=["Model", "iteration"],
-    value_vars=["train_loss", "train_acc"],
-    var_name="statistic",
-)
-dfs_tidy["statistic"] = dfs_tidy["statistic"].apply(lambda s: s.split("_")[1])
 
 dfs = dfs.sort_values(["iteration", "Model"])
 
