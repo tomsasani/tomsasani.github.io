@@ -3,7 +3,7 @@ title: "Tom Sasani, PhD"
 from: markdown+emoji
 about:
   template: solana
-  image: img/sasanit_headshot.jpg
+  image: img/sasani_headshot_rxrx.jpg
   # links:
   #   - icon: twitter
   #     text: Twitter
