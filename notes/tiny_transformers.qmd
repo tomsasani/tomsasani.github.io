@@ -1,10 +1,11 @@
 ---
 title: "Tiny transformers for population genetic inference"
 subtitle: "The self-attention mechanism works quite well for recombination rate classification"
+date: last-modified
 execute:
   echo: true
   eval: true
-fig-cap-location: bottom
+# fig-cap-location: bottom
 
 format:
   html:
@@ -403,7 +404,7 @@ class DeFinetti(nn.Module):
 
 ### Training datasets and classification tasks
 
-I compared the performance of CNNs and transformers on two simple classification tasks.
+I compared the performance of CNNs and transformers on three simple classification tasks.
 
 #### Recombination hotspot detection
 
@@ -527,6 +528,51 @@ ts = engine.simulate(
 ```
 :::
 
+#### Classifying different populations with a shared demographic history
+
+The final task involved classifying images derived from three populations (`CEU`, `CHB`, and `YRI`) that were simulated from the `OutOfAfrica_3G09` model in `stdpopsim`.
+
+::: {.callout-tip icon="false" collapse="true"}
+# Simulating three populations from a shared demographic history
+```{python}
+# | eval: false
+
+import stdpopsim
+
+# choose species and model
+species = stdpopsim.get_species("HomSap")
+demography = species.get_demographic_model("OutOfAfrica_3G09")
+
+contig = species.get_contig(
+    length=50_000,
+    recombination_rate=1e-8,
+    mutation_rate=2.35e-8,
+)
+
+# msprime by default
+engine = stdpopsim.get_default_engine()
+
+# pick a random class label
+class_label = rng.choice(3)
+
+samples_per_population = [0, 0, 0]
+# simulate all samples from that class label
+samples_per_population[class_label] = n_smps
+samples = dict(
+    zip(
+        ["YRI", "CEU", "CHB"],
+        samples_per_population,
+    )
+)
+
+ts = engine.simulate(
+    demography,
+    contig=contig,
+    samples=samples,
+)
+```
+:::
+
 #### Simulation "on-the-fly"
 
 Rather than train these models with a fixed dataset of $N$ images, I simulated training examples "on the fly" as described in Chan et al.
@@ -619,7 +665,7 @@ import plotly.express as px
 
 dfs = []
 for fh in glob.glob("../data/*.tsv"):
-    if "confused" in fh or "cerulean" in fh or "royal" in fh:
+    if not ("laced" in fh or "rural" in fh or "classic" in fh):
         continue
     df = pd.read_csv(fh, sep="\t")
     df["Model"] = df.apply(
@@ -667,6 +713,72 @@ f = px.scatter(
 )
 f.show()
 ```
+
+### Transformer models also outperform CNNs for population classification
+
+Overall, the transformer exhibits higher accuracy than the CNNs on the three-population classification task, as well (@fig-demo-performance).
+
+```{python}
+# | echo: false
+# | label: fig-demo-performance
+
+
+import pandas as pd
+import glob
+import plotly.express as px
+
+
+dfs = []
+for fh in glob.glob("../data/*.tsv"):
+    if not ("dry" in fh or "faithful" in fh or "giddy" in fh):
+        continue
+    df = pd.read_csv(fh, sep="\t")
+    df["Model"] = df.apply(
+        lambda row: (
+            "Transformer"
+            if row["use_vit"]
+            else "CNN (Wang et al.)" if row["pool"] else "CNN (defiNETti)"
+        ),
+        axis=1,
+    )
+    dfs.append(df)
+dfs = pd.concat(dfs)
+
+dfs = dfs.sort_values(["iteration", "Model"])
+
+f = px.scatter(
+    dfs,
+    x="iteration",
+    y="train_loss",
+    color="Model",
+    opacity=0.2,
+    trendline="rolling",
+    trendline_options={"window": 10},
+    labels={
+        "iteration": "# of minibatches",
+        "train_loss": "Cross-entropy loss",
+        "use_vit": "Is transformer?",
+    },
+)
+f.show()
+
+f = px.scatter(
+    dfs,
+    x="iteration",
+    y="train_acc",
+    color="Model",
+    opacity=0.2,
+    trendline="rolling",
+    trendline_options={"window": 10},
+    labels={
+        "iteration": "# of minibatches",
+        "train_acc": "Accuracy",
+        "use_vit": "Is transformer?",
+    },
+)
+f.show()
+```
+
 
 ## Future work
 
