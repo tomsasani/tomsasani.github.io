@@ -586,11 +586,8 @@ I used random seeds to ensure that each model saw the same 25,600 images during 
 
 ### Transformer models outperform CNNs for recombination rate classification
 
-Overall, the transformer exhibits higher accuracy than the CNNs on the recombination rate classification task (@fig-rho-performance).
-
 ```{python}
 #| echo: false
-#| label: fig-rho-performance
 
 
 import pandas as pd
@@ -651,11 +648,8 @@ f.show()
 
 ### Transformer models slightly outperform CNNs for recombination hotspot detection
 
-Transformer and CNN performance is more similar on the recombination hotspot detection task (@fig-hotspot-performance), though the former still exhibits better accuracy.
-
 ```{python}
 # | echo: false
-# | label: fig-hotspot-performance
 
 
 import pandas as pd
@@ -716,11 +710,8 @@ f.show()
 
 ### Transformer models also outperform CNNs for population classification
 
-Overall, the transformer exhibits higher accuracy than the CNNs on the three-population classification task, as well (@fig-demo-performance).
-
 ```{python}
 # | echo: false
-# | label: fig-demo-performance
 
 
 import pandas as pd
