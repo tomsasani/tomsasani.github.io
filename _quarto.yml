@@ -39,8 +39,8 @@ website:
       collapse-level: 2
       contents: 
         - href: notes/tiny_transformers.qmd
-        - href: notes/gatk.qmd
-        - href: notes/snakemake.qmd
+        # - href: notes/gatk.qmd
+        # - href: notes/snakemake.qmd
 
     - id: cv 
       title: "CV/Resume"
@@ -72,6 +72,7 @@ format:
     code-copy: true
     code-overflow: wrap
     toc: true
+    # backgroundcolor: "#D9CDBA"
 
 
 
