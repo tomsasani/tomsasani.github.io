@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tomsasani.github.io/ml_reading_group/2024_intro.html</loc>
-    <lastmod>2025-07-18T16:12:10.179Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/research.html</loc>
-    <lastmod>2025-07-18T16:12:10.322Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/notes/snakemake.html</loc>
-    <lastmod>2025-07-18T16:12:10.179Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/notes/tiny_transformers.html</loc>
-    <lastmod>2025-07-18T16:12:10.179Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/pubs.html</loc>
-    <lastmod>2025-07-18T16:12:10.322Z</lastmod>
+    <loc>https://tomsasani.github.io/teaching.html</loc>
+    <lastmod>2025-09-10T13:57:39.185Z</lastmod>
   </url>
   <url>
     <loc>https://tomsasani.github.io/tutorials.html</loc>
-    <lastmod>2025-07-18T16:12:10.324Z</lastmod>
+    <lastmod>2025-09-10T13:57:39.185Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/index.html</loc>
-    <lastmod>2025-07-18T16:12:10.179Z</lastmod>
+    <loc>https://tomsasani.github.io/research.html</loc>
+    <lastmod>2025-09-10T13:57:39.185Z</lastmod>
   </url>
   <url>
     <loc>https://tomsasani.github.io/notes/gatk.html</loc>
-    <lastmod>2025-07-18T16:12:10.179Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/teaching.html</loc>
-    <lastmod>2025-07-18T16:12:10.324Z</lastmod>
+    <lastmod>2025-09-10T13:57:39.041Z</lastmod>
   </url>
   <url>
     <loc>https://tomsasani.github.io/talks.html</loc>
-    <lastmod>2025-07-18T16:12:10.324Z</lastmod>
+    <lastmod>2025-09-10T13:57:39.185Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/pubs.html</loc>
+    <lastmod>2025-09-10T13:57:39.185Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/notes/tiny_transformers.html</loc>
+    <lastmod>2025-09-10T13:57:39.041Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/notes/snakemake.html</loc>
+    <lastmod>2025-09-10T13:57:39.041Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/index.html</loc>
+    <lastmod>2025-09-10T13:57:39.041Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tomsasani.github.io/ml_reading_group/2024_intro.html</loc>
+    <lastmod>2025-09-10T13:57:39.041Z</lastmod>
   </url>
 </urlset>
