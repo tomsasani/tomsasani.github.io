@@ -22,7 +22,8 @@ website:
         file: teaching.qmd
       - sidebar:notes
       # - sidebar:ml-reading-group
-      - sidebar:cv
+      - text: "CV"
+        file: vitae/resume.pdf
 
     right: 
       - icon: twitter
@@ -42,23 +43,6 @@ website:
         # - href: notes/gatk.qmd
         # - href: notes/snakemake.qmd
 
-    - id: cv 
-      title: "CV/Resume"
-      style: "docked"
-      collapse-level: 2
-      contents:
-        - text: "CV"
-          href: vitae/sasani_thomas_cv.pdf
-        - text: "Resume"
-          href: vitae/sasani_thomas_resume_longform.pdf
-
-    # - id: ml-reading-group
-    #   title: "ML reading group"
-    #   style: "docked"
-    #   background: "light"
-    #   collapse-level: 2
-    #   contents: 
-    #     - href: ml_reading_group/2024_intro.qmd
 
 format:
   html:
