@@ -23,11 +23,11 @@ website:
       - sidebar:notes
       # - sidebar:ml-reading-group
       - text: "CV"
-        file: vitae/resume.pdf
+        file: vitae/sasani_thomas_cv.pdf
 
     right: 
-      - icon: twitter
-        href: https://twitter.com/tomsasani
+      - icon: bluesky
+        href: https://bsky.app/profile/tomsasani.bsky.social
       - icon: github
         href: https://github.com/tomsasani
   
