@@ -1,5 +1,5 @@
 ---
-title: "Inherited DNA lesions cause multiallelic mutations in nematodes"
+title: "Inherited DNA lesions may cause multiallelic mutations in nematodes"
 date: last-modified
 format:
     # pdf:
@@ -74,6 +74,7 @@ As it's more succintly described in the Methods section of Volkova et al. (2020)
 ### Widespread evidence of multi-allelic mutations in mutagenized worms
 
 I re-analyzed sequencing data from Volkova et al. (2020) and found compelling evidence for multi-allelic mutations in many mutagenized strains.
+**All results below are derived from 712 strains treated with DMS, MMS, or EMS.**
 
 As an example, take a look at the single-nucleotide variants in @fig-multiallelic.
 
@@ -87,9 +88,21 @@ As an example, take a look at the single-nucleotide variants in @fig-multialleli
 
 ![](../img/CD0443a.CHROMOSOME_IV:14072135.png){#fig-multiallelic-d width=90%}
 
-**Multiallelic mutation evidence in mutagenized wild-type worms.**
+**Multiallelic mutation evidence in mutagenized worms.**
 Each aligned sequencing read is represented by a light or dark grey line. Reads are colored according to their orientation with respect to the reference (light gray = forward, dark grey = reverse). At a focal position in the center of the image, the nucleotide present in each read is shown as a colored point. The top subplot shows read evidence in a control sample (non-mutagenized) and the bottom subplot shows read evidence in the mutagenized sample. Only reads with MQ=60 and bases with BQ>=20 are shown. Supplementary, secondary, and improperly paired reads are removed.
 :::
+
+Most of these multi-allelic variants are supported by just 1 read, but requiring 2+ reads of support for the "third" allele removes the vast majority of candidate MAVs (@fig-elbow).
+Based on an extremely arbitrary guess at the "elbow" in the plot below, I require all MAVs to have at least **3 reads of support.**
+
+![
+**Most MAVs are only supported by a single sequencing read.**
+Blue line shows the total number of multi-allelic variants (MAVs) I discover using the read thresholds on the x-axis (that is, the number of supporting reads that must contain evidence for a third allele at a given SNV).
+The red line shows the enrichment of empirical MAVs over the permuted expectation at each read threshold.
+At each read threshold, I divide the empirical MAV count by the average number of MAVs identified in each of 100 permutation trials.
+Each trial involves permuting the sample labels associated with each mutation, and asking how many SNVs appear to have evidence for an "extra" allele. 
+](../img/elbow.png){#fig-elbow}
+
 
 ### What might explain the presence of multiallelic variants?
 
@@ -131,29 +144,29 @@ Since a random sample is highly unlikely to harbor evidence for a mutation obser
 
 Overall, **the observed evidence for multi-allelic mutations is much greater than we'd expect by chance** (@fig-support).
 
+
+::: {#fig-support layout-ncol=2}
 ![
 **Support for multi-allelic mutations is greater than we'd expect by chance.**
 For every sample, I calculated the number of *de novo* SNVs at which we observed evidence for 3+ alleles (shown as blue dots).
-In each of 25 trials, I randomly permuted the sample labels associated with each SNV, and calculated the number of SNVs at which I observed evidence for 2+ alleles.
+In each of 100 trials, I randomly permuted the sample labels associated with each SNV, and calculated the number of SNVs at which I observed evidence for 2+ alleles.
 Here, I plot the total number of observed multi-allelic mutations across the dataset, using either the "true" (empirical) data or the permuted data.
-](../img/multi_perm_overall.png){#fig-support width=70%}
-
-#### "Real" multi-allelic mutations have much greater read support than permuted expectation
-
-Using the same permutation strategy as described above, I also calculated the amount of reads supporting the "extra" allele at each multi-allelic SNV.
-As expected, the "real" multi-allelic mutations are supported by many more reads than the permuted sites (@fig-read-ev)
+](../img/multi_perm_overall.png){#fig-support-a}
 
 ![
 **Real multi-allelic mutations are supported by more reads.**
-At each multi-allelic mutation, I calculated the number of reads supporting the "third" allele. In each of the permuted datasets generated above, I calculated the number of reads supporting the "second" allele. 
-](../img/read_evidence.png){#fig-read-ev width=70%}
-
+At each multi-allelic mutation, I calculated the number of reads supporting the "third" allele. 
+In each of the permuted datasets generated above, I calculated the number of reads supporting the "second" allele. 
+Note that this plot only includes MAVs with at least 3 reads of support (our lower bound for calling an SNV a MAV).
+](../img/read_evidence.png){#fig-support-b}
+:::
 
 #### Multi-allelic mutations don't occur in lower-complexity sequence
 
 Another possible explanation for these multi-allelic mutations is that tools like BWA-MEM struggle to align reads in low-complexity, repetitive sequence, introducing base mismatches in the process.
-To check if this might be the case, I calculated the entropy of the sequence context surrounding every detected SNV in the dataset.
-Overall, the sequence context surrounding multi-allelic mutations is no less complex than the context surrounding bi-allelic mutations (@fig-entropy).
+If MAVs tend to arise in low-complexity sequences, they might be a consequence of that repetitive nucleotide content rather than real biology.
+To check if this might be the case, I calculated the entropy of the sequence context surrounding every SNV in the dataset, including both MAVs and biallelic SNVs.
+Overall, the sequence context surrounding multi-allelic mutations is no less complex than the context surrounding biallelic mutations (@fig-entropy).
 
 ![
 **Multi-allelic mutations don't occur at low-complexity sequence.**
@@ -161,10 +174,14 @@ I calculated the sequence entropy (lower values indicating more repetitive seque
 In each of 100 trials, I then randomly sampled the same number of bi-allelic SNVs and calculated their average sequence entropy.
 ](../img/entropy.png){#fig-entropy width=70%}
 
-<!-- I also checked if multi-allelic mutations exhibit greater strand bias than bi-allelic mutations.
-Specifically, for every nucleotide with read support at a particular mutated site, I asked if the reads supporting that nucleotide were biased toward the forward or reverse strand using a binomial test.
-If any nucleotide was significantly biased, the site was marked as having strand bias.
 
+<!-- #### Multi-allelic mutations don't exhibit greater strand bias than bi-allelic mutations
+
+Finally, I checked if multi-allelic mutations exhibit greater strand bias than biallelic mutations.
+If the "third alleles" at these MAVs arose due to an error during Illumina sequencing, we might expect the "third" alleles to be biased toward reads aligned in either the forward or reverse orientation.
+So, for every nucleotide with read support at a given SNV, I asked if the reads supporting that nucleotide were biased toward the forward or reverse strand using a binomial test.
+If any nucleotide was significantly biased, the site was marked as having strand bias.
+While a non-negligible fraction of multi-allelic mutations exhibit strand bias, it's not a significantly higher fraction than for biallelic SNVs.
 
 |   | Strand bias  | No strand bias |
 |--------|--------|-|
@@ -173,7 +190,8 @@ If any nucleotide was significantly biased, the site was marked as having strand
 
 ### Could lesions be inherited from P0 to F1?
 
-Let's walk through how the explanation in @nte-o3 might happen.
+Given all of the sanity checks above, I think that the explanation in @nte-o3 might be plausible.
+Let's walk through how it might happen.
 To do so, let's first imagine how a mutagenized germ cell progenitor (i.e., a mitotic germ cell in the *C. elegans* gonad) might undergo both mitosis and meiosis to produce a haploid gamete (@fig-mitosis).
 
 ![
@@ -183,19 +201,20 @@ Imagine that we've mutagenized a mitotic germ cell in a young adult (YA) *C. ele
 
 
 Critically, if a haploid gamete harbors a lesion-containing strand, that lesion might end up in a fertilized zygote.
-And if it's present in a fertilized zygote, there's a chance it would end up in the P4 cell that gives rise to all germ cells in the F1 animal (see @fig-pz).
+And if it's present in a fertilized zygote, there's a chance it would end up in the $P_4$ cell that gives rise to all germ cells in the F1 animal (see @fig-pz).
+Because *C. elegans* development is perfectly characterized, we actually know exactly how long the lesion would have to persist to arrive in that $P_4$ germ cell progenitor.
 
 ![
 **Lesion segregation during early post-zygotic development.**
 Here, we trace the fate of a single chromosome with a lesion-containing strand during early *C. elegans* development. Assuming the lesion is not repaired, there is a 50% chance the lesion-containing strand ends up in the $P_1$ cell after the first post-zygotic cell division. If that lesion persists for three more cell divisions, and segregates into the "right" daughter cell each time, it will eventually end up in the $P_4$ cell that gives rise to all germ cells in the adult worm. And the longer the lesion persists, the more likely it is that another incorrect nucleotide (shown as a green circle) will be mis-incorporated opposite the lesion. If that happens, the pool of gametes produced by this worm will be mosaic for both the green and blue mutations.
 ](../img/Artboard%206_2.png){#fig-pz width=70%}
 
-Because chromatids independently segregate during cell division, we can easily calculate the probability that the lesion-containing strand will be present in the $P_4$ germline progenitor cell (conditional on the lesion persisting for those cell divisions).
+<!-- Because chromatids independently segregate during cell division, we can easily calculate the probability that the lesion-containing strand will be present in the $P_4$ germline progenitor cell (conditional on the lesion persisting for those cell divisions).
 If the zygote only possesses one lesion-containing strand (i.e., only the sperm *or* egg had a persistent lesion), the probability that the lesion persists until $P_4$ is simply $0.5^4 = 6.25\%$.
 
 What if both diploid chromosomes carry one lesion-containing strand?
 Then, the probability that $P_1$ contains at least one of those lesions is $1 - 0.5^2 = 75\%$.
-The probability that $P_4$ contains at least one lesion is $0.75^4 = 42.2\%$.
+The probability that $P_4$ contains at least one lesion is $0.75^4 = 42.2\%$. -->
 
 
 ### Precedence for inherited lesions causing mutations in *C. elegans*
@@ -206,3 +225,14 @@ Recently, Wang et al. (2023)^[[Wang et al. (2023) *Nature*](https://www.nature.c
 > *We show that paternal exposure to ionizing radiation results in genome instability in the F1 generation and transgenerational embryonic lethality. We determined that the paternal DNA damage is mainly repaired in the zygote through maternally provided error-prone polymerase theta-mediated end joining (TMEJ), which results in chromosomal aberrations. (Wang et al. 2023)*
 
 However, my re-analysis lets us compare the incidence of lesion persistence across mutagen exposure and genetic backgrounds.
+
+<!-- probably sperm cells that are accumulating this damage that's making it into the zygote
+
+possible that mms is more potent, since more multi-allelics. but confounded by the fact that if EMS is more lethal, fewer F2s will survive and less mosaicism will exist, masking detection ability.
+
+can we infer timing of lesion introduction based on allele frequency? 25/75 split suggests that most MAVs are happening after Z2/Z3 division? tough to say given F2 lethality
+
+https://www.pnas.org/doi/full/10.1073/pnas.0705257104
+https://pubmed.ncbi.nlm.nih.gov/14585809/
+https://pubmed.ncbi.nlm.nih.gov/15784819/
+https://pubmed.ncbi.nlm.nih.gov/17052706/ -->
