@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2026-03-27">
 
-<title>Inherited DNA lesions cause multiallelic mutations in nematodes – Tom Sasani</title>
+<title>Inherited DNA lesions may cause multiallelic mutations in nematodes – Tom Sasani</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -202,7 +202,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Inherited DNA lesions cause multiallelic mutations in nematodes</h1>
+<h1 class="title">Inherited DNA lesions may cause multiallelic mutations in nematodes</h1>
 </div>
 
 
@@ -302,7 +302,7 @@ Figure&nbsp;2: <strong>Persistent DNA lesions are potent engines of multi-alleli
 <h2 class="anchored" data-anchor-id="results">Results</h2>
 <section id="widespread-evidence-of-multi-allelic-mutations-in-mutagenized-worms" class="level3">
 <h3 class="anchored" data-anchor-id="widespread-evidence-of-multi-allelic-mutations-in-mutagenized-worms">Widespread evidence of multi-allelic mutations in mutagenized worms</h3>
-<p>I re-analyzed sequencing data from Volkova et al.&nbsp;(2020) and found compelling evidence for multi-allelic mutations in many mutagenized strains.</p>
+<p>I re-analyzed sequencing data from Volkova et al.&nbsp;(2020) and found compelling evidence for multi-allelic mutations in many mutagenized strains. <strong>All results below are derived from 712 strains treated with DMS, MMS, or EMS.</strong></p>
 <p>As an example, take a look at the single-nucleotide variants in <a href="#fig-multiallelic" class="quarto-xref">Figure&nbsp;3</a>.</p>
 <div id="fig-multiallelic" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
@@ -361,7 +361,18 @@ Figure&nbsp;2: <strong>Persistent DNA lesions are potent engines of multi-alleli
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-multiallelic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: <strong>Multiallelic mutation evidence in mutagenized wild-type worms.</strong> Each aligned sequencing read is represented by a light or dark grey line. Reads are colored according to their orientation with respect to the reference (light gray = forward, dark grey = reverse). At a focal position in the center of the image, the nucleotide present in each read is shown as a colored point. The top subplot shows read evidence in a control sample (non-mutagenized) and the bottom subplot shows read evidence in the mutagenized sample. Only reads with MQ=60 and bases with BQ&gt;=20 are shown. Supplementary, secondary, and improperly paired reads are removed.
+Figure&nbsp;3: <strong>Multiallelic mutation evidence in mutagenized worms.</strong> Each aligned sequencing read is represented by a light or dark grey line. Reads are colored according to their orientation with respect to the reference (light gray = forward, dark grey = reverse). At a focal position in the center of the image, the nucleotide present in each read is shown as a colored point. The top subplot shows read evidence in a control sample (non-mutagenized) and the bottom subplot shows read evidence in the mutagenized sample. Only reads with MQ=60 and bases with BQ&gt;=20 are shown. Supplementary, secondary, and improperly paired reads are removed.
+</figcaption>
+</figure>
+</div>
+<p>Most of these multi-allelic variants are supported by just 1 read, but requiring 2+ reads of support for the “third” allele removes the vast majority of candidate MAVs (<a href="#fig-elbow" class="quarto-xref">Figure&nbsp;4</a>). Based on an extremely arbitrary guess at the “elbow” in the plot below, I require all MAVs to have at least <strong>3 reads of support.</strong></p>
+<div id="fig-elbow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-elbow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../img/elbow.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-elbow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: <strong>Most MAVs are only supported by a single sequencing read.</strong> Blue line shows the total number of multi-allelic variants (MAVs) I discover using the read thresholds on the x-axis (that is, the number of supporting reads that must contain evidence for a third allele at a given SNV). The red line shows the enrichment of empirical MAVs over the permuted expectation at each read threshold. At each read threshold, I divide the empirical MAV count by the average number of MAVs identified in each of 100 permutation trials. Each trial involves permuting the sample labels associated with each mutation, and asking how many SNVs appear to have evidence for an “extra” allele.
 </figcaption>
 </figure>
 </div>
@@ -424,35 +435,46 @@ Note&nbsp;3: Lesion persistence from P0 gamete to F1 zygote
 <h4 class="anchored" data-anchor-id="very-low-probability-of-multi-allelic-mutations-occurring-by-chance">Very low probability of multi-allelic mutations occurring by chance</h4>
 <p>As detailed in <a href="#nte-o1" class="quarto-xref">Note&nbsp;1</a>, bioinformatic artifacts may partly explain the abundance of multi-allelic mutations. How can we rule out the possibility of these artifacts?</p>
 <p>First, we can use a simple permutation test to demonstrate that multi-allelic mutations are more frequent than we’d expect by chance. As described in Aitken et al.&nbsp;(2020), I simply permute the sample labels associated with every mutation identified in this dataset. Then, I collate the read evidence at each site (using a randomly permuted sample’s reads instead of the true sample’s reads) and ask if there is high-quality support for multiple alleles. Since a random sample is highly unlikely to harbor evidence for a mutation observed in a completely independent sample (i.e., its genotype should be HOM_REF), I consider these “multi-allelic” variants to be mutations with support for 2+ alleles.</p>
-<p>Overall, <strong>the observed evidence for multi-allelic mutations is much greater than we’d expect by chance</strong> (<a href="#fig-support" class="quarto-xref">Figure&nbsp;4</a>).</p>
-<div id="fig-support" class="quarto-float quarto-figure quarto-figure-center anchored">
+<p>Overall, <strong>the observed evidence for multi-allelic mutations is much greater than we’d expect by chance</strong> (<a href="#fig-support" class="quarto-xref">Figure&nbsp;5</a>).</p>
+<div id="fig-support" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-support-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../img/multi_perm_overall.png" class="img-fluid figure-img" style="width:70.0%">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-support" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-support-a" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-support-a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../img/multi_perm_overall.png" class="img-fluid figure-img" data-ref-parent="fig-support">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-support-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: <strong>Support for multi-allelic mutations is greater than we’d expect by chance.</strong> For every sample, I calculated the number of <em>de novo</em> SNVs at which we observed evidence for 3+ alleles (shown as blue dots). In each of 25 trials, I randomly permuted the sample labels associated with each SNV, and calculated the number of SNVs at which I observed evidence for 2+ alleles. Here, I plot the total number of observed multi-allelic mutations across the dataset, using either the “true” (empirical) data or the permuted data.
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-support-a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) <strong>Support for multi-allelic mutations is greater than we’d expect by chance.</strong> For every sample, I calculated the number of <em>de novo</em> SNVs at which we observed evidence for 3+ alleles (shown as blue dots). In each of 100 trials, I randomly permuted the sample labels associated with each SNV, and calculated the number of SNVs at which I observed evidence for 2+ alleles. Here, I plot the total number of observed multi-allelic mutations across the dataset, using either the “true” (empirical) data or the permuted data.
 </figcaption>
 </figure>
 </div>
-</section>
-<section id="real-multi-allelic-mutations-have-much-greater-read-support-than-permuted-expectation" class="level4">
-<h4 class="anchored" data-anchor-id="real-multi-allelic-mutations-have-much-greater-read-support-than-permuted-expectation">“Real” multi-allelic mutations have much greater read support than permuted expectation</h4>
-<p>Using the same permutation strategy as described above, I also calculated the amount of reads supporting the “extra” allele at each multi-allelic SNV. As expected, the “real” multi-allelic mutations are supported by many more reads than the permuted sites (<a href="#fig-read-ev" class="quarto-xref">Figure&nbsp;5</a>)</p>
-<div id="fig-read-ev" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-read-ev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../img/read_evidence.png" class="img-fluid figure-img" style="width:70.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-read-ev-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: <strong>Real multi-allelic mutations are supported by more reads.</strong> At each multi-allelic mutation, I calculated the number of reads supporting the “third” allele. In each of the permuted datasets generated above, I calculated the number of reads supporting the “second” allele.
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-support" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-support-b" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-support-b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../img/read_evidence.png" class="img-fluid figure-img" data-ref-parent="fig-support">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-support-b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) <strong>Real multi-allelic mutations are supported by more reads.</strong> At each multi-allelic mutation, I calculated the number of reads supporting the “third” allele. In each of the permuted datasets generated above, I calculated the number of reads supporting the “second” allele. Note that this plot only includes MAVs with at least 3 reads of support (our lower bound for calling an SNV a MAV).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-support-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5
 </figcaption>
 </figure>
 </div>
 </section>
 <section id="multi-allelic-mutations-dont-occur-in-lower-complexity-sequence" class="level4">
 <h4 class="anchored" data-anchor-id="multi-allelic-mutations-dont-occur-in-lower-complexity-sequence">Multi-allelic mutations don’t occur in lower-complexity sequence</h4>
-<p>Another possible explanation for these multi-allelic mutations is that tools like BWA-MEM struggle to align reads in low-complexity, repetitive sequence, introducing base mismatches in the process. To check if this might be the case, I calculated the entropy of the sequence context surrounding every detected SNV in the dataset. Overall, the sequence context surrounding multi-allelic mutations is no less complex than the context surrounding bi-allelic mutations (<a href="#fig-entropy" class="quarto-xref">Figure&nbsp;6</a>).</p>
+<p>Another possible explanation for these multi-allelic mutations is that tools like BWA-MEM struggle to align reads in low-complexity, repetitive sequence, introducing base mismatches in the process. If MAVs tend to arise in low-complexity sequences, they might be a consequence of that repetitive nucleotide content rather than real biology. To check if this might be the case, I calculated the entropy of the sequence context surrounding every SNV in the dataset, including both MAVs and biallelic SNVs. Overall, the sequence context surrounding multi-allelic mutations is no less complex than the context surrounding biallelic mutations (<a href="#fig-entropy" class="quarto-xref">Figure&nbsp;6</a>).</p>
 <div id="fig-entropy" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-entropy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -463,10 +485,13 @@ Figure&nbsp;6: <strong>Multi-allelic mutations don’t occur at low-complexity s
 </figcaption>
 </figure>
 </div>
-<!-- I also checked if multi-allelic mutations exhibit greater strand bias than bi-allelic mutations.
-Specifically, for every nucleotide with read support at a particular mutated site, I asked if the reads supporting that nucleotide were biased toward the forward or reverse strand using a binomial test.
-If any nucleotide was significantly biased, the site was marked as having strand bias.
+<!-- #### Multi-allelic mutations don't exhibit greater strand bias than bi-allelic mutations
 
+Finally, I checked if multi-allelic mutations exhibit greater strand bias than biallelic mutations.
+If the "third alleles" at these MAVs arose due to an error during Illumina sequencing, we might expect the "third" alleles to be biased toward reads aligned in either the forward or reverse orientation.
+So, for every nucleotide with read support at a given SNV, I asked if the reads supporting that nucleotide were biased toward the forward or reverse strand using a binomial test.
+If any nucleotide was significantly biased, the site was marked as having strand bias.
+While a non-negligible fraction of multi-allelic mutations exhibit strand bias, it's not a significantly higher fraction than for biallelic SNVs.
 
 |   | Strand bias  | No strand bias |
 |--------|--------|-|
@@ -476,7 +501,7 @@ If any nucleotide was significantly biased, the site was marked as having strand
 </section>
 <section id="could-lesions-be-inherited-from-p0-to-f1" class="level3">
 <h3 class="anchored" data-anchor-id="could-lesions-be-inherited-from-p0-to-f1">Could lesions be inherited from P0 to F1?</h3>
-<p>Let’s walk through how the explanation in <a href="#nte-o3" class="quarto-xref">Note&nbsp;3</a> might happen. To do so, let’s first imagine how a mutagenized germ cell progenitor (i.e., a mitotic germ cell in the <em>C. elegans</em> gonad) might undergo both mitosis and meiosis to produce a haploid gamete (<a href="#fig-mitosis" class="quarto-xref">Figure&nbsp;7</a>).</p>
+<p>Given all of the sanity checks above, I think that the explanation in <a href="#nte-o3" class="quarto-xref">Note&nbsp;3</a> might be plausible. Let’s walk through how it might happen. To do so, let’s first imagine how a mutagenized germ cell progenitor (i.e., a mitotic germ cell in the <em>C. elegans</em> gonad) might undergo both mitosis and meiosis to produce a haploid gamete (<a href="#fig-mitosis" class="quarto-xref">Figure&nbsp;7</a>).</p>
 <div id="fig-mitosis" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mitosis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -487,7 +512,7 @@ Figure&nbsp;7: <strong>The fate of a mutagenized germ cell progenitor.</strong> 
 </figcaption>
 </figure>
 </div>
-<p>Critically, if a haploid gamete harbors a lesion-containing strand, that lesion might end up in a fertilized zygote. And if it’s present in a fertilized zygote, there’s a chance it would end up in the P4 cell that gives rise to all germ cells in the F1 animal (see <a href="#fig-pz" class="quarto-xref">Figure&nbsp;8</a>).</p>
+<p>Critically, if a haploid gamete harbors a lesion-containing strand, that lesion might end up in a fertilized zygote. And if it’s present in a fertilized zygote, there’s a chance it would end up in the <span class="math inline">\(P_4\)</span> cell that gives rise to all germ cells in the F1 animal (see <a href="#fig-pz" class="quarto-xref">Figure&nbsp;8</a>). Because <em>C. elegans</em> development is perfectly characterized, we actually know exactly how long the lesion would have to persist to arrive in that <span class="math inline">\(P_4\)</span> germ cell progenitor.</p>
 <div id="fig-pz" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pz-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -498,8 +523,12 @@ Figure&nbsp;8: <strong>Lesion segregation during early post-zygotic development.
 </figcaption>
 </figure>
 </div>
-<p>Because chromatids independently segregate during cell division, we can easily calculate the probability that the lesion-containing strand will be present in the <span class="math inline">\(P_4\)</span> germline progenitor cell (conditional on the lesion persisting for those cell divisions). If the zygote only possesses one lesion-containing strand (i.e., only the sperm <em>or</em> egg had a persistent lesion), the probability that the lesion persists until <span class="math inline">\(P_4\)</span> is simply <span class="math inline">\(0.5^4 = 6.25\%\)</span>.</p>
-<p>What if both diploid chromosomes carry one lesion-containing strand? Then, the probability that <span class="math inline">\(P_1\)</span> contains at least one of those lesions is <span class="math inline">\(1 - 0.5^2 = 75\%\)</span>. The probability that <span class="math inline">\(P_4\)</span> contains at least one lesion is <span class="math inline">\(0.75^4 = 42.2\%\)</span>.</p>
+<!-- Because chromatids independently segregate during cell division, we can easily calculate the probability that the lesion-containing strand will be present in the $P_4$ germline progenitor cell (conditional on the lesion persisting for those cell divisions).
+If the zygote only possesses one lesion-containing strand (i.e., only the sperm *or* egg had a persistent lesion), the probability that the lesion persists until $P_4$ is simply $0.5^4 = 6.25\%$.
+
+What if both diploid chromosomes carry one lesion-containing strand?
+Then, the probability that $P_1$ contains at least one of those lesions is $1 - 0.5^2 = 75\%$.
+The probability that $P_4$ contains at least one lesion is $0.75^4 = 42.2\%$. -->
 </section>
 <section id="precedence-for-inherited-lesions-causing-mutations-in-c.-elegans" class="level3">
 <h3 class="anchored" data-anchor-id="precedence-for-inherited-lesions-causing-mutations-in-c.-elegans">Precedence for inherited lesions causing mutations in <em>C. elegans</em></h3>
@@ -508,6 +537,16 @@ Figure&nbsp;8: <strong>Lesion segregation during early post-zygotic development.
 <p><em>We show that paternal exposure to ionizing radiation results in genome instability in the F1 generation and transgenerational embryonic lethality. We determined that the paternal DNA damage is mainly repaired in the zygote through maternally provided error-prone polymerase theta-mediated end joining (TMEJ), which results in chromosomal aberrations. (Wang et al.&nbsp;2023)</em></p>
 </blockquote>
 <p>However, my re-analysis lets us compare the incidence of lesion persistence across mutagen exposure and genetic backgrounds.</p>
+<!-- probably sperm cells that are accumulating this damage that's making it into the zygote
+
+possible that mms is more potent, since more multi-allelics. but confounded by the fact that if EMS is more lethal, fewer F2s will survive and less mosaicism will exist, masking detection ability.
+
+can we infer timing of lesion introduction based on allele frequency? 25/75 split suggests that most MAVs are happening after Z2/Z3 division? tough to say given F2 lethality
+
+https://www.pnas.org/doi/full/10.1073/pnas.0705257104
+https://pubmed.ncbi.nlm.nih.gov/14585809/
+https://pubmed.ncbi.nlm.nih.gov/15784819/
+https://pubmed.ncbi.nlm.nih.gov/17052706/ -->
 
 
 </section>
