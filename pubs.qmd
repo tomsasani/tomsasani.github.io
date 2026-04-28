@@ -1,14 +1,22 @@
 ---
 title: "Publications"
 from: markdown+emoji
+format: 
+    html:
+        css: style.css
+
 ---
+
 
 Click :computer: to access associated code and :book: for PDFs.
 
 ## Preprints
 
-Happ HC, **Sasani TA**, Warner D, Neklason DW, Quinlan AR. AVITI sequencing of a four-generation CEPH Utah pedigree confirms low mutation rates at homopolymer loci despite their low sequence complexity. [*bioRxiv.*](https://www.biorxiv.org/content/10.1101/2025.09.25.678675v1)
+Hiatt L, Peterson EV, Happ HC, Major-Mincer J, Avvaru AK, Goclowski CL, Garretson A, **Sasani TA**, Hotaling JM, Neklason DW, Uchida AM, Quinlan AR. Colibactin-associated mutations in the human colon appear to reflect anatomy and early exposure, not oncogenesis (2026). [*bioRxiv.*](https://www.medrxiv.org/content/10.64898/2026.04.13.26350783v1)
 
+**Sasani TA**, Goldberg ME, Avvaru AK, Nicholas TJ, Neklason DW, Dolzhenko E, Mokveld T, Munson KM, Hoekzema K, Ayllon M, Kaufman EJ, Porubsky D, Kronenberg Z, Brandine GS, Rowell WJ, Jorde LB, Mason CE, Eberle MA, Valdmanis PN, Eichler EE, Quinlan AR,  Dashnow H. A family portrait of the genomic factors shaping tandem repeat mutagenesis (2026). [*bioRxiv.*](https://www.biorxiv.org/content/10.64898/2026.03.06.710071v1)
+
+Happ HC, **Sasani TA**, Warner D, Neklason DW, Quinlan AR. AVITI sequencing of a four-generation CEPH Utah pedigree confirms low mutation rates at homopolymer loci despite their low sequence complexity (2025). [*bioRxiv.*](https://www.biorxiv.org/content/10.1101/2025.09.25.678675v1)
 
 Kunisaki J, Goldberg ME, Lulla S, **Sasani TA**, Hiatt L, Nicholas TJ, Liu L, Torres-Arce E, Guo Y, James E, Horns JJ, Ramsay JM, Chen W, Hotaling JM, Aston KI, Quinlan AR. Sperm from infertile, oligozoospermic men have elevated mutation rates (2024). [*medRxiv.*](https://www.medrxiv.org/content/10.1101/2024.08.22.24312232v1)
 
@@ -18,9 +26,13 @@ Xu K, Zhang Y, Baldwin-Brown J, **Sasani TA**, Phadnis N, Miller MP, Rog O. Deco
 
 Ashbrook DG, **Sasani TA**, Maksimov M, Gunturkun MH, Ma N, Villani F, Ren Y, Rothschild D, Chen H, Lu L, Colonna V, Dumont B, Harris K, Gymrek M, Pritchard JK, Palmer AA, Williams RW. Private and sub-family specific mutations of founder haplotypes in the BXD family reveal phenotypic consequences relevant to health and disease (2022). [*bioRxiv.*](https://www.biorxiv.org/content/10.1101/2022.04.21.489063v1.abstract)
 
-## Peer-reviewed Manuscripts
+<!-- ## <span class="gradient-highlight">Peer-reviewed manuscripts</span> -->
+## Peer-reviewed manuscripts
 
 Porubsky D, Dashnow H\*, **Sasani TA**\*, Logsdon GA\*, Hallast P\*, Noyes MD\*, Kronenberg ZN\*, Mokveld T\*, et al. Human *de novo* mutation rates from a four-generation pedigree reference (2025). [*Nature.*](https://www.nature.com/articles/s41586-025-08922-2)
+
+> :tv: \ Watch an [overview](https://www.youtube.com/watch?v=6TTCZdZd4Y4) of this work on the journal's YouTube channel
+
 
 **Sasani TA**, Quinlan AR, Harris K. Epistasis between mutator alleles contributes to germline mutation rate variability in laboratory mice (2024). [*eLife.*](https://doi.org/10.7554/eLife.89096.3) \ [:computer:](https://github.com/quinlan-lab/proj-mutator-mapping)
 
@@ -35,6 +47,8 @@ Wallace AD, **Sasani TA**, Swanier J, Gates B, Greenland J, Pedersen BP, Varley 
 Cawthon RM, Meeks HD, **Sasani TA***, Smith KR, Kerber RA, O'Brien E, Baird L, Dixon MM, Peiffer AP, Leppert MF, Quinlan AR, Jorde LB. Germline mutation rates in young adults predict longevity and reproductive lifespan (2020). [*Scientific Reports.*](https://www.nature.com/articles/s41598-020-66867-0) \ [:book:](pdfs/cawthon_scirep_2020.pdf)
 
 **Sasani TA**, Pedersen BS, Gao Z, Baird L, Przeworski M, Jorde LB, Quinlan AR. Large, three-generation human families reveal post-zygotic mosaicism and variability in germline mutation accumulation (2019). [*eLife.*](https://elifesciences.org/articles/46922) \ [:computer:](https://github.com/quinlan-lab/ceph-dnm-manuscript) \ [:book:](pdfs/sasani_elife_2019.pdf)
+
+> :microphone: \ Listen to my interview about this work on the [Naked Scientists podcast](https://elifesciences.org/podcast/episode61#431)
 
 Gao Z, Moorjani P, **Sasani TA**, Pedersen BP, Quinlan AR, Jorde LB, Amster G, Przeworski MP. Overlooked roles of DNA damage and maternal age in generating human germline mutations (2019). [*PNAS.*](https://www.pnas.org/content/116/19/9491.short) \  [:book:](pdfs/gao_pnas_2019.pdf)
 
