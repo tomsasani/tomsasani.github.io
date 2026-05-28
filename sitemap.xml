@@ -1,47 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://tomsasani.github.io/tutorials.html</loc>
-    <lastmod>2026-04-28T13:38:29.399Z</lastmod>
+    <loc>https://sasanilab.org/index.html</loc>
+    <lastmod>2026-05-28T17:02:33.074Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/ml_reading_group/2024_intro.html</loc>
-    <lastmod>2026-04-28T13:38:29.253Z</lastmod>
+    <loc>https://sasanilab.org/contact.html</loc>
+    <lastmod>2026-05-28T17:02:33.046Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/talks.html</loc>
-    <lastmod>2026-04-28T13:38:29.398Z</lastmod>
+    <loc>https://sasanilab.org/pubs.html</loc>
+    <lastmod>2026-05-28T17:02:33.154Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/notes/gatk.html</loc>
-    <lastmod>2026-04-28T13:38:29.253Z</lastmod>
+    <loc>https://sasanilab.org/research.html</loc>
+    <lastmod>2026-05-28T17:02:33.154Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/notes/tiny_transformers.html</loc>
-    <lastmod>2026-04-28T13:38:29.254Z</lastmod>
+    <loc>https://sasanilab.org/team.html</loc>
+    <lastmod>2026-05-28T17:02:33.154Z</lastmod>
   </url>
   <url>
-    <loc>https://tomsasani.github.io/research.html</loc>
-    <lastmod>2026-04-28T13:38:29.398Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/notes/multiallelic_mutations.html</loc>
-    <lastmod>2026-04-28T13:38:29.254Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/notes/snakemake.html</loc>
-    <lastmod>2026-04-28T13:38:29.254Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/pubs.html</loc>
-    <lastmod>2026-04-28T13:38:29.398Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/index.html</loc>
-    <lastmod>2026-04-28T13:38:29.253Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tomsasani.github.io/teaching.html</loc>
-    <lastmod>2026-04-28T13:38:29.399Z</lastmod>
+    <loc>https://sasanilab.org/news.html</loc>
+    <lastmod>2026-05-28T17:02:33.074Z</lastmod>
   </url>
 </urlset>
