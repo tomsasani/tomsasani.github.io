@@ -1,0 +1,26 @@
+---
+title: ""
+from: markdown+emoji
+---
+\
+
+## <span class="span_generic">About the PI</span>
+
+![](img/sasani_headshot_rxrx.png){style="float:right;padding: 0 0px 0px 0px;border-radius:90%" width="200"}
+
+**Tom Sasani** (he/him) is an Assistant Professor in the Department of Genetics at the University of Georgia.
+
+Tom received a B.A. from Lawrence University in Appleton, WI and a Ph.D in Human Genetics from the University of Utah under the supervision of [Aaron Quinlan](http://quinlanlab.org/). He did postdoctoral work with [Kelley Harris](https://sites.google.com/site/harriskelley/home) at the University of Washington, and was a Senior Data Scientist at [Recursion Pharmaceuticals](https://www.recursion.com/) until 2022. From 2022 to 2026, he was a research scientist in Aaron Quinlan's group.
+<!-- 
+<details>
+<summary>Bio</summary>
+Outside the lab, you can find Tom perfecting his tavern-style pizza recipe, listening to 80s pop records, and spending time with his family.
+</details> -->
+
+\
+\ 
+
+## <span class="span_generic">Hiring</span>
+
+Starting in January 2027, we will be actively recruiting graduate students, postdoctoral fellows, and research technicians!
+If you are interested in joining the lab, please reach out to Tom at `thomas [dot] a [dot] sasani [at] gmail [dot] com`.

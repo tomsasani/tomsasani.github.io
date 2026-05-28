@@ -1,0 +1,12 @@
+---
+title: ""
+from: markdown+emoji
+---
+\
+
+## <span>News</span>
+
+The Sasani Lab will be opening at UGA in January 2027.
+
+Stay tuned for more!
+

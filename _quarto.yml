@@ -1,0 +1,37 @@
+project:
+  type: website
+
+# execute:
+#   freeze: auto
+
+website:
+  title: "The Sasani Lab"
+  navbar:
+    style: "docked"
+    pinned: false    
+    right:
+        - text: "<span class='span_generic'>Research</span>"
+          file: research.qmd
+        - text: "<span class='span_generic'>Publications</span>"
+          file: pubs.qmd
+        - text: "<span class='span_generic'>Team</span>"
+          file: team.qmd
+        - text: "<span class='span_generic'>Contact</span>"
+          file: contact.qmd
+  # body-footer: | 
+  #   Sasani Lab @ UGA 
+
+
+format:
+  html:
+    theme:
+      light: [default, theme.scss]
+    mainfont: "IBM Plex Mono"
+    
+    code-copy: true
+    code-overflow: wrap
+    toc: false
+    backgroundcolor: "#eae9e5" #"#2c3e50"
+    search: false
+
+

@@ -1,0 +1,25 @@
+---
+title: ""
+from: markdown+emoji
+---
+\
+
+## <span>Get in touch!</span>
+
+Email Tom at:
+
+::: {style="text-align: center;"}
+
+`thomas [dot] a [dot] sasani [at] gmail [dot] com`
+:::
+
+<!-- We're located at: 
+
+::: {style="text-align: center;"}
+
+**Davison Life Sciences Building**\
+120 E Green Street\
+University of Georgia\
+Athens, GA 30602\
+
+::: -->

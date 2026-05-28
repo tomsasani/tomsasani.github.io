@@ -1,0 +1,22 @@
+---
+# title: "The Sasani Lab"
+image: img/bulldog.png
+# about:
+#   template: jolla
+#   image-width: 15em
+#   image-shape: rounded
+toc: false
+# fontsize: "14"
+---
+
+# <span class="span_generic">Welcome!</span>
+
+![](img/bulldog.png){style="float:right;padding: 0 0px 0px 0px;border-radius:10%" width="250"}
+
+\
+
+#### We're a new lab in the [Department of Genetics](https://www.genetics.uga.edu/) at the University of Georgia.
+
+
+#### We use **model systems**, **DNA sequencing**, and new **computational methods** to study mutation rate evolution.
+

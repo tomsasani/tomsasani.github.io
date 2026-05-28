@@ -1,0 +1,148 @@
+/*-- scss:defaults --*/
+@import 'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap';
+
+/* Quarto/Bootstrap variables belong in defaults */
+$navbar-bg: #093866;
+$body-color: #f68d8d;
+$link-color: blue;
+
+$navbar-bg: #BA0C2F;
+$body-color: #000000;
+$link-color: #E4002B;
+
+// $toc-color: #D6D2C4; 
+// $toc-font-color: #D6D2C4;
+
+/*-- scss:rules --*/
+
+
+.publication_link {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
+  color: #B4BD00;
+}
+
+h1 {
+  font-family: "Hanken Grotesk", sans-serif;
+  font-weight: 900; /* This will now stick! */
+  font-size: 3rem;
+  font-style: normal;
+  color: #eae9e5;
+}
+
+h2 {
+  font-family: "Hanken Grotesk", sans-serif;
+  font-weight: 500; /* This will now stick! */
+  font-size: 2rem;
+  font-style: normal;
+  color: #eae9e5;
+}
+
+h3 {
+  font-family: "Hanken Grotesk", sans-serif;
+  font-weight: 500; /* This will now stick! */
+  font-size: 1.5rem;
+  font-style: normal;
+}
+
+h4 {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: black;
+}
+
+span {
+  position: relative;
+  z-index: 1;
+}
+
+span::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  right: -5px;
+  background-color: #004E60;
+  transform: skew(5deg,-1deg);
+  border-radius: 4px;
+  z-index: -1;
+}
+
+.navbar li.nav-item a.nav-link {
+  color: #eae9e5 !important;
+  font-weight: 400;
+  font-family: "IBM Plex Mono";
+  font-size: 1.25rem;
+}
+
+.navbar-title {
+  font-family: "Hanken Grotesk", sans-serif;
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 1.75rem;
+}
+
+.navbar-brand span::before,
+.navbar-title::before {
+  content: none !important;
+  display: none !important;
+}
+
+.navbar li.nav-item:hover a.nav-link {
+  color: #ffffff !important;
+  font-weight: 500;
+  font-size: 1.25rem;
+  font-family: "IBM Plex Mono";
+}
+
+.navbar-title:hover {
+  color: #004E60 !important;
+  font-family: "Hanken Grotesk";
+}
+
+a:hover {
+  color: #ffffff !important;
+  font-family: "IBM Plex Mono";
+}
+
+.btn-primary {
+  background-color: #004E60; /* Green */
+  border-color: #004E60;
+    border-width: 2px;
+  color: #eae9e5;
+  padding: 0px 2px;
+  font-size:1rem;
+
+}
+
+.btn-code {
+  background-color: #554F47; /* Green */
+  border-color: #554F47;
+    border-width: 2px;
+  color: #eae9e5;
+  padding: 0px 2px;
+  font-size:1rem;
+
+}
+
+/* Hover state */
+.btn-primary:hover {
+  background-color: #eae9e5;
+  color: #004E60 !important;
+  border-color: #004E60;
+  border-width: 2px;
+  font-size:1em;
+}
+
+/* Hover state */
+.btn-code:hover {
+  background-color: #eae9e5;
+  color: #554F47 !important;
+  border-color: #554F47;
+  border-width: 2px;
+  font-size:1em;
+}
