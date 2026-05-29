@@ -26,9 +26,9 @@ Ashbrook DG, **Sasani TA**, Maksimov M, Gunturkun MH, Ma N, Villani F, Ren Y, Ro
 <!-- ## <span class="gradient-highlight">Peer-reviewed manuscripts</span> -->
 ## <span class="span_generic">Peer-reviewed manuscripts</span>
 
-Porubsky D, Dashnow H\*, **Sasani TA**\*, Logsdon GA\*, Hallast P\*, Noyes MD\*, Kronenberg ZN\*, Mokveld T\*, et al. Human *de novo* mutation rates from a four-generation pedigree reference (2025). [*Nature.*](https://www.nature.com/articles/s41586-025-08922-2)
+Porubsky D, Dashnow H\*, **Sasani TA**\*, Logsdon GA\*, Hallast P\*, Noyes MD\*, Kronenberg ZN\*, Mokveld T\*, et al. Human *de novo* mutation rates from a four-generation pedigree reference (2025). [*Nature.*](https://www.nature.com/articles/s41586-025-08922-2) [PDF](pdfs/porubsky_nature_2025.pdf){.btn-primary .btn-outline-primary .btn}
 
-**Sasani TA**, Quinlan AR, Harris K. Epistasis between mutator alleles contributes to germline mutation rate variability in laboratory mice (2024). [*eLife.*](https://doi.org/10.7554/eLife.89096.3) [code](https://github.com/quinlan-lab/proj-mutator-mapping){.btn-code .btn-outline-code .btn}
+**Sasani TA**, Quinlan AR, Harris K. Epistasis between mutator alleles contributes to germline mutation rate variability in laboratory mice (2024). [*eLife.*](https://doi.org/10.7554/eLife.89096.3) [code](https://github.com/quinlan-lab/proj-mutator-mapping){.btn-code .btn-outline-code .btn} [PDF](pdfs/sasani_elife_2024.pdf){.btn-primary .btn-outline-primary .btn}
 
 
 Fixsen SM, Cone KR, Goldstein SA, **Sasani TA**, Quinlan AR, Rothenburg S, Elde NC. Poxviruses capture host genes by LINE-1 retrotransposition (2022). [*eLife.*](https://elifesciences.org/articles/63332) [PDF](pdfs/fixsen_elife_2022.pdf){.btn-primary .btn-outline-primary .btn}
