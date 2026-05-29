@@ -87,9 +87,14 @@ span::before {
 }
 
 .navbar-brand span::before,
-.navbar-title::before {
+.navbar-title::before,
+.navbar-toggler span,
+.navbar-toggler span::before {
   content: none !important;
-  display: none !important;
+  display: inline-block !important; /* Restores standard icon behavior */
+  position: static !important;      /* Clears the relative/absolute positioning */
+  transform: none !important;        /* Removes the skew */
+  background-color: transparent !important; /* Clears the background color */
 }
 
 .navbar li.nav-item:hover a.nav-link {
