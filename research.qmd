@@ -4,7 +4,7 @@ format: html
 ---
 \
 
-## <span>Research</span>
+# <span>Research</span>
 \
 **Life requires mistakes.**
 
@@ -14,37 +14,50 @@ Although eukaryotes share much of their DNA repair and replication machinery, mu
 Even within the same organism, one cell type might accumulate mutations a hundred times more quickly than another. 
 Mutation rate variation has a profound impact on evolution and disease, but we know surprisingly little about the genetic and environmental factors that affect germline and somatic mutagenesis.
 
-**In our lab, we try to understand *when*, *where*, and *how* mutations occur.**
+**In our lab, we want to understand *when*, *where*, and *how* mutations occur.**
 
 <!-- These are a few projects we've worked on in the past. -->
 
-### Measuring variability in germline *de novo* mutation rates
+<!-- ## <span>Future research projects</span>
+
+We are pursuing a number of exciting new research directions.
+Using model systems, we will **measure the transgenerational inheritance of DNA damage** and use recombinant inbred lines to **discover natural, segregating mutator alleles**.
+In parallel, we are developing new **machine learning methods to uncover hidden mutation signatures** in large sequencing datasets.
+Using sequencing data from non-human species, we will also **measure the mutagenic potential of the early mammalian embryo.** -->
+
+
+## <span>Past research projects</span>
+
+
+### Variability in human germline *de novo* mutation rates
 
 In 2019, we sequenced 33 large, multi-generational human families and identified *de novo* germline mutations in hundreds of children.
 Some families accumulated mutations at much higher rates than others, and almost 10% of "apparent" germline mutations occurred in the early embryo.
 
 ::: {style="text-align: right;"}
-<span style="color: #D6D2C4;">Read the paper [***here***](https://elifesciences.org/articles/46922){.publication_link}</span>
+<!-- <span style="color: #D6D2C4;">Read the paper [***here***](https://elifesciences.org/articles/46922){.publication_link}</span>  -->
+
+***Read the paper*** [***here***](https://elifesciences.org/articles/46922){.btn-primary .btn-outline-primary .btn}
 :::
 
-### Finding mutator alleles in eukaryotic genomes
+### Mutator alleles in eukaryotic genomes
 
 Variants in DNA repair or replication genes — often called "mutator alleles" — can dramatically increase the mutation rate.
 Using a panel of recombinant inbred mouse lines, we found a large-effect germline mutator allele in the DNA repair gene *Mutyh.*
 Later, we developed a new statistical method to find another mutator allele in a DNA repair gene called *Ogg1*.
 
 ::: {style="text-align: right;"}
-<span style="color: #D6D2C4;">Read the papers [***here***](https://www.nature.com/articles/s41586-022-04701-5){.publication_link} and [***here***](https://elifesciences.org/articles/89096){.publication_link}</span>
+***Read the papers*** [***here***](https://www.nature.com/articles/s41586-022-04701-5){.btn-primary .btn-outline-primary .btn} ***and*** [***here***](https://elifesciences.org/articles/89096){.btn-primary .btn-outline-primary .btn}
 :::
 
-### Discovering hyper-mutable tandem repeat loci
+### Hyper-mutable tandem repeat loci
 
 Tandem repeats are repetitive nucleotide motifs that comprise almost 10% of our genomes.
 TRs mutate up to 10,000 times more often than single-nucleotide sites, making them potent engines of mutagenesis.
 We recently used long-read sequencing technologies to find hyper-mutable TR loci, which mutate up to 10 times in a single generation.
 
 ::: {style="text-align: right;"}
-<span style="color: #D6D2C4;">Read the papers [***here***](https://www.nature.com/articles/s41586-025-08922-2){.publication_link} and [***here***](https://www.biorxiv.org/content/10.64898/2026.03.06.710071v2){.publication_link}
+***Read the papers*** [***here***](https://www.nature.com/articles/s41586-025-08922-2){.btn-primary .btn-outline-primary .btn} ***and*** [***here***](https://www.biorxiv.org/content/10.64898/2026.03.06.710071v2){.btn-primary .btn-outline-primary .btn}
 :::
 
 <!-- ### Transgenerational DNA damage in *C. elegans*
