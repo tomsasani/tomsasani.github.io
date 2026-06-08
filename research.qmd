@@ -18,16 +18,24 @@ Mutation rate variation has a profound impact on evolution and disease, but we k
 
 <!-- These are a few projects we've worked on in the past. -->
 
-<!-- ## <span>Future research projects</span>
+## <span>Future research projects</span>
 
 We are pursuing a number of exciting new research directions.
 Using model systems, we will **measure the transgenerational inheritance of DNA damage** and use recombinant inbred lines to **discover natural, segregating mutator alleles**.
 In parallel, we are developing new **machine learning methods to uncover hidden mutation signatures** in large sequencing datasets.
-Using sequencing data from non-human species, we will also **measure the mutagenic potential of the early mammalian embryo.** -->
-
+Using sequencing data from non-human species, we will also **measure the mutagenic potential of the early mammalian embryo.**
 
 ## <span>Past research projects</span>
 
+### Mapping mutator alleles
+
+Variants in DNA repair or replication genes — often called "mutator alleles" — can dramatically increase the mutation rate.
+Using a panel of recombinant inbred mouse lines, we found a large-effect germline mutator allele in the DNA repair gene *Mutyh.*
+Later, we developed a new statistical method to find another mutator allele in a DNA repair gene called *Ogg1*.
+
+::: {style="text-align: right;"}
+***Read the papers*** [***here***](https://www.nature.com/articles/s41586-022-04701-5){.btn-primary .btn-outline-primary .btn} ***and*** [***here***](https://elifesciences.org/articles/89096){.btn-primary .btn-outline-primary .btn}
+:::
 
 ### Variability in human germline *de novo* mutation rates
 
@@ -38,16 +46,6 @@ Some families accumulated mutations at much higher rates than others, and almost
 <!-- <span style="color: #D6D2C4;">Read the paper [***here***](https://elifesciences.org/articles/46922){.publication_link}</span>  -->
 
 ***Read the paper*** [***here***](https://elifesciences.org/articles/46922){.btn-primary .btn-outline-primary .btn}
-:::
-
-### Mutator alleles in eukaryotic genomes
-
-Variants in DNA repair or replication genes — often called "mutator alleles" — can dramatically increase the mutation rate.
-Using a panel of recombinant inbred mouse lines, we found a large-effect germline mutator allele in the DNA repair gene *Mutyh.*
-Later, we developed a new statistical method to find another mutator allele in a DNA repair gene called *Ogg1*.
-
-::: {style="text-align: right;"}
-***Read the papers*** [***here***](https://www.nature.com/articles/s41586-022-04701-5){.btn-primary .btn-outline-primary .btn} ***and*** [***here***](https://elifesciences.org/articles/89096){.btn-primary .btn-outline-primary .btn}
 :::
 
 ### Hyper-mutable tandem repeat loci
