@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://sasanilab.org/index.html</loc>
-    <lastmod>2026-06-08T13:09:03.676Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sasanilab.org/contact.html</loc>
-    <lastmod>2026-06-08T13:09:03.648Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sasanilab.org/pubs.html</loc>
-    <lastmod>2026-06-08T13:09:03.821Z</lastmod>
-  </url>
-  <url>
     <loc>https://sasanilab.org/research.html</loc>
-    <lastmod>2026-06-08T13:09:03.821Z</lastmod>
-  </url>
-  <url>
-    <loc>https://sasanilab.org/team.html</loc>
-    <lastmod>2026-06-08T13:09:03.821Z</lastmod>
+    <lastmod>2026-06-25T18:57:36.804Z</lastmod>
   </url>
   <url>
     <loc>https://sasanilab.org/news.html</loc>
-    <lastmod>2026-06-08T13:09:03.676Z</lastmod>
+    <lastmod>2026-06-25T18:57:36.642Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sasanilab.org/pubs.html</loc>
+    <lastmod>2026-06-25T18:57:36.804Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sasanilab.org/team.html</loc>
+    <lastmod>2026-06-25T18:57:36.804Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sasanilab.org/contact.html</loc>
+    <lastmod>2026-06-25T18:57:36.610Z</lastmod>
+  </url>
+  <url>
+    <loc>https://sasanilab.org/index.html</loc>
+    <lastmod>2026-06-25T18:57:36.642Z</lastmod>
   </url>
 </urlset>
