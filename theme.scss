@@ -4,9 +4,9 @@
 @import 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap';
 
 /* Quarto/Bootstrap variables belong in defaults */
-$navbar-bg: #093866;
-$body-color: #f68d8d;
-$link-color: blue;
+// $navbar-bg: #093866;
+// $body-color: #f68d8d;
+// $link-color: blue;
 
 $navbar-bg: #BA0C2F;
 $body-color: #000000;
@@ -16,7 +16,29 @@ $link-color: #E4002B;
 // $toc-font-color: #D6D2C4;
 
 /*-- scss:rules --*/
+// h1, h2, h3 {
+//   display: block !important;
+//   overflow: visible !important;
+//   word-wrap: break-word;
+// }
 
+footer.footer {
+  // background-color: #093866; /* Matches your navbar background */
+  color: #eae9e5;            /* Off-white text color */
+  padding: 1.5rem 0;         /* Adds breathing room */
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 1.2rem;
+
+  a {
+    color: #E4002B;          /* Custom link color inside the footer */
+    text-decoration: none;
+    
+    &:hover {
+      color: #BA0C2F;
+      text-decoration: underline;
+    }
+  }
+}
 
 .publication_link {
   font-family: "IBM Plex Mono", monospace;
@@ -54,20 +76,32 @@ h4 {
   color: black;
 }
 
-span {
+h1 span, h2 span {
+  display: inline !important;
   position: relative;
   z-index: 1;
+  
+  background-color: #004E60;
+  padding-left: 6px; 
+  padding-right: 6px; 
+  
+  /* Apply the radius directly to the span */
+  border-radius: 4px !important; 
+  
+  /* This clones the 4px border-radius onto the start and end of EVERY broken line */
+  -webkit-box-decoration-break: clone !important;
+  box-decoration-break: clone !important;
 }
 
 span::before {
-  content: "";
+  content: none !important;
   position: absolute;
   top: 0;
   bottom: 0;
   left: -5px;
   right: -5px;
   background-color: #004E60;
-  // transform: skew(5deg,-1deg);
+  transform: skew(5deg,-1deg);
   border-radius: 4px;
   z-index: -1;
 }

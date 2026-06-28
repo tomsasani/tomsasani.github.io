@@ -4,6 +4,9 @@ project:
 # execute:
 #   freeze: auto
 
+body-footer: | 
+  This page brought to you by <https://example.com>
+
 website:
   title: "The Sasani Lab"
   navbar:
@@ -18,14 +21,20 @@ website:
           file: team.qmd
         - text: "<span class='span_generic'>Contact</span>"
           file: contact.qmd
-  # body-footer: | 
-  #   Sasani Lab @ UGA 
-
+  page-footer:
+    left: "![](img/bulldog.png){width=75px style='vertical-align: middle; margin-right: 0px;'}"
+    center: "The Sasani Lab @ UGA"
+    right: 
+      # - icon: github
+      #   href: https://github.com/yourusername
+      - icon: bluesky
+        href: https://bsky.app/profile/tomsasani.bsky.social
 
 format:
   html:
     theme:
       light: [default, theme.scss]
+      # dark: [default, _theme.scss]
     mainfont: "IBM Plex Mono"
     
     code-copy: true
