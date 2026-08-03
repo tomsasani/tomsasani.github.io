@@ -3,36 +3,32 @@
 @import 'https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap';
 @import 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap';
 
-/* Quarto/Bootstrap variables belong in defaults */
-// $navbar-bg: #093866;
-// $body-color: #f68d8d;
-// $link-color: blue;
-
 $navbar-bg: #BA0C2F;
 $body-color: #000000;
 $link-color: #E4002B;
 
-// $toc-color: #D6D2C4; 
-// $toc-font-color: #D6D2C4;
-
 /*-- scss:rules --*/
-// h1, h2, h3 {
-//   display: block !important;
-//   overflow: visible !important;
-//   word-wrap: break-word;
-// }
+footer.footer,
+footer.footer .nav-footer,
+footer.footer .nav-footer-left,
+footer.footer .nav-footer-center,
+footer.footer .nav-footer-right {
+  background-color: #eae9e5 !important;
+  color: #000000 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  margin-top: 0;
+}
 
 footer.footer {
-  // background-color: #093866; /* Matches your navbar background */
-  color: #eae9e5;            /* Off-white text color */
-  padding: 1.5rem 0;         /* Adds breathing room */
+  padding: 1.5rem 0;
   font-family: "IBM Plex Mono", monospace;
   font-size: 1.2rem;
 
   a {
-    color: #E4002B;          /* Custom link color inside the footer */
+    color: #E4002B;
     text-decoration: none;
-    
+
     &:hover {
       color: #BA0C2F;
       text-decoration: underline;
@@ -46,71 +42,59 @@ footer.footer {
   color: #E4002B;
 }
 
-h1 {
-  font-family: "Hanken Grotesk", sans-serif;
-  font-weight: 700; /* This will now stick! */
-  font-size: 2.5rem;
-  font-style: normal;
-  color: #eae9e5;
-}
-
+h1,
 h2 {
   font-family: "Hanken Grotesk", sans-serif;
-  font-weight: 500; /* This will now stick! */
-  font-size: 1.75rem;
   font-style: normal;
   color: #eae9e5;
 }
 
 h3 {
   font-family: "Hanken Grotesk", sans-serif;
-  font-weight: 500; /* This will now stick! */
-  font-size: 1.5rem;
   font-style: normal;
+  color: #000000;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-weight: 500;
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-weight: 500;
+  font-size: 1.5rem;
 }
 
 h4 {
   font-family: "IBM Plex Mono", monospace;
   font-weight: 500;
   font-size: 1.2rem;
-  color: black;
+  color: #000000;
 }
 
-h1 span, h2 span {
-  display: inline !important;
+h1 span,
+h2 span {
+  display: inline;
   position: relative;
   z-index: 1;
-  
   background-color: #004E60;
-  padding-left: 6px; 
-  padding-right: 6px; 
-  
-  /* Apply the radius directly to the span */
-  border-radius: 4px !important; 
-  
-  /* This clones the 4px border-radius onto the start and end of EVERY broken line */
-  -webkit-box-decoration-break: clone !important;
-  box-decoration-break: clone !important;
-}
-
-span::before {
-  content: none !important;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -5px;
-  right: -5px;
-  background-color: #004E60;
-  transform: skew(5deg,-1deg);
+  padding: 0 6px;
   border-radius: 4px;
-  z-index: -1;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transform: skew(5deg);
 }
 
 .navbar li.nav-item a.nav-link {
   color: #eae9e5 !important;
-  font-weight: 400;
-  font-family: "IBM Plex Mono";
+  font-family: "IBM Plex Mono", monospace;
   font-size: 1.25rem;
+  font-weight: 400;
 }
 
 .navbar-title {
@@ -120,69 +104,46 @@ span::before {
   font-size: 1.75rem;
 }
 
-.navbar-brand span::before,
-.navbar-title::before,
-.navbar-toggler span,
-.navbar-toggler span::before {
-  content: none !important;
-  display: inline-block !important; /* Restores standard icon behavior */
-  position: static !important;      /* Clears the relative/absolute positioning */
-  transform: none !important;        /* Removes the skew */
-  background-color: transparent !important; /* Clears the background color */
-}
-
 .navbar li.nav-item:hover a.nav-link {
   color: #ffffff !important;
   font-weight: 500;
-  font-size: 1.25rem;
-  font-family: "IBM Plex Mono";
 }
 
 .navbar-title:hover {
   color: #004E60 !important;
-  font-family: "Hanken Grotesk";
 }
 
 a:hover {
-  // color: #ffffff !important;
-  font-family: "IBM Plex Mono";
+  font-family: "IBM Plex Mono", monospace;
   font-weight: 700;
 }
 
-.btn-primary {
-  background-color: #004E60; /* Green */
-  border-color: #004E60;
-    border-width: 2px;
+.btn-primary,
+.btn-code {
+  border-width: 2px;
   color: #eae9e5;
-  padding: 0px 2px;
-  font-size:1rem;
+  padding: 0 2px;
+  font-size: 1rem;
+}
 
+.btn-primary {
+  background-color: #004E60;
+  border-color: #004E60;
 }
 
 .btn-code {
-  background-color: #554F47; /* Green */
+  background-color: #554F47;
   border-color: #554F47;
-    border-width: 2px;
-  color: #eae9e5;
-  padding: 0px 2px;
-  font-size:1rem;
-
 }
 
-/* Hover state */
 .btn-primary:hover {
   background-color: #eae9e5;
   color: #004E60 !important;
   border-color: #004E60;
-  border-width: 2px;
-  font-size:1em;
 }
 
-/* Hover state */
 .btn-code:hover {
   background-color: #eae9e5;
   color: #554F47 !important;
   border-color: #554F47;
-  border-width: 2px;
-  font-size:1em;
 }
