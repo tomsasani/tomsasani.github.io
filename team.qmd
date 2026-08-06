@@ -23,4 +23,5 @@ Outside the lab, you can find Tom perfecting his tavern-style pizza recipe, list
 ## <span class="span_generic">Hiring</span>
 
 Starting in January 2027, we will be actively recruiting graduate students, postdoctoral fellows, and research technicians!
+Prospective graduate students should apply through the [Integrated Life Science (ILS)](https://ils.uga.edu/) program.
 If you are interested in joining the lab, please reach out to Tom at `thomas [dot] a [dot] sasani [at] gmail [dot] com`.

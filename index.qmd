@@ -13,6 +13,15 @@ toc: false
 :::
 \
 
-#### We're a new lab <u>opening January 2027</u> in the [Department of Genetics](https://www.genetics.uga.edu/) at the University of Georgia.
+#### We're a new lab in the [Department of Genetics](https://www.genetics.uga.edu/) at the University of Georgia.
 
 #### We use **model systems**, **DNA sequencing**, and new **computational methods** to study mutation rate evolution.
+
+<!-- ::: {.text-center}
+### Latest news
+::: -->
+\
+
+::: {.announcement-banner}
+The Sasani Lab is officially opening in January 2027! 
+:::

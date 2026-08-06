@@ -79,7 +79,7 @@ h4 {
 
 h1 span,
 h2 span {
-  display: inline;
+  // display: inline;
   position: relative;
   z-index: 1;
   background-color: #004E60;
@@ -87,7 +87,8 @@ h2 span {
   border-radius: 4px;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-  transform: skew(5deg);
+  display: inline-block;
+  // transform: skew(-5deg);
 }
 
 .navbar li.nav-item a.nav-link {
@@ -146,4 +147,70 @@ a:hover {
   background-color: #eae9e5;
   color: #554F47 !important;
   border-color: #554F47;
+}
+
+.announcement-banner {
+  /* Layout & Centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  
+  /* Sizing & Responsiveness */
+  width: fit-content;      /* Tight around content on wide screens */
+  max-width: 100%;         /* Prevents ever bleeding past the parent container */
+  box-sizing: border-box;  /* Ensures padding doesn't add extra width */
+  margin: 0 auto;          /* Centers horizontally */
+  
+  /* Visual Styles */
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background-color: #DCEBFF;
+  border: 1.5px solid #85B8FF;
+  color: #000000;
+  font-weight: 400;
+}
+
+/* Ensure paragraph content doesn't force overflow */
+.announcement-banner p {
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
+  
+  /* Allows long text to break gracefully on small screens if needed */
+  text-align: center;
+  word-break: break-word; 
+}
+
+/* Link styling */
+.banner-link {
+  color: #0066FF;
+  text-decoration: none;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.banner-link:hover {
+  text-decoration: underline;
+}
+
+/* Close button styling */
+.close-btn {
+  background: none;
+  border: none;
+  color: #4A5568;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.close-btn:hover {
+  opacity: 1;
 }
