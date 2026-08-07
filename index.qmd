@@ -17,9 +17,6 @@ toc: false
 
 #### We use **model systems**, **DNA sequencing**, and new **computational methods** to study mutation rate evolution.
 
-<!-- ::: {.text-center}
-### Latest news
-::: -->
 \
 
 ::: {.announcement-banner}
