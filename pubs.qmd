@@ -9,6 +9,8 @@ toc: true
 
 ## <span class="span_generic">Preprints</span>
 
+**Sasani TA** and Quinlan AR. Inherited DNA damage generates multi-allelic mutations in *C. elegans* (2026). [*bioRxiv.*](https://www.biorxiv.org/content/10.64898/2026.08.26.747097v1)
+
 Hiatt L, Peterson EV, Happ HC, Major-Mincer J, Avvaru AK, Goclowski CL, Garretson A, **Sasani TA**, Hotaling JM, Neklason DW, Uchida AM, Quinlan AR. Colibactin-associated mutations in the human colon appear to reflect anatomy and early exposure, not oncogenesis (2026). [*bioRxiv.*](https://www.medrxiv.org/content/10.64898/2026.04.13.26350783v1)
 
 **Sasani TA**, Goldberg ME, Avvaru AK, Nicholas TJ, Neklason DW, Dolzhenko E, Mokveld T, Munson KM, Hoekzema K, Ayllon M, Kaufman EJ, Porubsky D, Kronenberg Z, Brandine GS, Rowell WJ, Jorde LB, Mason CE, Eberle MA, Valdmanis PN, Eichler EE, Quinlan AR,  Dashnow H. A family portrait of the genomic factors shaping tandem repeat mutagenesis (2026). [*bioRxiv.*](https://www.biorxiv.org/content/10.64898/2026.03.06.710071v1)
