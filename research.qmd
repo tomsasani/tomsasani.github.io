@@ -27,6 +27,18 @@ Using sequencing data from non-human species, we will also **measure the mutagen
 
 ## <span>Past research projects</span>
 
+### Transgenerational effects of DNA damage
+
+Using the model nematode *C. elegans*, we recently demonstrated that DNA damage can be inherited from generation to generation.
+If a parental (P0) worm is exposed to a mutagen, its gametes will contain many DNA *lesions* (e.g., bulky chemical adducts).
+Those lesions are transmitted to the next generation (F1).
+If they segregate unrepaired for multiple embryonic cell divisions, they might be repeatedly bypassed by low-fidelity DNA polymerases.
+The gametes of that F1 then become mosaic for multiple *de novo* alleles, which are passed down to the next generation.
+
+::: {style="text-align: right;"}
+***Read the paper*** [***here***](https://www.biorxiv.org/content/10.64898/2026.08.26.747097v1){.btn-primary .btn-outline-primary .btn}
+:::
+
 ### Mapping mutator alleles
 
 Variants in DNA repair or replication genes — often called "mutator alleles" — can dramatically increase the mutation rate.
