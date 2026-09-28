@@ -22,3 +22,9 @@ toc: false
 ::: {.announcement-banner}
 The Sasani Lab is officially opening in January 2027! 
 :::
+
+\ 
+
+::: {.text-center}
+Read more about our [lab expectations](lab_expectations.qmd).
+:::
