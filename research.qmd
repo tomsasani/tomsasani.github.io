@@ -21,7 +21,7 @@ Mutation rate variation has a profound impact on evolution and disease, but we k
 ## <span>Future research projects</span>
 
 We are pursuing a number of exciting new research directions.
-Using model systems, we will **measure the transgenerational inheritance of DNA damage** and use recombinant inbred lines to **discover natural, segregating mutator alleles**.
+Using the model nematode *C. elegans*, we will **measure the transgenerational inheritance of DNA damage** and use recombinant inbred lines to **discover natural, segregating mutator alleles**.
 In parallel, we are developing new **machine learning methods to uncover hidden mutation signatures** in large sequencing datasets.
 Using sequencing data from non-human species, we will also **measure the mutagenic potential of the early mammalian embryo.**
 
